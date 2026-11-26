@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0e0f13">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="MediaSave">
+<link rel="apple-touch-icon" href="/static/apple-touch-icon.png">
+<link rel="icon" href="/static/favicon.png">
+<title>MediaSave 4K — enter PIN</title>
+<style>
+  body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0e0f13; color: #eceef3;
+         font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; padding: 24px; box-sizing: border-box; }
+  .box { width: 100%; max-width: 360px; text-align: center; }
+  img { width: 72px; height: 72px; border-radius: 18px; }
+  h1 { font-size: 22px; margin: 14px 0 4px; }
+  p { color: #8d93a5; font-size: 14px; margin: 0 0 20px; }
+  input { width: 100%; box-sizing: border-box; font-size: 28px; letter-spacing: .4em; text-align: center;
+          padding: 14px; border-radius: 14px; border: 1px solid #262934; background: #171920; color: #fff; outline: none; }
+  input:focus { border-color: #ff4f7b; }
+  button { width: 100%; margin-top: 14px; padding: 15px; font: inherit; font-weight: 700; color: #fff; border: 0;
+           border-radius: 14px; background: linear-gradient(135deg, #ff4f7b, #e0306a); }
+  .err { color: #ff6b6b; font-size: 14px; margin-top: 12px; min-height: 1.4em; }
+</style>
+</head>
+<body>
+<form class="box" method="post" action="/login">
+  <img src="/static/icon-192.png" alt="">
+  <h1>MediaSave 4K</h1>
+  <p>{% if hosted %}Enter your MediaSave PIN (the one you chose when you set it up).{% else %}Enter the 6-digit PIN shown in the MediaSave window on your computer.{% endif %} You only need to do this once on this phone.</p>
+  {% if numeric %}<input name="pin" inputmode="numeric" pattern="[0-9]*" autocomplete="current-password" maxlength="64" autofocus required>
+  {% else %}<input name="pin" type="password" autocomplete="current-password" maxlength="64" autofocus required style="letter-spacing:.1em">{% endif %}
+  <input type="hidden" name="next" value="{{ next }}">
+  <button type="submit">Unlock</button>
+  <div class="err">{{ error or "" }}</div>
+</form>
+</body>
+</html>

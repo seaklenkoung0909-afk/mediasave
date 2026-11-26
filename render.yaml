@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: mediasave
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/ping
+    envVars:
+      - key: MEDIASAVE_PIN          # the code you type once on your iPhone (8+ characters recommended)
+        sync: false
+      - key: ALLOW_VIDEO_UPSCALE    # 4K video copies: too slow on the free plan
+        value: "0"
+      - key: KEEP_HOURS             # downloads are deleted from the server after this many hours
+        value: "3"

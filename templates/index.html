@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0e0f13">
+<meta name="color-scheme" content="dark">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="MediaSave">
+<meta name="application-name" content="MediaSave">
+<meta name="format-detection" content="telephone=no">
+<link rel="manifest" href="/manifest.webmanifest{% if manifest_key %}?k={{ manifest_key }}{% endif %}">
+<link rel="apple-touch-icon" href="/static/apple-touch-icon.png">
+<link rel="icon" href="/static/favicon.png">
+<!-- iPhone launch screens -->
+<link rel="apple-touch-startup-image" href="/static/splash/splash-1320x2868.png" media="(device-width: 440px) and (device-height: 956px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="/static/splash/splash-1290x2796.png" media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="/static/splash/splash-1284x2778.png" media="(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="/static/splash/splash-1260x2736.png" media="(device-width: 420px) and (device-height: 912px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="/static/splash/splash-1206x2622.png" media="(device-width: 402px) and (device-height: 874px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="/static/splash/splash-1179x2556.png" media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="/static/splash/splash-1170x2532.png" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="/static/splash/splash-1125x2436.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="/static/splash/splash-1242x2688.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="/static/splash/splash-828x1792.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="/static/splash/splash-1242x2208.png" media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="/static/splash/splash-750x1334.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="/static/splash/splash-640x1136.png" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+<title>MediaSave 4K</title>
+<style>
+  :root {
+    --bg: #0e0f13; --panel: #171920; --panel2: #0f1116; --line: #262934; --text: #eceef3;
+    --muted: #8d93a5; --accent: #ff4f7b; --accent2: #ffb648; --ok: #3ccf8e; --err: #ff6b6b; --blue: #3d8bff;
+    --r: 16px;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html { -webkit-text-size-adjust: 100%; background: var(--bg); }
+  body { margin: 0; font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+         background: var(--bg); color: var(--text); overscroll-behavior-y: none; }
+  body.locked { overflow: hidden; }
+  .wrap { max-width: 760px; margin: 0 auto;
+          padding: calc(14px + env(safe-area-inset-top)) calc(14px + env(safe-area-inset-right))
+                   calc(40px + env(safe-area-inset-bottom)) calc(14px + env(safe-area-inset-left)); }
+  header { display: flex; align-items: center; gap: 12px; margin: 4px 2px 14px; }
+  header img { width: 40px; height: 40px; border-radius: 11px; }
+  header .grow { flex: 1; min-width: 0; }
+  h1 { margin: 0; font-size: 20px; letter-spacing: -.01em; }
+  .sub { color: var(--muted); font-size: 12px; line-height: 1.3; }
+  .icon-btn { min-height: 38px !important; min-width: 38px; padding: 0 12px !important; border-radius: 99px !important; font-size: 14px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); padding: 14px; margin-bottom: 12px; }
+  textarea { width: 100%; min-height: 56px; max-height: 180px; resize: none; padding: 14px 15px;
+             background: var(--panel2); color: var(--text); border: 1.5px solid var(--line);
+             border-radius: 12px; font: inherit; font-size: 16px; outline: none; }
+  textarea:focus { border-color: var(--accent); }
+  button, .btn { -webkit-appearance: none; appearance: none; border: 0; border-radius: 12px; min-height: 48px;
+           padding: 12px 16px; font: inherit; font-weight: 650; cursor: pointer; color: var(--text);
+           background: #252833; text-decoration: none; display: inline-flex; align-items: center;
+           justify-content: center; gap: 8px; touch-action: manipulation; }
+  button:active, .btn:active { transform: scale(.98); }
+  button:disabled { opacity: .5; }
+  .primary { background: linear-gradient(135deg, var(--accent), #e0306a); color: #fff; }
+  .wide { width: 100%; }
+  .row { display: flex; gap: 10px; margin-top: 10px; }
+  .row > * { flex: 1; }
+  .msg { margin-top: 8px; font-size: 14px; }
+  .msg:empty { display: none; }
+  .msg.err { color: var(--err); }
+  .quick { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+  .chip { display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 99px;
+          background: var(--panel2); border: 1px solid var(--line); font-size: 14px; cursor: pointer; user-select: none; }
+  .chip input { accent-color: var(--accent); width: 18px; height: 18px; margin: 0; }
+  .sites { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+  .sites span { font-size: 12px; color: var(--muted); border: 1px solid var(--line); border-radius: 99px; padding: 3px 9px; }
+  details.card > summary { list-style: none; cursor: pointer; font-weight: 650; display: flex;
+                           justify-content: space-between; align-items: center; min-height: 28px; }
+  details.card > summary::-webkit-details-marker { display: none; }
+  details.card > summary::after { content: "›"; font-size: 22px; color: var(--muted); transition: transform .2s; }
+  details.card[open] > summary::after { transform: rotate(90deg); }
+  .set { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 0;
+         border-bottom: 1px solid var(--line); font-size: 15px; }
+  .set:last-of-type { border-bottom: 0; }
+  .set small { display: block; color: var(--muted); font-size: 12px; }
+  .set input[type=checkbox] { accent-color: var(--accent); width: 22px; height: 22px; flex: none; }
+  select { background: var(--panel2); color: var(--text); border: 1px solid var(--line);
+           border-radius: 10px; padding: 9px 10px; font: inherit; font-size: 15px; max-width: 46%; }
+  .help { font-size: 14px; color: #c8ccd8; }
+  .help ol { padding-left: 20px; margin: 8px 0; }
+  .help li { margin: 4px 0; }
+  code.copy { display: block; padding: 10px; border-radius: 10px; background: var(--panel2); border: 1px solid var(--line);
+              font-size: 13px; word-break: break-all; user-select: all; margin: 6px 0; }
+  .note { font-size: 13px; color: var(--muted); line-height: 1.45; }
+  .banner { display: flex; gap: 12px; align-items: center; border-color: rgba(61,139,255,.35); background: rgba(61,139,255,.08); }
+  .banner img { width: 42px; height: 42px; border-radius: 10px; flex: none; }
+  .banner .x { flex: none; min-height: 36px; padding: 6px 10px; background: transparent; color: var(--muted); }
+  .phone { display: grid; grid-template-columns: 170px 1fr; gap: 16px; align-items: center; }
+  .phone img { width: 170px; height: 170px; background: #fff; border-radius: 12px; padding: 6px; }
+  .pin { font-size: 26px; font-weight: 800; letter-spacing: .25em; }
+  @media (max-width: 520px) { .phone { grid-template-columns: 1fr; justify-items: center; text-align: center; } }
+
+  .job-head { display: flex; justify-content: space-between; gap: 10px; align-items: center; margin-bottom: 10px; }
+  .job-url { font-size: 13px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+  .plat { font-weight: 700; color: var(--text); margin-right: 6px; }
+  .badge { font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 99px; white-space: nowrap; flex: none; }
+  .s-queued, .s-downloading, .s-upscaling { background: rgba(255,182,72,.15); color: var(--accent2); }
+  .s-done { background: rgba(60,207,142,.15); color: var(--ok); }
+  .s-error { background: rgba(255,107,107,.15); color: var(--err); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; }
+  .item { background: var(--panel2); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; }
+  .media { aspect-ratio: 4/5; background: #000; display: grid; place-items: center; }
+  .media img, .media video { width: 100%; height: 100%; object-fit: contain; display: block; }
+  .meta { padding: 8px; display: flex; flex-direction: column; gap: 6px; }
+  .meta button { min-height: 42px; font-size: 14px; padding: 8px; }
+  .meta .res { font-size: 12px; color: var(--muted); text-align: center; }
+  .all { margin-top: 10px; }
+  .err-box { color: var(--err); font-size: 14px; margin-bottom: 6px; }
+  .wm { font-size: 13px; color: var(--accent2); margin-bottom: 8px; }
+  details.log { margin-top: 10px; font-size: 12px; color: var(--muted); }
+  details.log pre { white-space: pre-wrap; word-break: break-word; margin: 6px 0 0; }
+  .spinner { width: 13px; height: 13px; border: 2px solid currentColor; border-right-color: transparent;
+             border-radius: 50%; display: inline-block; animation: spin .8s linear infinite; vertical-align: -2px; margin-right: 5px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* connection bar */
+  .conn { position: fixed; left: 0; right: 0; top: 0; z-index: 40; background: #5a1f27; color: #fff; font-size: 14px;
+          padding: calc(8px + env(safe-area-inset-top)) 14px 8px; display: flex; gap: 10px; align-items: center; justify-content: center; }
+  .conn button { min-height: 32px; padding: 4px 12px; font-size: 13px; background: rgba(255,255,255,.15); }
+
+  /* bottom sheets & viewer */
+  .overlay { position: fixed; inset: 0; z-index: 50; background: rgba(0,0,0,.6); display: flex; align-items: flex-end; justify-content: center; }
+  .sheet { width: 100%; max-width: 560px; max-height: 92vh; overflow-y: auto; -webkit-overflow-scrolling: touch;
+           background: var(--panel); border-radius: 22px 22px 0 0; border: 1px solid var(--line); border-bottom: 0;
+           padding: 10px 18px calc(22px + env(safe-area-inset-bottom)); animation: up .25s ease-out; }
+  @keyframes up { from { transform: translateY(40px); opacity: 0; } }
+  .grab { width: 40px; height: 5px; border-radius: 99px; background: #3a3e4c; margin: 0 auto 10px; }
+  .sheet-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .sheet-head h2 { font-size: 20px; margin: 0; }
+  .sheet-head button { min-height: 34px; padding: 4px 12px; font-size: 14px; border-radius: 99px; }
+  .app-tile { display: flex; flex-direction: column; align-items: center; gap: 6px; margin: 14px 0 6px; }
+  .app-tile img { width: 76px; height: 76px; border-radius: 18px; box-shadow: 0 8px 24px rgba(255,79,123,.25); }
+  .app-tile span { font-size: 13px; color: #c8ccd8; }
+  .steps { list-style: none; padding: 0; margin: 14px 0; counter-reset: s; }
+  .steps li { position: relative; padding: 10px 0 10px 46px; border-bottom: 1px solid var(--line); font-size: 15px; min-height: 52px; }
+  .steps li:last-child { border-bottom: 0; }
+  .steps li::before { counter-increment: s; content: counter(s); position: absolute; left: 0; top: 10px; width: 32px; height: 32px;
+                      border-radius: 50%; background: var(--blue); color: #fff; font-weight: 800; display: grid; place-items: center; font-size: 15px; }
+  .glyph { display: inline-grid; place-items: center; vertical-align: -7px; width: 30px; height: 26px; border-radius: 8px;
+           background: #2a2e3a; margin: 0 2px; }
+  .glyph svg { width: 18px; height: 18px; stroke: #4da3ff; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .toggle { display: inline-block; width: 34px; height: 20px; border-radius: 99px; background: var(--ok); position: relative; vertical-align: -5px; }
+  .toggle::after { content: ""; position: absolute; right: 2px; top: 2px; width: 16px; height: 16px; border-radius: 50%; background: #fff; }
+  .callout { border-radius: 12px; padding: 10px 12px; font-size: 13px; line-height: 1.45; margin: 10px 0; }
+  .callout.warn { background: rgba(255,182,72,.1); color: #ffd28f; }
+  .callout.ok { background: rgba(60,207,142,.1); color: #9fe9c6; }
+  .callout.info { background: rgba(61,139,255,.1); color: #a9cbff; }
+  .section-title { font-weight: 750; font-size: 16px; margin: 20px 0 2px; }
+  .pointer { position: fixed; z-index: 60; left: 50%; transform: translateX(-50%); font-size: 30px; color: var(--blue);
+             animation: bob 1s ease-in-out infinite; pointer-events: none; text-shadow: 0 2px 10px rgba(0,0,0,.6); }
+  @keyframes bob { 50% { transform: translate(-50%, 8px); } }
+
+  .viewer { position: fixed; inset: 0; z-index: 55; background: #000; display: flex; flex-direction: column; }
+  .viewer .stage { flex: 1; display: grid; place-items: center; overflow: hidden; padding-top: env(safe-area-inset-top); }
+  .viewer img, .viewer video { max-width: 100%; max-height: 100%; object-fit: contain;
+                               -webkit-touch-callout: default; -webkit-user-select: auto; user-select: auto; }
+  .viewer .bar { background: rgba(23,25,32,.96); padding: 12px 16px calc(14px + env(safe-area-inset-bottom)); }
+  .viewer .bar p { margin: 0 0 10px; font-size: 15px; text-align: center; }
+
+  .toast { position: fixed; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom)); transform: translateX(-50%); z-index: 70;
+           background: #2b2f3b; color: #fff; padding: 10px 16px; border-radius: 99px; font-size: 14px;
+           box-shadow: 0 6px 24px rgba(0,0,0,.4); opacity: 0; pointer-events: none; transition: opacity .2s; max-width: 90vw; text-align: center; }
+  .toast.show { opacity: 1; }
+  footer { margin-top: 18px; font-size: 12px; color: var(--muted); text-align: center; }
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+<div class="conn hidden" id="conn">
+  <span>Can't reach your computer. Is MediaSave running, and are you on the same Wi-Fi?</span>
+  <button id="connRetry">Retry</button>
+</div>
+
+<div class="wrap">
+  <header>
+    <img src="/static/icon-192.png" alt="">
+    <div class="grow">
+      <h1>MediaSave 4K</h1>
+      <div class="sub">Paste any link · highest resolution · no watermark · 4K copies</div>
+    </div>
+    <button class="icon-btn hidden" id="installPill">Install</button>
+    <button class="icon-btn hidden" id="reload" aria-label="Refresh">↻</button>
+  </header>
+
+  <!-- Install banner (phones in the browser) -->
+  <div class="card banner hidden" id="installCard">
+    <img src="/static/icon-192.png" alt="">
+    <div style="flex:1;font-size:14px"><b>Put MediaSave on your Home Screen</b><br><span class="note">Opens like a normal app, takes 20 seconds.</span></div>
+    <button class="primary" id="installOpen" style="flex:none;min-height:40px;padding:8px 14px">How?</button>
+    <button class="x" id="installClose" aria-label="Close">✕</button>
+  </div>
+
+  <!-- Main input -->
+  <div class="card">
+    <textarea id="urls" rows="1" inputmode="url" autocapitalize="off" autocorrect="off" spellcheck="false"
+              placeholder="Paste any link here…"></textarea>
+    <div class="row">
+      <button class="hidden" id="paste">📋 Paste link</button>
+      <button class="primary" id="go">⬇ Download</button>
+    </div>
+    <div class="quick">
+      <label class="chip"><input type="checkbox" id="upscale"> Make 4K copy</label>
+    </div>
+    <div class="msg" id="msg"></div>
+    <div class="sites">
+      <span>Instagram</span><span>TikTok</span><span>Facebook</span><span>Behance</span><span>Pinterest</span>
+      <span>X</span><span>YouTube</span><span>Reddit</span><span>Douyin</span>
+      <span>Vimeo</span><span>ArtStation</span><span>Flickr</span><span>+ 1,000 more</span>
+    </div>
+  </div>
+
+  <div id="jobs"></div>
+
+  <!-- Use on phone (shown on the computer) -->
+  <div class="card hidden" id="phoneCard">
+    <div class="phone">
+      <img id="qr" alt="QR code to open MediaSave on your phone">
+      <div>
+        <div style="font-weight:700;font-size:17px;margin-bottom:4px">📱 Install it on your iPhone</div>
+        <div class="help" id="phoneHelp">Put your phone on the <b>same Wi-Fi</b> as this computer, open the <b>Camera</b>, and scan the code.
+          The phone opens MediaSave and shows how to add it to the Home Screen.</div>
+        <div class="note" style="margin-top:8px">Or type <b id="lanUrl"></b> in Safari and enter PIN</div>
+        <div class="pin" id="pin"></div>
+        <div class="note hidden" id="stableNote" style="margin-top:6px"></div>
+        <div class="note hidden" id="tunnelNote" style="margin-top:6px">🌍 “Anywhere” link is on, so this code also works on mobile data.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Share from other apps -->
+  <details class="card" id="shareHelp">
+    <summary>Share straight from Instagram, TikTok, Facebook…</summary>
+    <div class="help">
+      <p style="margin:10px 0 4px"><b>Simplest (any phone):</b> in any app tap <b>Share → Copy link</b>, open MediaSave, tap the box → <b>Paste</b>. The download starts on its own.</p>
+      <p style="margin:14px 0 4px"><b>iPhone: one tap from the Share sheet</b></p>
+      <ol>
+        <li>Open the <b>Shortcuts</b> app → <b>+</b> → name it <b>MediaSave</b>.</li>
+        <li>Tap <b>ⓘ</b> → turn on <b>Show in Share Sheet</b>; let it receive <b>URLs</b> and <b>Text</b>.</li>
+        <li>Add the action <b>Text</b>, and paste this into it:</li>
+      </ol>
+      <code class="copy" id="shortcutUrl"></code>
+      <ol start="4">
+        <li>Right after the pasted text, insert the variable <b>Shortcut Input</b>.</li>
+        <li>Add the action <b>Open URLs</b> (it uses the Text). Done.</li>
+      </ol>
+      <button id="copyShortcut" class="wide">Copy link for Shortcut</button>
+      <p style="margin:12px 0 4px">Now in any app: <b>Share → MediaSave</b>.</p>
+      <p style="margin:14px 0 4px"><b>Android: show up in the Share menu</b> by starting the computer app with
+        <b>start_anywhere</b>, then open the https link in Chrome and tap <b>Install</b>.</p>
+    </div>
+  </details>
+
+  <!-- Settings -->
+  <details class="card" id="settings">
+    <summary>Settings</summary>
+    <label class="set"><span>Start downloading as soon as I paste<small>No need to tap Download</small></span>
+      <input type="checkbox" id="autoStart" checked></label>
+    <label class="set" id="saveShortcutRow"><span>One-tap Save to Photos<small>Uses the “MediaSave Save” Shortcut (iPhone)</small></span>
+      <input type="checkbox" id="saveShortcut"></label>
+    <label class="set"><span>Best-quality 4K video<small>Slower, slightly sharper</small></span>
+      <input type="checkbox" id="best"></label>
+    <div class="set" id="loginRow"><span>Login (private posts, Facebook…)<small>A browser <b>on the computer</b> where you're logged in to that site</small></span>
+      <select id="browser">
+        <option value="">None</option><option value="chrome">Chrome</option><option value="edge">Edge</option>
+        <option value="firefox">Firefox</option><option value="safari">Safari</option>
+        <option value="brave">Brave</option><option value="opera">Opera</option>
+      </select></div>
+    <div class="row">
+      <button id="howInstall">Install guide</button>
+      <button id="update">Update downloaders</button>
+    </div>
+    <div class="row hidden" id="folderRow"><button id="folder">Open downloads folder</button></div>
+    <div class="note" style="margin-top:12px">
+      <b>Original</b> is the highest resolution the site stores (Instagram and TikTok keep up to 1080p; YouTube, Behance
+      and Pinterest can go higher). For videos the clean, unwatermarked stream is always chosen. The <b>4K</b> copy enlarges
+      anything smaller to fit 3840×2160 (same shape) with sharpening. It's sized for 4K screens and editors, but it can't
+      add detail the site never stored.
+    </div>
+    <div class="note" id="info" style="margin-top:8px"></div>
+  </details>
+
+  <footer>Only download content you own or have permission to use.</footer>
+</div>
+
+<!-- Install guide -->
+<div class="overlay hidden" id="sheetWrap">
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+    <div class="grab"></div>
+    <div class="sheet-head"><h2 id="sheetTitle">Install MediaSave</h2><button id="sheetClose">Done</button></div>
+    <div id="sheetBody"></div>
+  </div>
+</div>
+<div class="pointer hidden" id="pointer">⬇</div>
+
+<!-- Photo / video viewer (iPhone saving) -->
+<div class="viewer hidden" id="viewer">
+  <div class="stage" id="viewerStage"></div>
+  <div class="bar">
+    <p id="viewerText"></p>
+    <div class="row" style="margin-top:0">
+      <button id="viewerSetup" class="hidden">Set up one-tap saving</button>
+      <a id="viewerDownload" class="btn hidden">Download</a>
+      <button id="viewerClose" class="primary">Close</button>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const ua = navigator.userAgent;
+const isIOS = /iP(hone|ad|od)/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+const isAndroid = /Android/i.test(ua);
+const isPhone = isIOS || isAndroid || matchMedia("(pointer: coarse)").matches;
+const standalone = matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+const safariVersion = +((ua.match(/Version\/(\d+)/) || [])[1] || 0);
+const iosOtherBrowser = isIOS && /CriOS|FxiOS|EdgiOS|OPiOS|GSA\/|DuckDuckGo|FBAN|FBAV|Instagram|musical_ly|TikTok|Line\/|Zalo/i.test(ua);
+const iosInApp = isIOS && /FBAN|FBAV|Instagram|musical_ly|TikTok|Line\/|Zalo|GSA\//i.test(ua);
+const canShareFiles = !!(navigator.canShare && window.isSecureContext &&
+  (() => { try { return navigator.canShare({ files: [new File(["x"], "x.jpg", { type: "image/jpeg" })] }); } catch { return false; } })());
+const LINK_RE = /https?:\/\/[^\s"'<>]+\.[^\s"'<>]+|(?:^|\s)(?:(?:www|m|vt|vm)\.)?(?:instagram|tiktok|facebook|behance|pinterest|twitter|youtube|threads|douyin)\.(?:com|net)\/\S+|(?:^|\s)(?:x\.com|youtu\.be|fb\.watch|pin\.it)\/\S+/i;
+const LABEL = { queued: "Waiting", downloading: "Downloading", upscaling: "Making 4K", done: "Ready", error: "Failed" };
+const SHORTCUT_NAME = "MediaSave Save";
+
+const ICON = {
+  share: '<svg viewBox="0 0 24 24"><path d="M12 3v12M7.5 7.5 12 3l4.5 4.5"/><path d="M8 11H6a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-8a1 1 0 0 0-1-1h-2"/></svg>',
+  dots:  '<svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.3"/><circle cx="12" cy="12" r="1.3"/><circle cx="19" cy="12" r="1.3"/></svg>',
+  plus:  '<svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M12 8v8M8 12h8"/></svg>',
+  menu:  '<svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.3"/><circle cx="12" cy="12" r="1.3"/><circle cx="12" cy="19" r="1.3"/></svg>',
+};
+const g = (name) => `<span class="glyph">${ICON[name]}</span>`;
+
+// ---------- saved preferences ----------
+const store = {
+  get(k, d) { try { const v = localStorage.getItem("mediasave." + k); return v === null ? d : JSON.parse(v); } catch { return d; } },
+  set(k, v) { try { localStorage.setItem("mediasave." + k, JSON.stringify(v)); } catch {} },
+};
+for (const [id, def] of [["upscale", true], ["best", false], ["autoStart", true], ["saveShortcut", false]]) {
+  $(id).checked = store.get(id, def);
+  $(id).addEventListener("change", () => store.set(id, $(id).checked));
+}
+$("browser").value = store.get("browser", "");
+$("browser").addEventListener("change", () => store.set("browser", $("browser").value));
+if (!isIOS || canShareFiles) $("saveShortcutRow").classList.add("hidden");
+
+function toast(t, ms = 2600) { const el = $("toast"); el.textContent = t; el.classList.add("show");
+  clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.remove("show"), ms); }
+function say(text, err = false) { $("msg").textContent = text; $("msg").className = "msg" + (err ? " err" : ""); }
+async function api(path, opts = {}) {
+  const r = await fetch(path, opts);
+  if (r.status === 401) { location.href = "/"; throw new Error("PIN required"); }
+  return r;
+}
+
+let INFO = null;
+const infoReady = api("/api/info").then(r => r.json()).then(i => (INFO = i)).catch(() => null);
+
+// ---------- input ----------
+const box = $("urls");
+const grow = () => { box.style.height = "auto"; box.style.height = Math.min(box.scrollHeight + 2, 180) + "px"; };
+box.addEventListener("input", grow);
+box.addEventListener("paste", () => setTimeout(() => {
+  grow();
+  if ($("autoStart").checked && LINK_RE.test(box.value)) start();
+}, 30));
+box.addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); start(); } });
+
+if (navigator.clipboard && navigator.clipboard.readText && window.isSecureContext) {
+  $("paste").classList.remove("hidden");
+  $("paste").onclick = async () => {
+    try {
+      const t = await navigator.clipboard.readText();
+      if (!LINK_RE.test(t)) { toast("No link on the clipboard"); return; }
+      box.value = t; grow(); start();
+    } catch { toast("Tap the box and choose Paste"); box.focus(); }
+  };
+}
+$("go").onclick = () => start();
+
+async function start(text) {
+  const urls = text || box.value;
+  if (!LINK_RE.test(urls)) { say("Paste a link first (in the app: Share → Copy link).", true); box.focus(); return; }
+  $("go").disabled = true; say("");
+  try {
+    const r = await api("/api/jobs", { method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ urls, upscale: $("upscale").checked, best: $("best").checked, browser: $("browser").value }) });
+    const j = await r.json();
+    if (!r.ok) { say(j.error || "Something went wrong.", true); return; }
+    box.value = ""; grow(); box.blur();
+    j.jobs.forEach(job => { render(job); poll(job.id); });
+    $("jobs").scrollIntoView({ behavior: "smooth", block: "start" });
+  } catch (e) { if (e.message !== "PIN required") { say("Can't reach your computer.", true); checkConn(); } }
+  finally { $("go").disabled = false; }
+}
+
+// ---------- results ----------
+const lastState = {};
+function groupFiles(files) {
+  return files.filter(f => !f.upscaled)
+    .map(f => ({ orig: f, k4: files.find(x => x.upscaled && x.source === f.name) || null }));
+}
+function render(job) {
+  const key = JSON.stringify(job);
+  if (lastState[job.id] === key) return;      // unchanged: don't restart playing videos
+  lastState[job.id] = key;
+  let el = document.getElementById("job-" + job.id);
+  if (!el) { el = document.createElement("div"); el.className = "card"; el.id = "job-" + job.id; $("jobs").prepend(el); }
+  const busy = !["done", "error"].includes(job.status);
+  const items = groupFiles(job.files);
+  const btn = (f, primary, text) =>
+    `<button ${primary ? 'class="primary"' : ""} data-save="${esc(f.url)}" data-name="${esc(f.name)}" data-kind="${f.kind}">${text}</button>`;
+  const cards = items.map(({ orig, k4 }) => {
+    const media = orig.kind === "image"
+      ? `<img src="${esc(orig.url)}" loading="lazy" alt="" data-view="${esc(orig.url)}">`
+      : `<video src="${esc(orig.url)}#t=0.1" controls playsinline preload="metadata"></video>`;
+    const res = [orig.width ? `${orig.width}×${orig.height}` : "", k4 && k4.width ? `4K ${k4.width}×${k4.height}` : ""].filter(Boolean).join(" · ");
+    return `<div class="item"><div class="media">${media}</div><div class="meta">
+        ${k4 ? btn(k4, true, "Save 4K") : ""}${btn(orig, !k4, "Save original")}
+        <div class="res">${res}</div></div></div>`;
+  }).join("");
+  const showAll = !busy && items.length > 1;
+  el.innerHTML = `
+    <div class="job-head">
+      <div class="job-url"><span class="plat">${esc(job.platform || "")}</span>${esc(job.url.replace(/^https?:\/\/(www\.)?/, ""))}</div>
+      <span class="badge s-${job.status}">${busy ? '<span class="spinner"></span>' : ""}${LABEL[job.status]}</span>
+    </div>
+    ${job.error ? `<div class="err-box">${esc(job.error)}</div>` : ""}
+    ${job.watermark ? `<div class="wm">This site only offered a watermarked version of this video.</div>` : ""}
+    ${cards ? `<div class="grid">${cards}</div>` : ""}
+    ${showAll ? `<button class="wide all" data-all="${job.id}">Save all ${items.length}${items.some(i => i.k4) ? " (4K)" : ""}</button>` : ""}
+    <details class="log"><summary>Details</summary><pre>${esc(job.log.join("\n"))}</pre></details>`;
+}
+const polling = new Set();
+async function poll(id) {
+  if (polling.has(id)) return; polling.add(id);
+  const tick = async () => {
+    try {
+      const r = await api("/api/jobs/" + id);
+      if (r.status === 404) { polling.delete(id); return; }
+      const job = await r.json(); render(job);
+      if (["done", "error"].includes(job.status)) { polling.delete(id); if (job.status === "done" && document.hidden) toast("Download ready"); return; }
+      setTimeout(tick, 1200);
+    } catch { setTimeout(tick, 3000); }
+  };
+  tick();
+}
+
+// ---------- saving to the phone ----------
+const ready = new Map();     // button -> File[] waiting for a second tap (iOS needs a fresh tap to share)
+async function toFile(url, name, kind) {
+  const r = await api(url); const blob = await r.blob();
+  return new File([blob], name, { type: blob.type || (kind === "video" ? "video/mp4" : "image/jpeg") });
+}
+async function shareFiles(btn, files) {
+  try { await navigator.share({ files }); ready.delete(btn); return true; }
+  catch (e) {
+    if (e.name === "AbortError") { ready.delete(btn); return true; }
+    if (e.name === "NotAllowedError") {          // took too long to fetch: ask for one more tap
+      ready.set(btn, files); btn.dataset.label = btn.dataset.label || btn.textContent;
+      btn.textContent = "Tap again to save"; btn.disabled = false; return true;
+    }
+    return false;
+  }
+}
+function plainDownload(url, name) {
+  const a = document.createElement("a"); a.href = url + (url.includes("?") ? "&" : "?") + "dl=1";
+  a.download = name; document.body.appendChild(a); a.click(); a.remove();
+}
+async function runSaveShortcut(entries) {
+  await infoReady;
+  const urls = entries.map(e => `${location.origin}${e.url}?key=${INFO ? INFO.pin : ""}`).join("\n");
+  location.href = `shortcuts://run-shortcut?name=${encodeURIComponent(SHORTCUT_NAME)}&input=text&text=${encodeURIComponent(urls)}`;
+}
+function entryOf(b) { return { url: b.dataset.save, name: b.dataset.name, kind: b.dataset.kind }; }
+
+document.addEventListener("click", async (e) => {
+  const view = e.target.closest("img[data-view]");
+  if (view && isIOS) { openViewer({ url: view.dataset.view, kind: "image", name: "" }); return; }
+  const btn = e.target.closest("button[data-save], button[data-all]");
+  if (!btn) return;
+  if (ready.has(btn)) {                 // second tap after preparing
+    await shareFiles(btn, ready.get(btn));
+    if (!ready.has(btn) && btn.dataset.label) btn.textContent = btn.dataset.label; return;
+  }
+  const entries = btn.dataset.save ? [entryOf(btn)]
+    : [...btn.closest(".card").querySelectorAll(".item")].map(it => entryOf(it.querySelector("button[data-save]")));
+  const label = btn.textContent;
+
+  // 1) Secure (https) page: the Share sheet → Save Image / Save Video straight to Photos
+  if (canShareFiles) {
+    btn.disabled = true; btn.textContent = "Preparing…";
+    try {
+      const files = await Promise.all(entries.map(x => toFile(x.url, x.name, x.kind)));
+      if (navigator.canShare({ files }) && await shareFiles(btn, files)) {
+        if (!ready.has(btn)) { btn.textContent = label; btn.disabled = false; } return;
+      }
+    } catch {}
+    btn.textContent = label; btn.disabled = false;
+  }
+  // 2) iPhone with the "MediaSave Save" Shortcut: straight into Photos
+  if (isIOS && $("saveShortcut").checked) { runSaveShortcut(entries); return; }
+  // 3) iPhone without it: photo viewer (press & hold → Save to Photos) or guided video save
+  if (isIOS) {
+    if (entries.length === 1) { openViewer(entries[0]); return; }
+    if (!standalone) { plainDownload(`/api/jobs/${btn.dataset.all}/zip?which=best`, "mediasave.zip"); toast("Saving a ZIP to Files → Downloads"); return; }
+    openGuide("save"); return;
+  }
+  // 4) Android / computer: normal download
+  if (entries.length === 1) { plainDownload(entries[0].url, entries[0].name); toast("Saving to Downloads"); }
+  else { plainDownload(`/api/jobs/${btn.dataset.all}/zip?which=best`, "mediasave.zip"); toast("Downloading a ZIP with all files"); }
+});
+
+function openViewer(entry) {
+  const stage = $("viewerStage");
+  stage.innerHTML = entry.kind === "image"
+    ? `<img src="${esc(entry.url)}" alt="">`
+    : `<video src="${esc(entry.url)}" controls playsinline autoplay></video>`;
+  const canDownload = !standalone && entry.kind === "video";
+  if (entry.kind === "image") {
+    $("viewerText").innerHTML = "Press and hold the photo → <b>Save to Photos</b>";
+  } else if (canDownload) {
+    $("viewerText").innerHTML = "Tap <b>Download</b>, then in <b>Files → Downloads</b> open it → Share → <b>Save Video</b>.";
+  } else {
+    $("viewerText").innerHTML = "To save videos from the Home Screen app, set up <b>one-tap saving</b> once (about 1 minute).";
+  }
+  $("viewerSetup").classList.toggle("hidden", !isIOS);
+  $("viewerDownload").classList.toggle("hidden", !canDownload);
+  if (canDownload) { $("viewerDownload").href = entry.url + "?dl=1"; $("viewerDownload").setAttribute("download", entry.name || ""); }
+  $("viewer").classList.remove("hidden"); document.body.classList.add("locked");
+}
+function closeViewer() { $("viewer").classList.add("hidden"); $("viewerStage").innerHTML = ""; document.body.classList.remove("locked"); }
+$("viewerClose").onclick = closeViewer;
+$("viewerSetup").onclick = () => { closeViewer(); openGuide("save"); };
+
+// ---------- install guide ----------
+function addSteps() {
+  if (isIOS) {
+    if (iosOtherBrowser) {
+      return `<div class="callout warn">${iosInApp
+          ? "You're inside another app's browser, which can't add to the Home Screen."
+          : "This browser may not offer “Add to Home Screen”."} Open this page in <b>Safari</b>: tap <b>Copy link</b>, open Safari, paste it in the address bar.</div>
+        <button class="wide primary" id="copyHere">Copy link</button>`;
+    }
+    if (safariVersion >= 26) {
+      return `<ol class="steps">
+        <li>Tap ${g("dots")} next to the address bar at the bottom.</li>
+        <li>Tap ${g("share")} <b>Share</b>.</li>
+        <li>Scroll down and tap ${g("plus")} <b>Add to Home Screen</b>.</li>
+        <li>Leave <b>Open as Web App</b> <span class="toggle"></span> on, then tap <b>Add</b>.</li>
+      </ol>
+      <div class="note">Don't see ${g("dots")}? Tap ${g("share")} if it's showing, or tap the address bar first.</div>`;
+    }
+    return `<ol class="steps">
+      <li>Tap ${g("share")} <b>Share</b> in Safari's bottom bar (or top bar on iPad).</li>
+      <li>Scroll down and tap ${g("plus")} <b>Add to Home Screen</b>.</li>
+      <li>Tap <b>Add</b> in the top-right corner.</li>
+    </ol>`;
+  }
+  if (isAndroid) {
+    if (deferredPrompt) return `<button class="wide primary" id="nativeInstall" style="margin-top:12px">Install MediaSave</button>`;
+    return `<ol class="steps">
+      <li>Tap ${g("menu")} in Chrome's top-right corner.</li>
+      <li>Tap <b>Add to Home screen</b> (or <b>Install app</b>).</li>
+      <li>Tap <b>Add</b> / <b>Install</b>.</li>
+    </ol>`;
+  }
+  return `<div class="callout info">Open MediaSave on your phone: scan the QR code on the main screen with the phone's Camera, then follow the steps it shows.</div>`;
+}
+function saveSteps() {
+  return `<div class="section-title">Save straight to Photos (recommended)</div>
+    <div class="note">Home Screen web apps on iPhone can't download files on their own. This one-time Shortcut saves photos <b>and videos</b> to Photos with one tap.</div>
+    <ol class="steps">
+      <li>Open the <b>Shortcuts</b> app → tap <b>+</b>. Name it exactly <b>${SHORTCUT_NAME}</b>.</li>
+      <li>Add the action <b>Split Text</b>. Set its text to <b>Shortcut Input</b> and split by <b>New Lines</b>.</li>
+      <li>Add <b>Repeat with Each</b> (item in Split Text).</li>
+      <li>Inside the repeat, add <b>Get Contents of URL</b> (uses <b>Repeat Item</b>).</li>
+      <li>Inside the repeat, add <b>Save to Photo Album</b> → <b>Recents</b>. Tap <b>Done</b>.</li>
+    </ol>
+    <div class="note">The first time, iPhone asks to allow <b>local network</b> and <b>Photos</b> access. Tap <b>Allow</b>. If it asks what input to receive, choose <b>Text</b>.</div>
+    <button class="wide primary" id="enableShortcut" style="margin-top:12px">I've added it, turn on one-tap saving</button>
+    <button class="wide" id="testShortcut" style="margin-top:8px">Test it with the app icon</button>`;
+}
+function addressNote() {
+  if (!INFO) return "";
+  const host = location.host;
+  if (INFO.hosted)
+    return `<div class="callout ok">✓ This is your own MediaSave web address (<b>${esc(host)}</b>). The icon works anywhere, on Wi-Fi or mobile data, and no computer is needed.</div>`;
+  if (/\.local(:\d+)?$/.test(host))
+    return `<div class="callout ok">✓ Using your computer's permanent address (<b>${esc(host)}</b>), so the icon keeps working even if your Wi-Fi address changes.</div>`;
+  if (location.protocol === "https:")
+    return `<div class="callout warn">This is the temporary “anywhere” link. It changes every time the computer app restarts, so add the Home Screen icon from the Wi-Fi address instead.</div>`;
+  return `<div class="callout info">Your icon will open <b>${esc(host)}</b>. If your computer's address ever changes, scan the QR code again (or reserve this address in your router).</div>`;
+}
+function openGuide(section) {
+  const showAdd = !standalone;
+  $("sheetTitle").textContent = section === "save" ? "Save to Photos" : (isIOS ? "Add to iPhone Home Screen" : "Install MediaSave");
+  $("sheetBody").innerHTML = `
+    ${showAdd && section !== "save" ? `
+      <div class="app-tile"><img src="/static/apple-touch-icon.png" alt=""><span>MediaSave</span></div>
+      ${addSteps()}${addressNote()}` : ""}
+    ${standalone && section !== "save" ? `<div class="callout ok">✓ MediaSave is installed and running from your Home Screen.</div>` : ""}
+    ${isIOS && !iosOtherBrowser && !canShareFiles ? saveSteps() : ""}
+    ${isIOS && canShareFiles ? `<div class="section-title">Saving</div><div class="note">Tap <b>Save</b> on any photo or video, then choose <b>Save Image</b> / <b>Save Video</b>. It goes straight to your Photos.</div>` : ""}`;
+  $("sheetWrap").classList.remove("hidden"); document.body.classList.add("locked");
+  if (section === "save") $("sheetBody").querySelector(".section-title")?.scrollIntoView();
+  // Make the page address unlock the app by itself when it's added to the Home Screen
+  if (showAdd && INFO && INFO.pin) history.replaceState(null, "", `/?key=${INFO.pin}&app=1`);
+  // Point at Safari's toolbar (bottom of the screen on iPhone)
+  if (isIOS && showAdd && !iosOtherBrowser && section !== "save") {
+    const p = $("pointer"); p.style.bottom = "calc(6px + env(safe-area-inset-bottom))"; p.classList.remove("hidden");
+    setTimeout(() => p.classList.add("hidden"), 6000);
+  }
+  const copy = $("copyHere");
+  if (copy) copy.onclick = () => copyText(location.href.split("&app=")[0].replace("&install=1", ""));
+  const en = $("enableShortcut");
+  if (en) en.onclick = () => { $("saveShortcut").checked = true; store.set("saveShortcut", true); toast("One-tap saving is on"); closeGuide(); };
+  const t = $("testShortcut");
+  if (t) t.onclick = () => runSaveShortcut([{ url: "/static/icon-512.png" }]);
+  store.set("guideSeen", true);
+}
+function closeGuide() {
+  $("sheetWrap").classList.add("hidden"); $("pointer").classList.add("hidden"); document.body.classList.remove("locked");
+  history.replaceState(null, "", "/");
+  if (!standalone && isPhone) $("installCard").classList.remove("hidden");
+}
+$("sheetClose").onclick = closeGuide;
+$("sheetWrap").addEventListener("click", (e) => { if (e.target === $("sheetWrap")) closeGuide(); });
+$("installOpen").onclick = () => openGuide();
+$("installPill").onclick = () => openGuide();
+$("howInstall").onclick = () => openGuide();
+$("installClose").onclick = () => { $("installCard").classList.add("hidden"); store.set("bannerHidden", true); };
+
+async function copyText(t) {
+  try { await navigator.clipboard.writeText(t); }
+  catch { const ta = document.createElement("textarea"); ta.value = t; document.body.appendChild(ta); ta.select();
+          try { document.execCommand("copy"); } catch {} ta.remove(); }
+  toast("Copied");
+}
+$("copyShortcut").onclick = () => copyText($("shortcutUrl").textContent);
+
+// Android (https "anywhere" link): Chrome's own install prompt + Share-menu entry
+let deferredPrompt = null;
+if ("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js").catch(() => {});
+window.addEventListener("beforeinstallprompt", (e) => { e.preventDefault(); deferredPrompt = e; });
+document.addEventListener("click", async (e) => {
+  if (e.target.id !== "nativeInstall" || !deferredPrompt) return;
+  deferredPrompt.prompt(); deferredPrompt = null; closeGuide();
+});
+
+// ---------- app mode ----------
+if (standalone) {
+  $("reload").classList.remove("hidden");
+  $("reload").onclick = () => location.reload();
+  store.set("installed", true);
+} else if (isPhone) {
+  $("installPill").classList.remove("hidden");
+  if (store.get("guideSeen", false) && !store.get("bannerHidden", false)) $("installCard").classList.remove("hidden");
+}
+
+// connection check (the computer might be asleep or the phone off Wi-Fi)
+async function checkConn() {
+  try {
+    const ctl = new AbortController(); const t = setTimeout(() => ctl.abort(), 4000);
+    const r = await fetch("/api/ping", { cache: "no-store", signal: ctl.signal }); clearTimeout(t);
+    $("conn").classList.toggle("hidden", r.ok); return r.ok;
+  } catch { $("conn").classList.remove("hidden"); return false; }
+}
+$("connRetry").onclick = async () => { if (await checkConn()) location.reload(); };
+setInterval(checkConn, 15000);
+document.addEventListener("visibilitychange", () => { if (!document.hidden) { checkConn(); loadJobs(); } });
+
+// computer-only bits + info
+infoReady.then(i => {
+  if (!i) return;
+  $("info").textContent = [`gallery-dl ${i.gallery_dl || "missing"}`, `yt-dlp ${i.yt_dlp || "missing"}`,
+    i.ffmpeg ? "ffmpeg ✓" : "ffmpeg missing", i.cookies_file ? "cookies.txt ✓" : "",
+    i.folder ? "saving to " + i.folder : "saving on your computer"].filter(Boolean).join(" · ");
+  $("shortcutUrl").textContent = i.shortcut_url;
+  if (i.hosted) {
+    $("loginRow").classList.add("hidden");
+    $("browser").value = "";
+    if (!i.video_upscale) $("upscale").parentElement.lastChild.textContent = " Make 4K copy (photos)";
+  }
+  if (i.hosted && !isPhone) {          // on a computer: QR to open the online app on the iPhone
+    $("qr").src = "/api/qr.svg?u=" + encodeURIComponent(`${i.public_url || location.origin}/?key=${i.pin}&install=1`);
+    $("lanUrl").textContent = (i.public_url || location.origin).replace(/^https?:\/\//, "");
+    $("pin").textContent = i.pin;
+    $("phoneHelp").innerHTML = "Open the <b>Camera</b> on your iPhone and scan the code. Safari opens MediaSave and shows how to add it to the Home Screen.";
+    $("phoneCard").classList.remove("hidden");
+    $("jobs").before($("phoneCard"));
+  }
+  if (i.is_local) {
+    const base = i.tunnel_url || i.lan_url;
+    $("qr").src = "/api/qr.svg?u=" + encodeURIComponent(`${base}/?key=${i.pin}&install=1`);
+    $("lanUrl").textContent = i.lan_url.replace("http://", "");
+    $("pin").textContent = i.pin;
+    if (i.stable_url) { $("stableNote").textContent = `Phones that support it switch to ${i.stable_url.replace("http://", "")}, which keeps working if this computer's IP changes.`; $("stableNote").classList.remove("hidden"); }
+    if (i.tunnel_url) $("tunnelNote").classList.remove("hidden");
+    $("phoneCard").classList.remove("hidden");
+    $("folderRow").classList.remove("hidden");
+    if (!isPhone) $("jobs").before($("phoneCard"));
+  }
+});
+$("folder").onclick = () => api("/api/open-folder", { method: "POST" });
+$("update").onclick = async () => {
+  $("update").disabled = true; toast("Updating downloaders…", 8000);
+  try { const r = await api("/api/update", { method: "POST" }); const j = await r.json(); toast(j.message, 5000); }
+  catch { toast("Update failed"); }
+  $("update").disabled = false;
+};
+
+// Prefer the computer's permanent name (e.g. my-pc.local) over a Wi-Fi IP that can change
+async function preferStableAddress(wantInstall) {
+  if (standalone || !isPhone || !/^\d+\.\d+\.\d+\.\d+$/.test(location.hostname)) return false;
+  try { if (sessionStorage.getItem("triedStable")) return false; sessionStorage.setItem("triedStable", "1"); } catch {}
+  await infoReady;
+  if (!INFO || !INFO.stable_url) return false;
+  try {
+    const ctl = new AbortController(); const t = setTimeout(() => ctl.abort(), 2500);
+    const r = await fetch(INFO.stable_url + "/api/ping", { mode: "cors", cache: "no-store", signal: ctl.signal });
+    clearTimeout(t);
+    const j = await r.json();
+    if (j.id !== INFO.server_id) return false;
+  } catch { return false; }
+  location.replace(`${INFO.stable_url}/?key=${INFO.pin}${wantInstall ? "&install=1" : ""}`);
+  return true;
+}
+
+// ---------- start-up: history, shared links, install guide ----------
+function loadJobs() {
+  return api("/api/jobs").then(r => r.json()).then(({ jobs }) => {
+    jobs.slice().reverse().forEach(job => { render(job); if (!["done", "error"].includes(job.status)) poll(job.id); });
+  }).catch(() => {});
+}
+(async () => {
+  const params = new URLSearchParams(location.search);
+  const shared = params.get("url");
+  const wantInstall = params.get("install") === "1";
+  if (!shared && await preferStableAddress(wantInstall || (!store.get("guideSeen", false) && isPhone))) return;
+  await loadJobs();
+  if (shared) {
+    history.replaceState(null, "", "/");
+    if (LINK_RE.test(shared)) start(shared); else say("That shared item had no link.", true);
+  } else if (!standalone && isPhone && (wantInstall || !store.get("guideSeen", false))) {
+    await infoReady; openGuide();
+  } else if (params.has("app") || wantInstall) {
+    history.replaceState(null, "", "/");
+  }
+})();
+</script>
+</body>
+</html>
