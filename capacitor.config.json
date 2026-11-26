@@ -1,0 +1,12 @@
+{
+  "appId": "com.seak.sunmirror",
+  "appName": "SunMirror",
+  "webDir": "www",
+  "backgroundColor": "#000000",
+  "ios": {
+    "contentInset": "never",
+    "scrollEnabled": true,
+    "backgroundColor": "#000000",
+    "limitsNavigationsToAppBoundDomains": false
+  }
+}
