@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Archviz Studio — Sketch to photoreal render</title>
+  <meta name="theme-color" content="#0b0b10" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 40 40%22%3E%3Cpath d=%22M6 32 L20 8 L34 32 Z M13 32 V22 H27 V32%22 fill=%22none%22 stroke=%22%23a855f7%22 stroke-width=%224%22 stroke-linejoin=%22round%22/%3E%3C/svg%3E" />
+  <link rel="apple-touch-icon" href="samples/sketch-villa.jpg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="app.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <svg class="logo" viewBox="0 0 40 40" aria-hidden="true"><defs><linearGradient id="lg" x1="0" x2="1"><stop offset="0" stop-color="#8b5cf6"/><stop offset="1" stop-color="#ec4899"/></linearGradient></defs><path d="M6 32 L20 8 L34 32 Z" fill="none" stroke="url(#lg)" stroke-width="3.5" stroke-linejoin="round"/><path d="M13 32 V22 H27 V32" fill="none" stroke="url(#lg)" stroke-width="3.5" stroke-linejoin="round"/></svg>
+      <span class="brand-name">ARCHVIZ<span class="grad"> STUDIO</span></span>
+      <span id="demoBadge" class="badge" hidden>DEMO MODE</span>
+    </div>
+    <div class="top-actions">
+      <button id="historyBtn" class="ghost-btn">
+        <svg viewBox="0 0 24 24"><path d="M12 8v4l3 2M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5"/></svg><span>History</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <!-- ───────────── LEFT: controls ───────────── -->
+    <aside class="panel" id="panel">
+      <nav class="modes" id="modes" role="tablist">
+        <button data-mode="exterior" class="active"><svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V10l7-5 7 5v11M9 21v-6h6v6"/></svg>Exterior</button>
+        <button data-mode="interior"><svg viewBox="0 0 24 24"><path d="M4 18v-5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v5M4 18h16M6 18v2M18 18v2M7 11V8a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v3"/></svg>Interior</button>
+        <button data-mode="floorplan"><svg viewBox="0 0 24 24"><path d="M3 3h18v18H3zM3 12h8M11 3v6M15 12h6M15 12v9"/></svg>Floor plan</button>
+        <button data-mode="refine"><svg viewBox="0 0 24 24"><path d="M12 3l1.8 4.7L18.5 9l-4.7 1.8L12 15.5l-1.8-4.7L5.5 9l4.7-1.3zM19 15l.9 2.1L22 18l-2.1.9L19 21l-.9-2.1L16 18l2.1-.9z"/></svg>Refine</button>
+        <button data-mode="views"><svg viewBox="0 0 24 24"><path d="M3 8V5a2 2 0 0 1 2-2h3M16 3h3a2 2 0 0 1 2 2v3M21 16v3a2 2 0 0 1-2 2h-3M8 21H5a2 2 0 0 1-2-2v-3"/><circle cx="12" cy="12" r="3.5"/></svg>Views</button>
+      </nav>
+
+      <section class="card">
+        <h3><span class="step">1</span><span id="uploadTitle">Upload your sketch</span>
+          <span class="tip" title="Hand sketch, SketchUp / Revit / clay screenshot, line drawing or a rough render. The AI keeps your exact design and camera.">?</span></h3>
+        <label id="drop" class="drop">
+          <input id="fileInput" type="file" accept="image/*" hidden />
+          <div class="drop-empty">
+            <svg viewBox="0 0 24 24"><path d="M12 16V4M7 9l5-5 5 5M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg>
+            <strong>Tap, drop or paste an image</strong>
+            <small id="uploadHint">Sketch · SketchUp · Revit · clay model · line drawing</small>
+          </div>
+          <img id="sourcePreview" alt="" hidden />
+          <button id="clearSource" class="icon-x" type="button" title="Remove" hidden>×</button>
+        </label>
+        <button id="sampleBtn" class="link-btn" type="button">or try a sample sketch →</button>
+      </section>
+
+      <section class="card" id="requestCard">
+        <h3><span class="step">2</span><span id="requestTitle">Tell the AI what you want</span></h3>
+        <div class="textarea-wrap">
+          <textarea id="request" rows="3" placeholder="e.g. Tropical villa at dusk, lots of plants, warm lights inside, car in the garage — any language is fine (Tiếng Việt OK)"></textarea>
+          <button id="micBtn" class="mic" type="button" title="Speak instead of typing" hidden>
+            <svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>
+          </button>
+        </div>
+        <div class="chips" id="ideaChips"></div>
+        <div class="chips views-chips" id="viewChips" hidden></div>
+      </section>
+
+      <section class="card" id="lookCard">
+        <h3><span class="step">3</span>Pick a look</h3>
+        <div class="presets" id="presets"></div>
+      </section>
+
+      <details class="card advanced" id="advanced">
+        <summary>Advanced options <small>(optional)</small></summary>
+
+        <div class="field" id="fidelityField">
+          <label>Design fidelity <span class="tip" title="Strict = keep every window and volume exactly as drawn.">?</span></label>
+          <div class="seg" id="fidelity">
+            <button data-v="strict" class="active">Strict</button>
+            <button data-v="balanced">Balanced</button>
+            <button data-v="creative">Creative</button>
+          </div>
+        </div>
+
+        <div class="grid2" id="optionGrid">
+          <div class="field"><label>Building type</label>
+            <select data-opt="buildingType"><option value="auto">Auto-detect</option><option>modern villa</option><option>townhouse / tube house</option><option>apartment building</option><option>office building</option><option>resort / hotel</option><option>restaurant / café</option><option>shophouse</option><option>public building</option></select></div>
+          <div class="field"><label>Style</label>
+            <select data-opt="style"><option value="auto">As drawn</option><option>tropical modern</option><option>minimalist</option><option>contemporary</option><option>Indochine</option><option>Japandi</option><option>brutalist concrete</option><option>Mediterranean</option><option>neoclassical</option><option>industrial</option></select></div>
+          <div class="field"><label>Environment</label>
+            <select data-opt="environment"><option value="auto">Auto</option><option>quiet residential street</option><option>dense tropical garden</option><option>urban city street</option><option>hillside with forest</option><option>beachfront</option><option>rice fields countryside</option><option>lakeside</option></select></div>
+          <div class="field"><label>Lighting</label>
+            <select data-opt="lighting"><option value="auto">From look</option><option>sunrise</option><option>bright midday</option><option>golden hour</option><option>blue hour dusk</option><option>night</option></select></div>
+          <div class="field"><label>Weather</label>
+            <select data-opt="weather"><option value="auto">From look</option><option>clear sky</option><option>soft clouds</option><option>overcast</option><option>just after rain, wet ground</option><option>light mist / fog</option></select></div>
+          <div class="field"><label>People · Cars</label>
+            <div class="row2">
+              <select data-opt="people"><option value="auto">People: auto</option><option value="yes">People: yes</option><option value="no">People: no</option></select>
+              <select data-opt="cars"><option value="auto">Cars: auto</option><option value="yes">Cars: yes</option><option value="no">Cars: no</option></select>
+            </div></div>
+        </div>
+
+        <div class="field" id="refsField">
+          <label>Style reference images <small>(max 5 — mood only, never copied)</small></label>
+          <div class="refs" id="refs">
+            <label class="ref-add"><input id="refInput" type="file" accept="image/*" multiple hidden />+<small>Add</small></label>
+          </div>
+        </div>
+
+        <div class="grid3">
+          <div class="field"><label>Aspect ratio</label>
+            <select id="ratio"><option value="match">Match input</option><option>1:1</option><option>4:3</option><option>3:2</option><option>16:9</option><option>21:9</option><option>3:4</option><option>2:3</option><option>4:5</option><option>9:16</option></select></div>
+          <div class="field"><label>Quality</label>
+            <select id="quality"><option value="pro">Pro (best)</option><option value="fast">Fast</option></select></div>
+          <div class="field"><label>Resolution</label>
+            <select id="size"><option>1K</option><option selected>2K</option><option>4K</option></select></div>
+        </div>
+        <div class="grid3">
+          <div class="field"><label>Variations</label>
+            <select id="count"><option>1</option><option selected>2</option><option>3</option><option>4</option></select></div>
+          <label class="check"><input type="checkbox" id="reviewFirst" /> Let me review the AI brief before rendering</label>
+        </div>
+      </details>
+
+      <div class="go-bar">
+        <button id="goBtn" class="go"><svg viewBox="0 0 24 24"><path d="M12 3l1.8 4.7L18.5 9l-4.7 1.8L12 15.5l-1.8-4.7L5.5 9l4.7-1.3z"/></svg><span id="goLabel">Render</span></button>
+      </div>
+    </aside>
+
+    <!-- ───────────── RIGHT: stage ───────────── -->
+    <section class="stage" id="stage">
+      <div class="stage-bar">
+        <div class="stage-actions" id="stageActions" hidden>
+          <button id="compareBtn" class="tool active" title="Before / after"><svg viewBox="0 0 24 24"><path d="M12 3v18M8 7l-4 5 4 5M16 7l4 5-4 5"/></svg><span>Compare</span></button>
+          <button id="downloadBtn" class="tool"><svg viewBox="0 0 24 24"><path d="M12 4v12M7 11l5 5 5-5M4 20h16"/></svg><span>Download</span></button>
+          <button id="zoomBtn" class="tool"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-5-5M11 8v6M8 11h6"/></svg><span>Zoom</span></button>
+          <span class="sep"></span>
+          <button id="toRefineBtn" class="tool accent"><svg viewBox="0 0 24 24"><path d="M4 20l4-1 11-11-3-3L5 16zM14 6l3 3"/></svg><span>Refine this</span></button>
+          <button id="toViewsBtn" class="tool accent"><svg viewBox="0 0 24 24"><path d="M3 8V5a2 2 0 0 1 2-2h3M16 3h3a2 2 0 0 1 2 2v3M21 16v3a2 2 0 0 1-2 2h-3M8 21H5a2 2 0 0 1-2-2v-3"/><circle cx="12" cy="12" r="3.5"/></svg><span>More views</span></button>
+        </div>
+      </div>
+
+      <div class="viewer" id="viewer">
+        <div class="empty" id="emptyState">
+          <h1><span class="grad">Sketch in.</span><br/>Photograph out.</h1>
+          <p>Upload a sketch or SketchUp screenshot, say what you want in your own words, and get a hyper-realistic architectural photo that keeps your exact design.</p>
+          <ol class="how">
+            <li><b>1</b>Upload</li><li><b>2</b>Describe (any language)</li><li><b>3</b>Render</li>
+          </ol>
+        </div>
+        <div class="compare" id="compare" hidden>
+          <img id="afterImg" alt="Render" />
+          <div class="before-wrap" id="beforeWrap"><img id="beforeImg" alt="Original" /></div>
+          <div class="handle" id="handle"><span></span></div>
+          <span class="tag tag-l">BEFORE</span><span class="tag tag-r">AI</span>
+        </div>
+        <div class="loading" id="loading" hidden>
+          <div class="orb"></div>
+          <p id="loadingText">Reading your sketch…</p>
+          <small id="loadingTime">0s</small>
+        </div>
+      </div>
+
+      <div class="thumbs" id="thumbs"></div>
+
+      <div class="ai-card" id="aiCard" hidden>
+        <div class="ai-head">
+          <div class="ai-avatar">AI</div>
+          <div class="ai-msg">
+            <p id="aiUnderstood"></p>
+            <div class="materials" id="aiMaterials"></div>
+          </div>
+        </div>
+        <details id="briefDetails">
+          <summary>See & edit the render brief</summary>
+          <textarea id="briefText" rows="7"></textarea>
+          <button id="rerenderBtn" class="secondary">Render with this brief</button>
+        </details>
+        <div class="suggest" id="aiSuggest"></div>
+      </div>
+
+      <div class="error" id="errorBox" hidden></div>
+    </section>
+  </main>
+
+  <!-- History drawer -->
+  <div class="drawer" id="drawer" hidden>
+    <div class="drawer-inner">
+      <div class="drawer-head"><h3>History</h3><div><button id="clearHistory" class="link-btn">Clear all</button><button id="closeDrawer" class="icon-x static">×</button></div></div>
+      <div class="history-grid" id="historyGrid"></div>
+    </div>
+  </div>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" hidden><img id="lightImg" alt="" /><button class="icon-x static" id="closeLight">×</button></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

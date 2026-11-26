@@ -1,0 +1,23 @@
+{
+  "name": "archviz-studio",
+  "version": "1.0.0",
+  "description": "Sketch to hyper-realistic architectural render studio (Gemini Nano Banana Pro)",
+  "main": "server.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@google/genai": "^3.6.1",
+    "dotenv": "^18.0.10",
+    "express": "^4.22.3"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "private": true
+}
