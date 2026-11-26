@@ -3,6 +3,7 @@ services:
     name: mediasave
     runtime: docker
     plan: free
+    region: singapore      # closest Render region to Vietnam
     dockerfilePath: ./Dockerfile
     healthCheckPath: /api/ping
     envVars:
