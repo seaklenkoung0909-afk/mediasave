@@ -447,7 +447,7 @@ table.kv{width:100%;border-collapse:collapse;font-size:15px}
      <button class="btn" id="replayB" type="button" data-i18n="replay">ចាក់ឡូហ្គោឡើងវិញ</button>
      <button class="btn pri" id="installB" type="button" hidden data-i18n="install">ដំឡើងកម្មវិធី</button>
     </div>
-    <div class="prose" style="margin-top:12px">
+    <div class="prose" id="installHelp" style="margin-top:12px">
      <div data-lang="km"><ul>
       <li><b>iPhone / iPad៖</b> បើកក្នុង Safari → ចុចប៊ូតុង ចែករំលែក → «បន្ថែមទៅអេក្រង់ដើម» (Add to Home Screen)។</li>
       <li><b>Mac៖</b> Safari → File → Add to Dock។ <b>Windows / Mac (Chrome, Edge)៖</b> ចុចរូបតំណាងដំឡើងនៅក្នុងរបារអាសយដ្ឋាន ឬប៊ូតុង «ដំឡើងកម្មវិធី» ខាងលើ។</li>
@@ -997,6 +997,8 @@ $('replayB').onclick=playIntro;
 let deferred=null;
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferred=e;$('installB').hidden=false});
 $('installB').onclick=async()=>{if(!deferred)return;deferred.prompt();try{await deferred.userChoice}catch(e){}deferred=null;$('installB').hidden=true};
+const NATIVE=!!(window.Capacitor&&window.Capacitor.isNativePlatform&&window.Capacitor.isNativePlatform());
+if(NATIVE){$('installHelp').hidden=true;root.classList.add('native')}
 try{if('serviceWorker' in navigator&&window.top===window&&(location.protocol==='https:'||location.hostname==='localhost'||location.hostname==='127.0.0.1'))
  navigator.serviceWorker.register('sw.js').catch(()=>{})}catch(e){}
 
