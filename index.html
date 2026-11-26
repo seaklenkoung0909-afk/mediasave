@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="km" data-mode="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="SunMirror">
+<meta name="application-name" content="SunMirror">
+<meta name="theme-color" content="#1f6fc4" id="themeColor">
+<meta name="description" content="Sunlight reflection on a vertical mirror in 3D, with the Khmer lunar calendar.">
+<title>ចំណាំងផ្លាត់ព្រះអាទិត្យ · SunMirror</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<script>
+/* set theme + language before first paint */
+(function(){var m='auto',l='km';try{m=localStorage.getItem('sm-mode')||'auto';l=localStorage.getItem('sm-lang')||'km'}catch(e){}
+var vt=document.documentElement.getAttribute('data-theme');
+var dark=vt?vt==='dark':(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches);
+document.documentElement.setAttribute('data-mode',m==='auto'?(dark?'dark':'light'):m);
+document.documentElement.setAttribute('lang',l==='en'?'en':'km');})();
+</script>
+<style>
+/* VOICE: a precise, premium field instrument — clear numbers, calm bilingual type.
+   IDEA: a surveyor's sun-and-mirror workbench; the 3D scene is the bench, the controls a brass dial beside it.
+   PICTURE: live 3D sun, vertical mirror, reflected beam and glowing spot with the mirror outline laid over it.
+   COLOUR and TYPE: light = white + sky blue; dark = true black + bright blue; gold = black + glossy metallic gold. Kantumruy Pro.
+   LAYOUT: tablet/desktop = 3D left, control dock right, tabs under it; phone = 3D, dock, tabs stacked. */
+@font-face{font-family:"Kantumruy Pro";font-weight:400;font-display:swap;src:url(fonts/kp-khmer-400.woff2) format("woff2");unicode-range:U+1780-17FF,U+19E0-19FF,U+200C-200D,U+25CC}
+@font-face{font-family:"Kantumruy Pro";font-weight:600;font-display:swap;src:url(fonts/kp-khmer-600.woff2) format("woff2");unicode-range:U+1780-17FF,U+19E0-19FF,U+200C-200D,U+25CC}
+@font-face{font-family:"Kantumruy Pro";font-weight:700;font-display:swap;src:url(fonts/kp-khmer-700.woff2) format("woff2");unicode-range:U+1780-17FF,U+19E0-19FF,U+200C-200D,U+25CC}
+@font-face{font-family:"Kantumruy Pro";font-weight:400;font-display:swap;src:url(fonts/kp-latin-400.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Kantumruy Pro";font-weight:600;font-display:swap;src:url(fonts/kp-latin-600.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Kantumruy Pro";font-weight:700;font-display:swap;src:url(fonts/kp-latin-700.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+
+:root,:root[data-mode=light]{color-scheme:light;
+--bg:#ffffff;--ink:#121820;--mute:#5b6573;--line:#e1e6ec;--card:#f3f6f9;--card2:#ffffff;
+--acc:#1f6fc4;--accBg:#1f6fc4;--accInk:#ffffff;--acc2:#e3effb;--hdr:#1f6fc4;--hdrInk:#ffffff;--hdrLine:transparent;
+--sunink:#8a5d00;--red:#d0342c;--blue:#2a5bd7;--redBg:#fde6e4;--blueBg:#e6ecfd;--warn:#fff4d6;
+--hud:rgba(255,255,255,.93);--fig:#8cc4ef;--shine:none;--focus:#f2a900;
+--introBg:radial-gradient(120% 90% at 50% 40%,#ffffff 0%,#e6f0fb 60%,#cfe2f6 100%);--introInk:#12305a;--introSub:#4a6488}
+:root[data-mode=dark]{color-scheme:dark;
+--bg:#000000;--ink:#eef2f6;--mute:#9aa6b4;--line:#1d242c;--card:#0d1014;--card2:#07090b;
+--acc:#4c9bff;--accBg:#2f7fe6;--accInk:#ffffff;--acc2:#0d2038;--hdr:#000000;--hdrInk:#ffffff;--hdrLine:#1d242c;
+--sunink:#ffd166;--red:#ff6b62;--blue:#8fb2ff;--redBg:#2c1110;--blueBg:#0f1a33;--warn:#2b2410;
+--hud:rgba(6,8,10,.88);--fig:#0b1424;--shine:none;--focus:#ffd166;
+--introBg:radial-gradient(110% 80% at 50% 42%,#0e1a2c 0%,#04070c 55%,#000 100%);--introInk:#ffffff;--introSub:#8fa3bb}
+:root[data-mode=gold]{color-scheme:dark;
+--bg:#0b0804;--ink:#f8ecd2;--mute:#c4ab7c;--line:#3a2c14;--card:#16100a;--card2:#100b06;
+--acc:#e0b04a;--accBg:linear-gradient(135deg,#7a520f 0%,#d4a437 28%,#fff0b3 47%,#e2b048 60%,#8a6216 100%);--accInk:#1b1204;--acc2:#2a1e0c;
+--hdr:linear-gradient(115deg,#4a3008 0%,#b98a2a 22%,#f6dc8c 42%,#fff6d0 50%,#e0b04a 60%,#8f6418 82%,#4a3008 100%);--hdrInk:#1b1204;--hdrLine:#6e5320;
+--sunink:#ffd36b;--red:#ff8a6a;--blue:#9fc0ff;--redBg:#2e140b;--blueBg:#141a2c;--warn:#2a1e0c;
+--hud:rgba(14,10,5,.9);--fig:#2a1c08;--shine:inset 0 1px 0 rgba(255,255,255,.55),inset 0 -2px 6px rgba(80,50,0,.35),0 2px 10px rgba(212,164,55,.25);--focus:#fff0b3;
+--introBg:radial-gradient(90% 70% at 50% 40%,#3a2808 0%,#140d04 55%,#050302 100%);--introInk:#f6dc8c;--introSub:#c4ab7c}
+
+*{box-sizing:border-box;min-width:0}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "Kantumruy Pro",system-ui,-apple-system,"Segoe UI",sans-serif;overflow-x:clip;
+padding:0 env(safe-area-inset-right) 0 env(safe-area-inset-left);transition:background .35s,color .35s}
+button,input,select{font:inherit;color:inherit}
+html[lang=en] [data-lang=km],html[lang=km] [data-lang=en]{display:none!important}
+
+/* header */
+.top{background:var(--hdr);color:var(--hdrInk);border-bottom:1px solid var(--hdrLine);padding:calc(10px + env(safe-area-inset-top)) max(2.5vw,14px) 10px;display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;justify-content:space-between;box-shadow:var(--shine)}
+.brandrow{display:flex;gap:10px;align-items:center}
+.brandrow svg{width:40px;height:40px;flex:none;filter:drop-shadow(0 2px 4px rgba(0,0,0,.25))}
+.top h1{margin:0;font-size:clamp(19px,2.4vw,26px);line-height:1.15;font-weight:700}
+.top p{margin:2px 0 0;font-size:13px;opacity:.9;line-height:1.35}
+.qset{display:flex;gap:6px;align-items:center}
+.modes{display:flex;border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,.35);background:rgba(0,0,0,.12)}
+:root[data-mode=gold] .modes{border-color:rgba(60,40,0,.4);background:rgba(255,255,255,.18)}
+:root[data-mode=light] .modes{background:rgba(255,255,255,.12)}
+.modes button{width:44px;height:40px;border:0;background:none;color:inherit;cursor:pointer;display:grid;place-items:center}
+.modes button svg{width:20px;height:20px}
+.modes button[aria-pressed=true]{background:rgba(255,255,255,.92);color:#121820}
+:root[data-mode=dark] .modes button[aria-pressed=true]{background:#2f7fe6;color:#fff}
+:root[data-mode=gold] .modes button[aria-pressed=true]{background:#1b1204;color:#f6dc8c}
+.langb{height:40px;min-width:52px;padding:0 10px;border-radius:12px;border:1px solid rgba(255,255,255,.35);background:rgba(0,0,0,.12);color:inherit;font-weight:700;cursor:pointer}
+:root[data-mode=gold] .langb{border-color:rgba(60,40,0,.4);background:rgba(255,255,255,.18)}
+
+/* layout */
+.app{display:grid;grid-template-columns:minmax(0,1fr);align-items:stretch}
+.stage{position:relative;display:flex;flex-direction:column;border-bottom:1px solid var(--line)}
+.panel{display:flex;flex-direction:column;min-height:0;padding-bottom:env(safe-area-inset-bottom)}
+.fig{position:relative;flex:1;min-height:300px;background:var(--fig);overflow:hidden;touch-action:none}
+.fig canvas{position:absolute;inset:0;width:100%!important;height:100%!important;display:block}
+.hud{position:absolute;left:12px;top:12px;max-width:min(340px,calc(100% - 24px));background:var(--hud);border-radius:14px;padding:12px 14px;box-shadow:0 6px 24px rgba(0,0,0,.22);pointer-events:none;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+:root[data-mode=gold] .hud{border:1px solid #6e5320}
+.hud .big{font-size:clamp(30px,4vw,42px);font-weight:700;line-height:1.05;color:var(--sunink)}
+:root[data-mode=gold] .hud .big{background:linear-gradient(100deg,#c8922c,#fff0b3 45%,#e0b04a 60%,#a87a20);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hud .verdict{font-weight:600;font-size:17px;line-height:1.3;margin-top:2px}
+.hud .sm{font-size:13px;color:var(--mute);margin-top:4px;line-height:1.45}
+.fitbtn{position:absolute;right:12px;top:12px}
+.legend{position:absolute;right:12px;bottom:12px;font-size:13px;background:var(--hud);border-radius:10px;padding:6px 10px;display:flex;flex-direction:column;gap:2px;pointer-events:none}
+.legend i{display:inline-block;width:18px;height:4px;border-radius:2px;margin-inline-end:6px;vertical-align:middle}
+
+.btn{min-height:44px;padding:8px 14px;border-radius:10px;border:1px solid var(--line);background:var(--card2);cursor:pointer;font-weight:600;color:var(--ink)}
+.btn:hover{border-color:var(--acc)}
+.btn.pri{background:var(--accBg);color:var(--accInk);border-color:transparent;box-shadow:var(--shine)}
+.btn.sm{min-height:38px;padding:4px 10px;font-weight:600;font-size:14px}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+
+.dock{padding:10px max(2vw,12px) 8px;display:flex;flex-direction:column;gap:8px;background:var(--bg);border-bottom:1px solid var(--line)}
+.ctl{background:var(--card);border-radius:12px;padding:8px 10px}
+:root[data-mode=gold] .ctl{border:1px solid var(--line);background:linear-gradient(180deg,#1b140b,#120d07)}
+.ch{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:14px;margin-bottom:4px}
+.ch span{color:var(--mute);font-size:13px;text-align:end;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.azrow{display:grid;grid-template-columns:auto auto minmax(0,1fr) auto auto;gap:6px;align-items:center;margin:0 0 2px}
+.azin{position:relative}.azin input{text-align:center;font-size:22px;font-weight:700;padding-inline-end:26px}
+.azin span{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:20px;font-weight:700;color:var(--mute);pointer-events:none}
+.trow,.drow{display:grid;gap:6px;align-items:center}
+.trow{grid-template-columns:auto auto minmax(0,1fr) auto}
+.drow{grid-template-columns:auto minmax(0,1fr) auto auto}
+.trow input,.drow input{text-align:center;font-weight:700;font-size:18px}
+.compass{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;margin-top:4px}
+.compass button{min-height:42px;padding:2px;line-height:1.15;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:13px;border:1px solid var(--line);border-radius:8px;background:var(--card2);cursor:pointer;color:var(--ink)}
+.compass small{font-size:11px;color:var(--mute)}
+.compass button[aria-pressed=true]{border-color:var(--acc);background:var(--acc2);font-weight:700}
+:root[data-mode=gold] .compass button[aria-pressed=true]{background:var(--accBg);color:var(--accInk);box-shadow:var(--shine)}
+:root[data-mode=gold] .compass button[aria-pressed=true] small{color:#3a2806}
+.seg{display:flex;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.seg button{flex:1;min-height:44px;border:0;background:var(--card2);cursor:pointer;font-weight:600;color:var(--ink)}
+.seg button[aria-pressed=true]{background:var(--accBg);color:var(--accInk);box-shadow:var(--shine)}
+
+.tabs{display:flex;gap:2px;padding:6px max(2vw,10px) 0;border-bottom:1px solid var(--line);background:var(--bg);z-index:5;overflow-x:auto;scrollbar-width:none}
+.tabs button{flex:none;min-height:44px;padding:8px 12px;border:0;background:none;border-bottom:3px solid transparent;cursor:pointer;font-weight:600;color:var(--mute)}
+.tabs button[aria-selected=true]{color:var(--ink);border-bottom-color:var(--acc)}
+.scrollarea{min-height:0}
+.pane{padding:14px max(2vw,14px) 24px}
+.pane[hidden]{display:none}
+h2{font-size:19px;margin:18px 0 8px;line-height:1.3}
+h2:first-child{margin-top:0}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+label.f{display:block;margin:12px 0 4px;font-weight:600;font-size:15px}
+.f small{font-weight:400;color:var(--mute)}
+input[type=number],input[type=text],input[type=date],select{min-height:44px;font-size:16px;padding:6px 10px;border:1px solid var(--line);border-radius:10px;background:var(--card2);width:100%;color:var(--ink)}
+input[type=range]{width:100%;accent-color:var(--acc);min-height:32px}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+table.kv{width:100%;border-collapse:collapse;font-size:15px}
+.kv td{padding:7px 0;border-bottom:1px solid var(--line);vertical-align:top}
+.kv td:last-child{text-align:end;font-variant-numeric:tabular-nums;font-weight:600;white-space:nowrap;padding-inline-start:10px}
+.note{font-size:14px;color:var(--mute)}
+.warn{background:var(--warn);border-radius:10px;padding:8px 12px;font-size:14px;margin-top:10px}
+.warn:empty{display:none}
+.window{margin-top:10px;padding:10px 12px;background:var(--acc2);border-radius:10px;font-size:15px}
+.modecards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.modecards button{border:2px solid var(--line);border-radius:12px;padding:6px;cursor:pointer;background:var(--card2);color:var(--ink);font-weight:600;font-size:14px;display:flex;flex-direction:column;gap:6px;align-items:stretch}
+.modecards button[aria-pressed=true]{border-color:var(--acc)}
+.modecards i{display:block;height:44px;border-radius:8px}
+.sw-auto{background:linear-gradient(90deg,#fff 50%,#000 50%);border:1px solid #888}
+.sw-light{background:#fff;border:1px solid #ccd}
+.sw-dark{background:#000;border:1px solid #333}
+.sw-gold{background:linear-gradient(115deg,#4a3008,#d4a437 35%,#fff6d0 50%,#e0b04a 62%,#6e4a10)}
+
+/* calendar */
+.calhead{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between}
+.calhead .ttl{font-weight:700;font-size:19px;line-height:1.25}
+.calhead .lun{font-size:14px;color:var(--mute)}
+.cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-top:10px}
+.cal .wd{background:var(--accBg);color:var(--accInk);text-align:center;font-weight:600;font-size:14px;padding:6px 0}
+:root[data-mode=gold] .cal .wd{background:#c8952f;box-shadow:inset 0 1px 0 rgba(255,240,180,.6)}
+.day{position:relative;min-height:72px;border:0;border-top:1px solid var(--line);border-inline-start:1px solid var(--line);padding:4px;background:var(--bg);cursor:pointer;text-align:center;border-radius:0;display:flex;flex-direction:column;align-items:center;color:var(--ink)}
+.day:nth-child(7n+1){border-inline-start:0}
+.day.out{opacity:.35}
+.day .g{font-weight:700;font-size:18px;line-height:1.2}
+.day .l{font-size:12px;color:var(--mute);line-height:1.3}
+.day .l.mn{color:var(--sunink);font-weight:600}
+.day.hol .g{color:var(--red)}
+.day.obs .g{color:var(--blue)}
+.day .ev{font-size:11px;line-height:1.25;margin-top:2px;border-radius:4px;padding:0 3px;max-width:100%;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.day.hol .ev{background:var(--redBg);color:var(--red)}
+.day.obs .ev{background:var(--blueBg);color:var(--blue)}
+.day .moon{position:absolute;left:4px;top:5px;width:12px;height:12px}
+.day.sel{box-shadow:inset 0 0 0 3px var(--focus)}
+.day.today .g{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:3px}
+.evlist{list-style:none;padding:0;margin:12px 0 0;display:flex;flex-direction:column;gap:8px}
+.evlist li{display:grid;grid-template-columns:52px minmax(0,1fr);gap:10px;align-items:start}
+.evlist .dd{text-align:center;font-size:13px;color:var(--mute);line-height:1.2}
+.evlist .dd b{display:block;font-size:19px;color:var(--ink)}
+.evlist .tx{border:1px solid var(--line);border-radius:10px;padding:6px 10px;font-size:15px;line-height:1.45;margin-bottom:4px}
+.evlist .tx.h{color:var(--red)}.evlist .tx.o{color:var(--blue)}
+.selinfo{margin-top:12px;border:1px solid var(--line);border-radius:12px;padding:12px}
+.selinfo .kd{font-weight:700;font-size:17px;line-height:1.4}
+
+/* map */
+.plan{position:relative;aspect-ratio:1/1;max-height:440px;width:100%;background:var(--card);border-radius:12px;overflow:hidden}
+.plan svg{position:absolute;inset:0;width:100%;height:100%}
+.links{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.links a{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:44px;padding:8px 12px;border-radius:10px;border:1px solid var(--line);color:var(--ink);text-decoration:none;font-weight:600;background:var(--card)}
+.links a span{font-weight:400;font-size:13px;color:var(--mute);font-variant-numeric:tabular-nums}
+.gmap{width:100%;height:320px;border:0;border-radius:12px;margin-top:10px;background:var(--card)}
+.prose p{margin:0 0 12px;max-width:68ch}
+.prose ol,.prose ul{padding-inline-start:22px;margin:0 0 12px}
+.prose li{margin-bottom:6px}
+.formula{background:var(--card);border-radius:10px;padding:10px 12px;font-variant-numeric:tabular-nums;margin:0 0 12px}
+
+/* intro */
+.intro{position:fixed;inset:0;z-index:100;display:grid;place-items:center;background:var(--introBg);color:var(--introInk);cursor:pointer;transition:opacity .6s ease,visibility .6s}
+.intro.out{opacity:0;visibility:hidden}
+.intro .in{display:flex;flex-direction:column;align-items:center;gap:14px;padding:24px;text-align:center}
+.intro svg{width:min(42vw,200px);height:auto;overflow:visible}
+.intro .t1{font-size:clamp(24px,5vw,40px);font-weight:700;line-height:1.2;opacity:0;transform:translateY(12px);animation:rise .8s 1.35s cubic-bezier(.2,.8,.2,1) forwards}
+.intro .t2{font-size:clamp(13px,2.4vw,16px);letter-spacing:.02em;color:var(--introSub);opacity:0;animation:rise .8s 1.6s ease forwards}
+:root[data-mode=gold] .intro .t1{background:linear-gradient(100deg,#a87a20 0%,#f6dc8c 30%,#fffbe8 45%,#e0b04a 60%,#a87a20 100%);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:rise .8s 1.35s cubic-bezier(.2,.8,.2,1) forwards,sheen 2.2s 1.5s ease-in-out forwards}
+.intro .skip{position:absolute;bottom:calc(20px + env(safe-area-inset-bottom));font-size:13px;color:var(--introSub)}
+.lg-sun{transform-origin:40px 40px;animation:sunIn 1s cubic-bezier(.2,.8,.2,1) both}
+.lg-rays{transform-origin:40px 40px;animation:spin 14s linear infinite,fade .8s .2s both}
+.lg-mirror{transform-origin:84px 98px;animation:standUp .7s .35s cubic-bezier(.3,1.4,.5,1) both}
+.lg-in{stroke-dasharray:60;stroke-dashoffset:60;animation:draw .5s .75s ease-out forwards}
+.lg-out{stroke-dasharray:60;stroke-dashoffset:60;animation:draw .5s 1.15s ease-out forwards}
+.lg-spot{transform-origin:46px 98px;animation:pop .6s 1.5s cubic-bezier(.2,1.6,.4,1) both}
+.lg-flash{transform-origin:84px 62px;animation:flash .7s 1.05s ease-out both}
+@keyframes sunIn{from{transform:scale(.4);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes standUp{from{transform:scaleY(0);opacity:0}to{transform:scaleY(1);opacity:1}}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes pop{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes flash{0%{transform:scale(0);opacity:0}40%{transform:scale(1.4);opacity:1}100%{transform:scale(.6);opacity:0}}
+@keyframes rise{to{opacity:1;transform:none}}
+@keyframes sheen{from{background-position:100% 0}to{background-position:0 0}}
+
+/* adaptive layouts */
+@media(min-width:700px) and (min-height:560px){
+ body{height:100dvh;display:flex;flex-direction:column;overflow:hidden}
+ .app{flex:1;min-height:0;grid-template-columns:minmax(0,1.45fr) minmax(330px,1fr)}
+ .stage{height:100%;min-height:0;border-bottom:0;border-inline-end:1px solid var(--line)}
+ .panel{height:100%;overflow-y:auto}
+ .dock{flex:none}
+ .tabs{position:sticky;top:0}
+}
+@media(min-width:700px) and (min-height:860px){
+ .panel{overflow:hidden}
+ .scrollarea{flex:1;overflow-y:auto}
+ .tabs{position:static}
+}
+@media(min-width:1500px){.app{grid-template-columns:minmax(0,1.8fr) minmax(400px,1fr)}}
+@media not ((min-width:700px) and (min-height:560px)){
+ .fig{flex:none;height:52vh;min-height:300px;max-height:560px}
+}
+@media(max-width:600px){
+ .top p{display:none}
+ .brandrow svg{width:34px;height:34px}
+ .modes button{width:38px}
+ .hud{left:8px;top:8px;padding:8px 10px}
+ .hud .big{font-size:28px}.hud .verdict{font-size:15px}
+ .legend{display:none}
+ .fitbtn{top:auto;bottom:10px;right:10px}
+ .modecards{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .day{min-height:58px;padding:3px 1px}
+ .day .g{font-size:16px}.day .l{font-size:11px}
+ .day .ev{display:none}
+ .day.hol::after,.day.obs::after{content:"";width:6px;height:6px;border-radius:50%;background:var(--red);margin-top:3px}
+ .day.obs::after{background:var(--blue)}
+}
+@media(prefers-reduced-motion:reduce){
+ .intro *{animation-duration:.01s!important;animation-delay:0s!important}
+ .lg-rays{animation:none}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+ <defs>
+  <radialGradient id="gSun" cx="40%" cy="35%" r="70%"><stop offset="0" stop-color="#fffbe6"/><stop offset=".45" stop-color="#ffd25a"/><stop offset="1" stop-color="#e08a00"/></radialGradient>
+  <linearGradient id="gMir" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f4fbff"/><stop offset=".45" stop-color="#a9cbe4"/><stop offset=".55" stop-color="#e9f4fb"/><stop offset="1" stop-color="#6f93ad"/></linearGradient>
+  <linearGradient id="gGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7a520f"/><stop offset=".3" stop-color="#d4a437"/><stop offset=".48" stop-color="#fff0b3"/><stop offset=".62" stop-color="#e2b048"/><stop offset="1" stop-color="#8a6216"/></linearGradient>
+  <symbol id="logo" viewBox="0 0 120 120">
+   <g class="lg-rays" stroke="#ffc23a" stroke-width="4" stroke-linecap="round">
+    <line x1="40" y1="8" x2="40" y2="15"/><line x1="40" y1="65" x2="40" y2="72"/><line x1="8" y1="40" x2="15" y2="40"/><line x1="65" y1="40" x2="72" y2="40"/>
+    <line x1="17.4" y1="17.4" x2="22.3" y2="22.3"/><line x1="57.7" y1="57.7" x2="62.6" y2="62.6"/><line x1="17.4" y1="62.6" x2="22.3" y2="57.7"/><line x1="57.7" y1="22.3" x2="62.6" y2="17.4"/>
+   </g>
+   <circle class="lg-sun" cx="40" cy="40" r="17" fill="url(#gSun)"/>
+   <line class="lg-in" x1="52" y1="50" x2="82" y2="62" stroke="#ffcf4a" stroke-width="4.5" stroke-linecap="round"/>
+   <line class="lg-out" x1="82" y1="62" x2="48" y2="97" stroke="#ff8a00" stroke-width="4.5" stroke-linecap="round"/>
+   <g class="lg-mirror"><rect x="82" y="34" width="9" height="64" rx="2.5" fill="url(#gMir)" stroke="#47657c" stroke-width="1.2"/><rect x="83.5" y="37" width="2" height="40" rx="1" fill="#fff" opacity=".85"/></g>
+   <circle class="lg-flash" cx="84" cy="62" r="7" fill="#fff6c8"/>
+   <line x1="14" y1="100" x2="108" y2="100" stroke="currentColor" stroke-opacity=".35" stroke-width="2" stroke-linecap="round"/>
+   <ellipse class="lg-spot" cx="46" cy="99" rx="14" ry="4.2" fill="#fff0a0" stroke="#ffb020" stroke-width="1.5"/>
+  </symbol>
+ </defs>
+</svg>
+
+<div class="intro" id="intro" role="dialog" aria-label="SunMirror">
+ <div class="in">
+  <svg viewBox="0 0 120 120" aria-hidden="true" id="introLogo"></svg>
+  <div class="t1" data-i18n="title">ចំណាំងផ្លាត់ព្រះអាទិត្យលើកញ្ចក់</div>
+  <div class="t2" data-i18n="tagline">3D · ប្រតិទិនខ្មែរ · ផែនទី</div>
+ </div>
+ <div class="skip" data-i18n="tapSkip">ចុចដើម្បីរំលង</div>
+</div>
+
+<header class="top">
+ <div class="brandrow">
+  <svg viewBox="0 0 120 120" aria-hidden="true"><use href="#logo"/></svg>
+  <div><h1 data-i18n="title">ចំណាំងផ្លាត់ព្រះអាទិត្យលើកញ្ចក់</h1><p id="hdrDate">—</p></div>
+ </div>
+ <div class="qset">
+  <div class="modes" role="group" data-i18n-aria="appearance" aria-label="រចនាបថ" id="qModes">
+   <button type="button" data-mode="auto" data-i18n-title="mAuto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></svg></button>
+   <button type="button" data-mode="light" data-i18n-title="mLight"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
+   <button type="button" data-mode="dark" data-i18n-title="mDark"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/></svg></button>
+   <button type="button" data-mode="gold" data-i18n-title="mGold"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 3h12l4 6-10 12L2 9z" opacity=".9"/><path d="M2 9h20M9 3l3 18M15 3l-3 18" stroke="rgba(0,0,0,.35)" stroke-width="1" fill="none"/></svg></button>
+  </div>
+  <button type="button" class="langb" id="langB" aria-label="Language / ភាសា">EN</button>
+ </div>
+</header>
+
+<main class="app">
+ <section class="stage" data-i18n-aria="view3d" aria-label="3D">
+  <div class="fig" id="view3d">
+   <div class="hud" id="hud" aria-live="polite">
+    <div class="big" id="hudBig">—</div>
+    <div class="verdict" id="hudVerdict"></div>
+    <div class="sm" id="hudSm"></div>
+   </div>
+   <button class="btn sm fitbtn" id="fitBtn" type="button" data-i18n="fit">មើលទាំងមូល</button>
+   <div class="legend" aria-hidden="true">
+    <span><i style="background:#ffc93c"></i><span data-i18n="lgIn">ពន្លឺចូល</span></span>
+    <span><i style="background:#ff8a00"></i><span data-i18n="lgOut">ពន្លឺផ្លាត់</span></span>
+    <span><i style="background:#1f6fc4"></i><span data-i18n="lgRef">ទំហំកញ្ចក់ (គំរូ)</span></span>
+   </div>
+  </div>
+ </section>
+
+ <aside class="panel">
+  <div class="dock">
+   <div class="ctl">
+    <div class="ch"><b data-i18n="dirTitle">ទិសមុខកញ្ចក់</b><span id="mAzL">90°</span></div>
+    <div class="azrow">
+     <button type="button" class="btn sm" data-n="-5">−5°</button>
+     <button type="button" class="btn sm" data-n="-1">−1°</button>
+     <div class="azin"><input type="number" id="mAzN" min="0" max="359.9" step="0.1" inputmode="decimal" data-i18n-aria="dirTitle" aria-label="ទិសមុខកញ្ចក់"><span>°</span></div>
+     <button type="button" class="btn sm" data-n="1">+1°</button>
+     <button type="button" class="btn sm" data-n="5">+5°</button>
+    </div>
+    <input type="range" id="mAz" min="0" max="359.9" step="0.1" data-i18n-aria="dirTitle" aria-label="ទិសមុខកញ្ចក់">
+    <div class="compass" id="compass"></div>
+   </div>
+   <div class="ctl">
+    <div class="ch"><b data-i18n="time">ម៉ោង</b><span id="sunL">—</span></div>
+    <div class="trow">
+     <button class="btn pri" id="playBtn" type="button" aria-pressed="false">លេង</button>
+     <button class="btn sm" id="tMinus" type="button">−10′</button>
+     <input type="text" id="tIn" inputmode="numeric" maxlength="5" placeholder="09:00" data-i18n-aria="time" aria-label="ម៉ោង">
+     <button class="btn sm" id="tPlus" type="button">+10′</button>
+    </div>
+    <input type="range" id="time" min="0" max="1439" step="1" data-i18n-aria="time" aria-label="ម៉ោង">
+   </div>
+   <div class="ctl">
+    <div class="ch"><b data-i18n="date">ថ្ងៃ</b><span id="dockKh">—</span></div>
+    <div class="drow">
+     <button class="btn sm" id="dPrev" type="button" data-i18n-aria="prevDay" aria-label="ថ្ងៃមុន">‹</button>
+     <input type="date" id="dIn" min="1900-01-01" max="2100-12-31" data-i18n-aria="date" aria-label="ថ្ងៃ">
+     <button class="btn sm" id="dNext" type="button" data-i18n-aria="nextDay" aria-label="ថ្ងៃបន្ទាប់">›</button>
+     <button class="btn sm" id="dToday" type="button" data-i18n="today">ថ្ងៃនេះ</button>
+    </div>
+   </div>
+   <div class="ctl">
+    <div class="ch"><b data-i18n="surf">ស្នាមធ្លាក់លើ</b><span id="wDL"></span></div>
+    <div class="seg" role="group">
+     <button type="button" id="tgGround" aria-pressed="true" data-i18n="ground">ដី</button>
+     <button type="button" id="tgWall" aria-pressed="false" data-i18n="wall">ជញ្ជាំងទល់មុខ</button>
+    </div>
+    <div id="wallBox" hidden><input type="range" id="wD" min="0" max="1000" step="1" data-i18n-aria="wallDist" aria-label="ចម្ងាយជញ្ជាំង"></div>
+   </div>
+  </div>
+
+  <div class="tabs" role="tablist">
+   <button role="tab" aria-selected="true" data-p="res" data-i18n="tRes">លទ្ធផល</button>
+   <button role="tab" aria-selected="false" data-p="cal" data-i18n="tCal" id="tab-cal">ប្រតិទិនខ្មែរ</button>
+   <button role="tab" aria-selected="false" data-p="map" data-i18n="tMap" id="tab-map">ផែនទី</button>
+   <button role="tab" aria-selected="false" data-p="set" data-i18n="tSet" id="tab-set">ការកំណត់</button>
+   <button role="tab" aria-selected="false" data-p="learn" data-i18n="tLearn" id="tab-learn">ពន្យល់</button>
+  </div>
+  <div class="scrollarea">
+   <div class="pane" id="p-res" role="tabpanel">
+    <table class="kv"><tbody id="resTable"></tbody></table>
+    <div class="warn" id="warn"></div>
+    <div class="window" id="litWin"></div>
+   </div>
+
+   <div class="pane" id="p-cal" role="tabpanel" hidden>
+    <div class="calhead">
+     <div><div class="ttl" id="calTtl">—</div><div class="lun" id="calLun">—</div></div>
+     <div class="row">
+      <button class="btn sm" id="prevM" type="button" data-i18n-aria="prevMonth" aria-label="ខែមុន">‹</button>
+      <button class="btn sm" id="todayB" type="button" data-i18n="today">ថ្ងៃនេះ</button>
+      <button class="btn sm" id="nextM" type="button" data-i18n-aria="nextMonth" aria-label="ខែក្រោយ">›</button>
+     </div>
+    </div>
+    <div class="row" style="margin-top:8px">
+     <select id="mSel" style="width:auto;flex:1" data-i18n-aria="month" aria-label="ខែ"></select>
+     <input type="number" id="ySel" min="1900" max="2100" style="width:110px" data-i18n-aria="year" aria-label="ឆ្នាំ">
+    </div>
+    <div class="cal" id="cal"></div>
+    <div class="selinfo" id="selInfo"></div>
+    <h2 data-i18n="evTitle">ថ្ងៃបុណ្យ និងទិវាក្នុងខែ</h2>
+    <ul class="evlist" id="evList"></ul>
+    <p class="note" data-i18n="calNote">ក្រហម = ថ្ងៃឈប់សម្រាក · ខៀវ = ទិវា / ថ្ងៃពុទ្ធសាសនា · រូបព្រះចន្ទ = ថ្ងៃសីល។</p>
+   </div>
+
+   <div class="pane" id="p-map" role="tabpanel" hidden>
+    <h2 data-i18n="loc">ទីតាំងកញ្ចក់</h2>
+    <label class="f" for="cityS" data-i18n="choose">ជ្រើសទីតាំង</label>
+    <select id="cityS"></select>
+    <div class="grid2">
+     <div><label class="f" for="latIn" data-i18n="lat">រយៈទទឹង</label><input type="number" id="latIn" step="0.0001" min="-89" max="89"></div>
+     <div><label class="f" for="lonIn" data-i18n="lon">រយៈបណ្តោយ</label><input type="number" id="lonIn" step="0.0001" min="-180" max="180"></div>
+    </div>
+    <label class="f" for="paste" data-i18n="pasteL">បិទភ្ជាប់តំណ ឬកូអរដោនេពី Google Maps</label>
+    <div class="row"><input type="text" id="paste" placeholder="11.5564, 104.9282" style="flex:1"><button class="btn" id="pasteB" type="button" data-i18n="use">ប្រើ</button></div>
+    <div class="note" id="pasteMsg"></div>
+    <h2 data-i18n="planT">ប្លង់ពីលើ (ជើងនៅខាងលើ)</h2>
+    <div class="plan"><svg id="plan" role="img"></svg></div>
+    <div class="links" id="links"></div>
+    <h2>Google Map</h2>
+    <button class="btn" id="gmapB" type="button" data-i18n="gmapB">បង្ហាញ Google Map</button>
+    <iframe class="gmap" id="gmap" title="Google Map" hidden loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    <p class="note" data-i18n="gmapNote">បើផែនទីមិនបង្ហាញ សូមចុចតំណ «Google Maps» ខាងលើ។</p>
+   </div>
+
+   <div class="pane" id="p-set" role="tabpanel" hidden>
+    <h2 data-i18n="appearance">រចនាបថ</h2>
+    <div class="modecards" id="modeCards">
+     <button type="button" data-mode="auto"><i class="sw-auto"></i><span data-i18n="mAuto">ស្វ័យប្រវត្តិ</span></button>
+     <button type="button" data-mode="light"><i class="sw-light"></i><span data-i18n="mLight">ពណ៌ស</span></button>
+     <button type="button" data-mode="dark"><i class="sw-dark"></i><span data-i18n="mDark">ពណ៌ខ្មៅ</span></button>
+     <button type="button" data-mode="gold"><i class="sw-gold"></i><span data-i18n="mGold">មាសរលោង</span></button>
+    </div>
+    <p class="note" data-i18n="autoNote">ស្វ័យប្រវត្តិ = តាមការកំណត់ភ្លឺ/ងងឹតរបស់ឧបករណ៍។</p>
+    <h2 data-i18n="language">ភាសា</h2>
+    <div class="seg" role="group"><button type="button" id="lgKm" aria-pressed="true">ខ្មែរ</button><button type="button" id="lgEn" aria-pressed="false">English</button></div>
+    <h2 data-i18n="mirrorSize">ទំហំកញ្ចក់</h2>
+    <div class="grid2">
+     <div><label class="f" for="mW"><span data-i18n="width">ទទឹង</span> <small>mm</small></label><input type="number" id="mW" min="5" max="5000" step="1"></div>
+     <div><label class="f" for="mH"><span data-i18n="height">កម្ពស់</span> <small>mm</small></label><input type="number" id="mH" min="5" max="5000" step="1"></div>
+     <div><label class="f" for="mB"><span data-i18n="base">បាតពីដី</span> <small>cm</small></label><input type="number" id="mB" min="0" max="5000" step="0.5"></div>
+     <div><label class="f" for="tzIn"><span data-i18n="tz">ម៉ោងតំបន់</span> <small>UTC±</small></label><input type="number" id="tzIn" min="-12" max="14" step="0.5"></div>
+    </div>
+    <p class="note" data-i18n="sizeNote">កញ្ចក់ឈរបញ្ឈរ ៩០° នឹងដី។ បាតពីដី 0 = ឈរផ្ទាល់លើដី។</p>
+    <h2 data-i18n="appT">កម្មវិធី</h2>
+    <div class="row">
+     <button class="btn" id="replayB" type="button" data-i18n="replay">ចាក់ឡូហ្គោឡើងវិញ</button>
+     <button class="btn pri" id="installB" type="button" hidden data-i18n="install">ដំឡើងកម្មវិធី</button>
+    </div>
+    <div class="prose" style="margin-top:12px">
+     <div data-lang="km"><ul>
+      <li><b>iPhone / iPad៖</b> បើកក្នុង Safari → ចុចប៊ូតុង ចែករំលែក → «បន្ថែមទៅអេក្រង់ដើម» (Add to Home Screen)។</li>
+      <li><b>Mac៖</b> Safari → File → Add to Dock។ <b>Windows / Mac (Chrome, Edge)៖</b> ចុចរូបតំណាងដំឡើងនៅក្នុងរបារអាសយដ្ឋាន ឬប៊ូតុង «ដំឡើងកម្មវិធី» ខាងលើ។</li>
+      <li>បន្ទាប់ពីដំឡើង កម្មវិធីបើកពេញអេក្រង់ ហើយប្រើបានទោះគ្មានអ៊ីនធឺណិត (លើកលែងតែ Google Maps)។</li>
+     </ul></div>
+     <div data-lang="en"><ul>
+      <li><b>iPhone / iPad:</b> open in Safari → tap Share → “Add to Home Screen”.</li>
+      <li><b>Mac:</b> Safari → File → Add to Dock. <b>Windows / Mac (Chrome, Edge):</b> click the install icon in the address bar, or the “Install app” button above.</li>
+      <li>Once installed it opens full-screen and works offline (except Google Maps).</li>
+     </ul></div>
+    </div>
+   </div>
+
+   <div class="pane prose" id="p-learn" role="tabpanel" hidden>
+    <div data-lang="km">
+     <h2>ទិសដៅនៃចំណាំងផ្លាត់</h2>
+     <p>កញ្ចក់រាបស្មើ ផ្លាត់ពន្លឺតាមច្បាប់ «មុំចូល = មុំផ្លាត់»។ ព្រោះកញ្ចក់ឈរបញ្ឈរ ៩០° នឹងដី ពន្លឺផ្លាត់រក្សាមុំកម្ពស់ដដែលនឹងព្រះអាទិត្យ ប៉ុន្តែចុះក្រោមវិញ។</p>
+     <div class="formula">ទិសពន្លឺផ្លាត់ = ២ × ទិសមុខកញ្ចក់ − ទិសព្រះអាទិត្យ<br>មុំធ្លាក់ចុះ = មុំកម្ពស់ព្រះអាទិត្យ</div>
+     <p>កញ្ចក់ទទួលពន្លឺបាន លុះត្រាតែព្រះអាទិត្យនៅខាងមុខកញ្ចក់ គឺទិសព្រះអាទិត្យខុសពីទិសមុខកញ្ចក់តិចជាង ៩០°។</p>
+     <h2>ហេតុអ្វីស្នាមពន្លឺធំ ឬតូចជាងកញ្ចក់?</h2>
+     <ol>
+      <li><b>មុំចូលទ្រេត៖</b> មុខកាត់បាច់ពន្លឺ = ផ្ទៃកញ្ចក់ × cos(មុំចូល) — តូចជាងកញ្ចក់ជានិច្ច។</li>
+      <li><b>ផ្ទៃទទួលទ្រេត៖</b> ស្នាមលាតវែង — ផ្ទៃ ÷ cos(មុំធ្លាក់លើផ្ទៃ)។ ព្រះអាទិត្យទាប ស្នាមលើដីវែងខ្លាំង។</li>
+      <li><b>ថាសព្រះអាទិត្យ ០,៥៣°៖</b> ចម្ងាយកាន់តែឆ្ងាយ គែមស្នាមកាន់តែព្រាល ≈ ចម្ងាយ ÷ ១០៧។</li>
+     </ol>
+     <div class="formula">លើដី៖ ផ្ទៃស្នាម ÷ ផ្ទៃកញ្ចក់ ≈ cos(មុំចូល) ÷ sin(កម្ពស់ព្រះអាទិត្យ)</div>
+     <p>កញ្ចក់ឈរលើដី៖ ស្នាមចាប់ផ្តើមត្រង់ជើងកញ្ចក់ ហើយវែង ≈ កម្ពស់កញ្ចក់ ÷ tan(កម្ពស់ព្រះអាទិត្យ)។</p>
+     <p>កម្មវិធីគណនាជាក់ស្តែង ពីជ្រុងទាំង ៤ នៃកញ្ចក់ និងគែមថាសព្រះអាទិត្យ ២៤ ចំណុច។ ទីតាំងព្រះអាទិត្យតាមរូបមន្ត NOAA។ ប្រតិទិនចន្ទគតិ ១៩០០–២១០០។</p>
+    </div>
+    <div data-lang="en">
+     <h2>Direction of the reflection</h2>
+     <p>A flat mirror reflects light so that the angle in equals the angle out. Because the mirror stands vertical (90° to the ground), the reflected beam keeps the sun's elevation angle but heads downward.</p>
+     <div class="formula">Reflected azimuth = 2 × mirror azimuth − sun azimuth<br>Downward angle = sun elevation</div>
+     <p>The mirror only catches sunlight when the sun is in front of it — the sun's azimuth must be within 90° of the mirror's facing direction.</p>
+     <h2>Why is the spot bigger or smaller than the mirror?</h2>
+     <ol>
+      <li><b>Oblique incidence:</b> beam cross-section = mirror area × cos(incidence) — always smaller than the mirror.</li>
+      <li><b>Oblique surface:</b> the beam spreads on the ground or wall — area ÷ cos(angle on that surface). A low sun makes a long spot on the ground.</li>
+      <li><b>The sun is a 0.53° disc:</b> the further the light travels, the blurrier and wider the edges ≈ distance ÷ 107.</li>
+     </ol>
+     <div class="formula">On the ground: spot area ÷ mirror area ≈ cos(incidence) ÷ sin(sun elevation)</div>
+     <p>Mirror standing on the ground: the spot starts at the mirror's foot and its length ≈ mirror height ÷ tan(sun elevation).</p>
+     <p>The app traces the 4 mirror corners and 24 points on the sun's rim onto the surface and measures the real spot. Sun position uses the NOAA formulas; the lunar calendar covers 1900–2100.</p>
+    </div>
+   </div>
+  </div>
+ </aside>
+</main>
+
+<script src="lib/three.min.js"></script>
+<script src="lib/OrbitControls.js"></script>
+<script src="lib/momentkh.js"></script>
+<script>
+{
+const $=id=>document.getElementById(id);
+const root=document.documentElement;
+const D2R=Math.PI/180,R2D=180/Math.PI,ALPHA=0.2665*D2R;
+const KN=s=>String(s).replace(/\d/g,d=>'០១២៣៤៥៦៧៨៩'[d]);
+const pad=n=>String(n).padStart(2,'0');
+const hm=m=>{m=((Math.round(m)%1440)+1440)%1440;return pad(Math.floor(m/60))+':'+pad(m%60)};
+const KH=window.momentkh||null;
+const store={get(k,d){try{const v=localStorage.getItem(k);return v===null?d:v}catch(e){return d}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+
+/* ---------- i18n ---------- */
+let LANG=root.getAttribute('lang')==='en'?'en':'km';
+const I={
+ title:['ចំណាំងផ្លាត់ព្រះអាទិត្យលើកញ្ចក់','Sunlight Reflection on a Mirror'],
+ tagline:['3D · ប្រតិទិនខ្មែរ · ផែនទី','3D · Khmer calendar · Map'],
+ tapSkip:['ចុចដើម្បីរំលង','Tap to skip'],
+ appearance:['រចនាបថ','Appearance'],view3d:['ទិដ្ឋភាព 3D','3D view'],
+ mAuto:['ស្វ័យប្រវត្តិ','Auto'],mLight:['ពណ៌ស','Light'],mDark:['ពណ៌ខ្មៅ','Dark'],mGold:['មាសរលោង','Gold'],
+ autoNote:['ស្វ័យប្រវត្តិ = តាមការកំណត់ភ្លឺ/ងងឹតរបស់ឧបករណ៍ ហើយប្តូរដោយខ្លួនឯង។','Auto follows your device’s light/dark setting and switches by itself.'],
+ language:['ភាសា','Language'],mirrorSize:['ទំហំកញ្ចក់','Mirror size'],width:['ទទឹង','Width'],height:['កម្ពស់','Height'],base:['បាតពីដី','Base above ground'],tz:['ម៉ោងតំបន់','Time zone'],
+ sizeNote:['កញ្ចក់ឈរបញ្ឈរ ៩០° នឹងដី។ បាតពីដី 0 = ឈរផ្ទាល់លើដី ហើយស្នាមចាប់ផ្តើមត្រង់ជើងកញ្ចក់។','The mirror stands vertical, 90° to the ground. Base 0 = standing on the ground, so the spot starts at its foot.'],
+ appT:['កម្មវិធី','App'],replay:['ចាក់ឡូហ្គោឡើងវិញ','Replay intro'],install:['ដំឡើងកម្មវិធី','Install app'],
+ fit:['មើលទាំងមូល','Fit view'],lgIn:['ពន្លឺចូល','Incoming light'],lgOut:['ពន្លឺផ្លាត់','Reflected light'],lgRef:['ទំហំកញ្ចក់ (គំរូ)','Mirror size (reference)'],
+ dirTitle:['ទិសមុខកញ្ចក់','Mirror facing'],time:['ម៉ោង','Time'],play:['លេង','Play'],pause:['ផ្អាក','Pause'],
+ date:['ថ្ងៃ','Date'],today:['ថ្ងៃនេះ','Today'],prevDay:['ថ្ងៃមុន','Previous day'],nextDay:['ថ្ងៃបន្ទាប់','Next day'],
+ surf:['ស្នាមធ្លាក់លើ','Spot lands on'],ground:['ដី','Ground'],wall:['ជញ្ជាំងទល់មុខ','Facing wall'],wallAt:['ជញ្ជាំងឆ្ងាយ ','Wall at '],wallDist:['ចម្ងាយជញ្ជាំង','Wall distance'],
+ tRes:['លទ្ធផល','Results'],tCal:['ប្រតិទិនខ្មែរ','Khmer calendar'],tMap:['ផែនទី','Map'],tSet:['ការកំណត់','Settings'],tLearn:['ពន្យល់','Explain'],
+ loading:['កំពុងផ្ទុក…','Loading…'],night:['យប់','Night'],below:['ព្រះអាទិត្យនៅក្រោមជើងមេឃ','The sun is below the horizon'],changeT:['ប្តូរម៉ោង ដើម្បីមើលចំណាំងផ្លាត់','Change the time to see the reflection'],
+ noRefl:['គ្មានចំណាំង','No reflection'],behind:['ព្រះអាទិត្យនៅខាងក្រោយកញ្ចក់','The sun is behind the mirror'],
+ behindSm:['ទិសព្រះអាទិត្យ {a}° ខុសពីមុខកញ្ចក់លើស ៩០°','Sun azimuth {a}° is more than 90° from the mirror’s facing'],
+ spot:['ស្នាមពន្លឺ','The spot is '],smaller:['តូចជាងកញ្ចក់','smaller than the mirror'],bigger:['ធំជាងកញ្ចក់','bigger than the mirror'],same:['ប្រហាក់ប្រហែលកញ្ចក់','about the same as the mirror'],
+ hudSm:['ស្នាម {s} · កញ្ចក់ {m} · ចម្ងាយ {l} · ទិសផ្លាត់ {d}','Spot {s} · mirror {m} · distance {l} · towards {d}'],
+ rSun:['ព្រះអាទិត្យ (ទិស / កម្ពស់)','Sun (azimuth / elevation)'],rMir:['មុខកញ្ចក់','Mirror faces'],rInc:['មុំចូលលើកញ្ចក់','Angle of incidence'],
+ rOut:['ទិសពន្លឺផ្លាត់','Reflected direction'],down:['ចុះ','down'],rL:['ចម្ងាយតាមកាំពន្លឺ','Distance along the ray'],
+ rHg:['ចម្ងាយលើដីពីជើងកញ្ចក់','Ground distance from mirror'],rHw:['កម្ពស់ស្នាមលើជញ្ជាំង','Spot height on wall'],
+ r1:['① មុខកាត់បាច់ពន្លឺ (×cos មុំចូល)','① Beam cross-section (×cos incidence)'],r2:['② លាតលើផ្ទៃទទួល (÷cos {a}°)','② Spread on surface (÷cos {a}°)'],
+ r3:['③ ព្រាលគែមដោយថាសព្រះអាទិត្យ','③ Edge blur from the sun’s disc'],rDimG:['ទំហំស្នាម (ទទឹង × បណ្តោយ)','Spot size (width × length)'],rDimW:['ទំហំស្នាម (ទទឹង × កម្ពស់)','Spot size (width × height)'],
+ rMsz:['ទំហំកញ្ចក់','Mirror size'],rArea:['ផ្ទៃស្នាមពិត','Actual spot area'],rMA:['ផ្ទៃកញ្ចក់','Mirror area'],
+ wMiss:['ពន្លឺធ្លាក់ដល់ដីមុនដល់ជញ្ជាំង — បង្ហាញស្នាមលើដីជំនួស។','The light reaches the ground before the wall — showing the ground spot instead.'],
+ wClip:['ស្នាមខ្លះធ្លាក់លើដីមុនដល់ជញ្ជាំង (គិតតែផ្នែកលើជញ្ជាំង)។','Part of the spot hits the ground before the wall (only the wall part is counted).'],
+ wLow:['ព្រះអាទិត្យទាបណាស់ — ស្នាមលើដីលាតវែងខ្លាំង ហើយអាចមានអ្វីបាំង។','The sun is very low — the ground spot is very long and may be blocked.'],
+ litToday:['ថ្ងៃនេះ កញ្ចក់ទទួលពន្លឺព្រះអាទិត្យ៖ ','Mirror is sunlit today: '],and:[' និង ',' and '],noLit:['ថ្ងៃនេះ កញ្ចក់មុខនេះមិនទទួលពន្លឺព្រះអាទិត្យទេ','The mirror gets no direct sun today'],
+ rise:['ថ្ងៃរះ','Sunrise'],set:['ថ្ងៃលិច','Sunset'],sunL:['ព្រះអាទិត្យ {a}° {d} · ខ្ពស់ {e}°','Sun {a}° {d} · elev {e}°'],
+ prevMonth:['ខែមុន','Previous month'],nextMonth:['ខែក្រោយ','Next month'],month:['ខែ','Month'],year:['ឆ្នាំ','Year'],
+ evTitle:['ថ្ងៃបុណ្យ និងទិវាក្នុងខែ','Holidays and observances this month'],noEv:['មិនមានថ្ងៃបុណ្យក្នុងខែនេះ','No holidays this month'],
+ calNote:['ក្រហម = ថ្ងៃឈប់សម្រាក · ខៀវ = ទិវា / ថ្ងៃពុទ្ធសាសនា · រូបព្រះចន្ទ = ថ្ងៃសីល។ ថ្ងៃចន្ទគតិគណនាតាមក្បួន (១៩០០–២១០០)។ ថ្ងៃឈប់សម្រាកផ្លូវការអាចប្រែប្រួលតាមអនុក្រឹត្យប្រចាំឆ្នាំ។','Red = public holiday · blue = observance / Buddhist day · moon = Sila (precept) day. Lunar dates are computed (1900–2100). Official holidays can change by yearly sub-decree.'],
+ corr:['ត្រូវនឹងថ្ងៃទី {d} ខែ{m} ឆ្នាំ {y}','Gregorian: {m} {d}, {y}'],selLit:['កញ្ចក់ (មុខ {a}) ទទួលពន្លឺ៖ ','Mirror (facing {a}) sunlit: '],selNoLit:['កញ្ចក់មុខនេះមិនទទួលពន្លឺនៅថ្ងៃនេះទេ','This mirror gets no direct sun on this day'],
+ loc:['ទីតាំងកញ្ចក់','Mirror location'],choose:['ជ្រើសទីតាំង','Choose a place'],lat:['រយៈទទឹង','Latitude'],lon:['រយៈបណ្តោយ','Longitude'],
+ pasteL:['បិទភ្ជាប់តំណ ឬកូអរដោនេពី Google Maps','Paste a Google Maps link or coordinates'],use:['ប្រើ','Use'],
+ pasteOk:['បានកំណត់ទីតាំង ','Location set: '],pasteErr:['រកមិនឃើញកូអរដោនេ — សូមចម្លងលេខដូចជា 11.5564, 104.9282 ពី Google Maps (ចុចសង្កត់លើផែនទី)។','No coordinates found — copy numbers like 11.5564, 104.9282 from Google Maps (long-press on the map).'],
+ planT:['ប្លង់ពីលើ (ជើងនៅខាងលើ)','Plan view (north up)'],spotL:['ស្នាមពន្លឺ','Spot'],sunG:['ថ្ងៃ','Sun'],
+ openMir:['បើកទីតាំងកញ្ចក់ក្នុង Google Maps','Open mirror location in Google Maps'],openSpot:['បើកទីតាំងស្នាមពន្លឺក្នុង Google Maps','Open spot location in Google Maps'],walk:['ផ្លូវដើរពីកញ្ចក់ទៅស្នាមពន្លឺ','Walking route mirror → spot'],
+ gmapB:['បង្ហាញ Google Map (ផ្កាយរណប)','Show Google Map (satellite)'],gmapNote:['បើផែនទីមិនបង្ហាញក្នុងផ្ទាំងនេះ សូមចុចតំណ «Google Maps» ខាងលើ។','If the map does not appear here, use the Google Maps links above.'],
+ no3D:['មិនអាចផ្ទុកម៉ាស៊ីន 3D បានទេ','Could not load the 3D engine'],noKH:['មិនអាចផ្ទុកប្រតិទិនខ្មែរបានទេ','Could not load the Khmer calendar'],custom:['ផ្ទាល់ខ្លួន','Custom'],
+};
+const t=(k,v)=>{let s=(I[k]||[k,k])[LANG==='en'?1:0];if(v)for(const x in v)s=s.split('{'+x+'}').join(v[x]);return s};
+const NUM=s=>LANG==='en'?String(s):KN(s);
+const DIRK=['ជើង','ឦសាន','កើត','អាគ្នេយ៍','ត្បូង','និរតី','លិច','ពាយព្យ'],DIRE=['N','NE','E','SE','S','SW','W','NW'],DIRF=['North','Northeast','East','Southeast','South','Southwest','West','Northwest'];
+const dirName=a=>(LANG==='en'?DIRE:DIRK)[Math.round((((a%360)+360)%360)/45)%8];
+const SOLAR_K=['មករា','កុម្ភៈ','មីនា','មេសា','ឧសភា','មិថុនា','កក្កដា','សីហា','កញ្ញា','តុលា','វិច្ឆិកា','ធ្នូ'];
+const SOLAR_E=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const WD_K=['អាទិ','ចន្ទ','អង្គ','ពុធ','ព្រហ','សុក្រ','សៅរ៍'],WD_E=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const WDF_E=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const LM_E=['Migasir','Boss','Meak','Phalkun','Cheit','Pisakh','Jesth','Asadh','Srap','Phatrabot','Assoch','Kadeuk','Pathamasadh','Tutiyasadh'];
+const AN_E=['Rat','Ox','Tiger','Rabbit','Dragon','Snake','Horse','Goat','Monkey','Rooster','Dog','Pig'];
+const SAK_E=['Samrith','Ek','To','Trei','Chattva','Pañcha','Chha','Sapta','Attha','Nap'];
+const PH_E=['Koeut','Roch'];
+
+/* ---------- theme ---------- */
+let MODE=store.get('sm-mode','auto');
+const mq=window.matchMedia?matchMedia('(prefers-color-scheme: dark)'):null;
+const effMode=()=>{if(MODE!=='auto')return MODE;const vt=root.getAttribute('data-theme');if(vt==='dark'||vt==='light')return vt;return mq&&mq.matches?'dark':'light'};
+const THEMECOL={light:'#1f6fc4',dark:'#000000',gold:'#b98a2a'};
+function applyMode(){const m=effMode();root.setAttribute('data-mode',m);$('themeColor').setAttribute('content',THEMECOL[m]);
+ document.querySelectorAll('[data-mode]').forEach(b=>{if(b.tagName==='BUTTON')b.setAttribute('aria-pressed',b.dataset.mode===MODE)});
+ if(window.__redraw)window.__redraw()}
+const setMode=m=>{MODE=m;store.set('sm-mode',m);applyMode()};
+document.querySelectorAll('button[data-mode]').forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.mode)));
+if(mq){const h=()=>{if(MODE==='auto')applyMode()};mq.addEventListener?mq.addEventListener('change',h):mq.addListener(h)}
+new MutationObserver(()=>{if(MODE==='auto'&&root.getAttribute('data-mode')!==effMode())applyMode()}).observe(root,{attributes:true,attributeFilter:['data-theme']});
+
+/* ---------- intro ---------- */
+{const sym=document.getElementById('logo');$('introLogo').innerHTML=sym.innerHTML;sym.querySelectorAll('[class]').forEach(el=>el.removeAttribute('class'))}
+const intro=$('intro');let introT=null;
+function hideIntro(){intro.classList.add('out');clearTimeout(introT)}
+function playIntro(){intro.classList.remove('out');intro.querySelectorAll('*').forEach(el=>{el.style.animation='none';void el.getBoundingClientRect();el.style.animation=''});
+ clearTimeout(introT);introT=setTimeout(hideIntro,matchMedia('(prefers-reduced-motion: reduce)').matches?900:3000)}
+intro.addEventListener('click',hideIntro);
+let seen=false;try{seen=sessionStorage.getItem('sm-intro')==='1';sessionStorage.setItem('sm-intro','1')}catch(e){}
+if(seen)intro.classList.add('out');else playIntro();
+
+/* ---------- vectors (East, North, Up) ---------- */
+const add=(a,b)=>[a[0]+b[0],a[1]+b[1],a[2]+b[2]],sub=(a,b)=>[a[0]-b[0],a[1]-b[1],a[2]-b[2]],
+mul=(a,k)=>[a[0]*k,a[1]*k,a[2]*k],dot=(a,b)=>a[0]*b[0]+a[1]*b[1]+a[2]*b[2],
+cross=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]],
+len=a=>Math.hypot(a[0],a[1],a[2]),norm=a=>mul(a,1/len(a));
+const reflect=(s,n)=>add(mul(s,-1),mul(n,2*dot(s,n)));
+
+/* ---------- sun position (NOAA) ---------- */
+function sunPos(ms,lat,lon){
+ const jd=ms/864e5+2440587.5,T=(jd-2451545)/36525;
+ const L0=((280.46646+T*(36000.76983+T*0.0003032))%360+360)%360;
+ const M=357.52911+T*(35999.05029-0.0001537*T);
+ const e=0.016708634-T*(0.000042037+0.0000001267*T);
+ const Mr=M*D2R;
+ const C=Math.sin(Mr)*(1.914602-T*(0.004817+0.000014*T))+Math.sin(2*Mr)*(0.019993-0.000101*T)+Math.sin(3*Mr)*0.000289;
+ const om=(125.04-1934.136*T)*D2R;
+ const lam=(L0+C-0.00569-0.00478*Math.sin(om))*D2R;
+ const eps0=23+(26+(21.448-T*(46.815+T*(0.00059-T*0.001813)))/60)/60;
+ const eps=(eps0+0.00256*Math.cos(om))*D2R;
+ const decl=Math.asin(Math.sin(eps)*Math.sin(lam));
+ const y=Math.tan(eps/2)**2,L0r=L0*D2R;
+ const eot=4*R2D*(y*Math.sin(2*L0r)-2*e*Math.sin(Mr)+4*e*y*Math.sin(Mr)*Math.cos(2*L0r)-0.5*y*y*Math.sin(4*L0r)-1.25*e*e*Math.sin(2*Mr));
+ const utcMin=(((ms%864e5)+864e5)%864e5)/6e4;
+ const tst=((utcMin+eot+4*lon)%1440+1440)%1440;
+ const H=(tst/4-180)*D2R,la=lat*D2R;
+ const cz=Math.min(1,Math.max(-1,Math.sin(la)*Math.sin(decl)+Math.cos(la)*Math.cos(decl)*Math.cos(H)));
+ let el=90-Math.acos(cz)*R2D;
+ const az=((Math.atan2(Math.sin(H),Math.cos(H)*Math.sin(la)-Math.tan(decl)*Math.cos(la))*R2D+180)%360+360)%360;
+ if(el>-1){const ref=1.02/Math.tan((el+10.3/(el+5.11))*D2R)/60;el+=ref}
+ return {az,el,decl:decl*R2D,eot};
+}
+const sunVec=(az,el)=>[Math.cos(el*D2R)*Math.sin(az*D2R),Math.cos(el*D2R)*Math.cos(az*D2R),Math.sin(el*D2R)];
+
+/* ---------- state ---------- */
+const CITIES=[
+ [['ភ្នំពេញ','Phnom Penh'],11.5564,104.9282],[['សៀមរាប (អង្គរវត្ត)','Siem Reap (Angkor Wat)'],13.4125,103.8670],[['បាត់ដំបង','Battambang'],13.0957,103.2022],
+ [['កំពត','Kampot'],10.6104,104.1815],[['ព្រះសីហនុ','Sihanoukville'],10.6253,103.5234],[['តាកែវ','Takeo'],10.9908,104.7850],[['កំពង់ចាម','Kampong Cham'],11.9934,105.4635],[['ផ្ទាល់ខ្លួន','Custom'],null,null]];
+function nowLocal(tz){const d=new Date(Date.now()+tz*36e5);return {y:d.getUTCFullYear(),m:d.getUTCMonth()+1,d:d.getUTCDate(),min:d.getUTCHours()*60+d.getUTCMinutes()}}
+const S={lat:11.5564,lon:104.9282,tz:7,mAz:90,w:36,h:63,hb:0,target:'ground',D:0.03};
+try{const sv=JSON.parse(store.get('sunmirror-mm','{}'));for(const k in S)if(typeof sv[k]===typeof S[k])S[k]=sv[k]}catch(e){}
+const T0=nowLocal(S.tz);S.date={y:T0.y,m:T0.m,d:T0.d};S.min=(T0.min>360&&T0.min<1080)?T0.min:540;
+const save=()=>{const o={...S};delete o.date;delete o.min;store.set('sunmirror-mm',JSON.stringify(o))};
+const utcMs=(dt,min,tz)=>Date.UTC(dt.y,dt.m-1,dt.d)+(min-tz*60)*6e4;
+
+/* ---------- geometry ---------- */
+function hull(pts){
+ const p=pts.slice().sort((a,b)=>a[0]-b[0]||a[1]-b[1]);if(p.length<3)return p;
+ const cr=(o,a,b)=>(a[0]-o[0])*(b[1]-o[1])-(a[1]-o[1])*(b[0]-o[0]);const lo=[],up=[];
+ for(const q of p){while(lo.length>1&&cr(lo[lo.length-2],lo[lo.length-1],q)<=0)lo.pop();lo.push(q)}
+ for(let i=p.length-1;i>=0;i--){const q=p[i];while(up.length>1&&cr(up[up.length-2],up[up.length-1],q)<=0)up.pop();up.push(q)}
+ lo.pop();up.pop();return lo.concat(up);
+}
+const area2=p=>{let a=0;for(let i=0;i<p.length;i++){const q=p[i],r=p[(i+1)%p.length];a+=q[0]*r[1]-r[0]*q[1]}return Math.abs(a)/2};
+function clipY0(poly){const out=[];for(let i=0;i<poly.length;i++){const a=poly[i],b=poly[(i+1)%poly.length];const ia=a[1]>=0,ib=b[1]>=0;
+ if(ia)out.push(a);if(ia!==ib){const tt=a[1]/(a[1]-b[1]);out.push([a[0]+tt*(b[0]-a[0]),0])}}return out}
+const ground=()=>({kind:'ground',O:[0,0,0],N:[0,0,1],a1:[1,0,0],a2:[0,1,0]});
+function wallPlane(r,D){const rh=norm([r[0],r[1],0]);return {kind:'wall',O:mul(rh,D),N:mul(rh,-1),a1:[rh[1],-rh[0],0],a2:[0,0,1],rh}}
+function hitP(p,q,P){const den=dot(q,P.N);if(Math.abs(den)<1e-9)return null;const tt=dot(sub(P.O,p),P.N)/den;return tt>=-1e-9?{t:Math.max(0,tt),x:add(p,mul(q,Math.max(0,tt)))}:null}
+const to2=(P,x)=>{const d=sub(x,P.O);return [dot(d,P.a1),dot(d,P.a2)]};
+const from2=(P,v)=>add(P.O,add(mul(P.a1,v[0]),mul(P.a2,v[1])));
+
+function compute(){
+ const ms=utcMs(S.date,S.min,S.tz),sp=sunPos(ms,S.lat,S.lon),s=sunVec(sp.az,sp.el);
+ const A=S.mAz*D2R,n=[Math.sin(A),Math.cos(A),0],u=[Math.cos(A),-Math.sin(A),0];
+ const w=S.w/1000,h=S.h/1000,C=[0,0,S.hb+h/2];
+ const corners=[[-1,-1],[1,-1],[1,1],[-1,1]].map(([a,b])=>add(add(C,mul(u,a*w/2)),[0,0,b*h/2]));
+ const cosI=dot(s,n);
+ const R={sp,s,n,u,w,h,C,corners,cosI,day:sp.el>0,lit:sp.el>0.05&&cosI>0.002,mA:w*h};
+ if(!R.lit)return R;
+ const r=reflect(s,n);R.r=r;R.rAz=(Math.atan2(r[0],r[1])*R2D+360)%360;R.inc=Math.acos(Math.min(1,cosI))*R2D;
+ let P=S.target==='wall'?wallPlane(r,S.D):ground();
+ let c=hitP(C,r,P);
+ if(P.kind==='wall'&&(!c||c.x[2]<0)){R.wallMiss=true;P=ground();c=hitP(C,r,P)}
+ if(!c){R.lit=false;return R}
+ R.P=P;R.spotC=c.x;R.L=c.t;
+ const up=Math.abs(s[2])>0.99?[1,0,0]:[0,0,1];const e1=norm(cross(s,up)),e2=cross(e1,s);
+ const pts=[];const tA=Math.tan(ALPHA);
+ for(let k=0;k<24;k++){const f=k/24*2*Math.PI;const sk=norm(add(s,add(mul(e1,tA*Math.cos(f)),mul(e2,tA*Math.sin(f)))));
+  if(dot(sk,n)<=0)continue;const rk=reflect(sk,n);
+  for(const p of corners){const hh=hitP(p,rk,P);if(hh)pts.push(to2(P,hh.x))}}
+ let poly=hull(pts);
+ if(P.kind==='wall'){const cl=clipY0(poly);R.clipped=cl.length&&area2(cl)<area2(poly)*0.999;poly=cl}
+ R.poly=poly;R.area=area2(poly);R.ratio=R.area/R.mA;
+ {let ax=[1,0],bx=[0,1];if(P.kind==='ground'){const rh=norm([r[0],r[1],0]);bx=[rh[0],rh[1]];ax=[rh[1],-rh[0]]}
+  const ext2=v=>{const d=poly.map(q=>q[0]*v[0]+q[1]*v[1]);return d.length?Math.max(...d)-Math.min(...d):0};R.dims=[ext2(ax),ext2(bx)]}
+ const G=ground();
+ R.cHits=corners.map(p=>{let a=hitP(p,r,P);if(P.kind==='wall'){const g=hitP(p,r,G);if(g&&(!a||g.t<a.t))a=g}return a?a.x:add(p,mul(r,R.L))});
+ R.cross=R.mA*cosI;R.k=1/Math.abs(dot(r,P.N));R.geo=R.cross*R.k;R.blur=2*R.L*tA;
+ R.tInc=Math.acos(Math.min(1,Math.abs(dot(r,P.N))))*R2D;
+ R.horiz=Math.hypot(R.spotC[0],R.spotC[1]);
+ return R;
+}
+function litWindows(dt){
+ const out=[];let cur=null,rise=null,set=null;const A=S.mAz*D2R,n=[Math.sin(A),Math.cos(A),0];
+ for(let m=0;m<=1440;m+=2){const sp=sunPos(utcMs(dt,m,S.tz),S.lat,S.lon);
+  if(sp.el>-0.833&&rise===null)rise=m;if(sp.el>-0.833)set=m;
+  const ok=sp.el>0.05&&dot(sunVec(sp.az,sp.el),n)>0.002;
+  if(ok&&!cur)cur=[m,m];else if(ok)cur[1]=m;else if(cur){out.push(cur);cur=null}}
+ if(cur)out.push(cur);return {wins:out,rise,set};
+}
+
+/* ---------- 3D ---------- */
+const PAL={
+ light:{ground:0xcbbf9c,g1:0x8a7f63,g2:0xb3a888,day:0x8cc4ef,dawn:0xf0a868,night:0x0b1424,ink:'#1b2430',north:'#c0392b',halo:'rgba(255,255,255,.9)',back:0x6b5440},
+ dark:{ground:0x2a2925,g1:0x6a6455,g2:0x3e3b34,day:0x1b3656,dawn:0x5a3520,night:0x000000,ink:'#e8edf3',north:'#ff6b62',halo:'rgba(0,0,0,.85)',back:0x3a3a3a},
+ gold:{ground:0x3a2a10,g1:0xd4a437,g2:0x6e5320,day:0x3b2a0f,dawn:0x7a4a12,night:0x0b0804,ink:'#f6dc8c',north:'#fff0b3',halo:'rgba(0,0,0,.85)',back:0x8a6216}};
+const pal=()=>PAL[root.getAttribute('data-mode')]||PAL.light;
+const box=$('view3d');let renderer,scene,camera,controls,dyn,sunLight,hemi,fitted=false,glow,groundMesh;
+const V=p=>new THREE.Vector3(p[0],p[2],-p[1]);
+function textSprite(txt,col,halo){const c=document.createElement('canvas');c.width=320;c.height=96;const g=c.getContext('2d');
+ g.font='700 44px "Kantumruy Pro",sans-serif';g.textAlign='center';g.textBaseline='middle';g.lineWidth=8;g.strokeStyle=halo;g.strokeText(txt,160,48);g.fillStyle=col;g.fillText(txt,160,48);
+ const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(c),depthTest:false,transparent:true}));return sp}
+function glowTex(){const c=document.createElement('canvas');c.width=c.height=128;const g=c.getContext('2d');const gr=g.createRadialGradient(64,64,0,64,64,64);
+ gr.addColorStop(0,'rgba(255,250,220,1)');gr.addColorStop(.25,'rgba(255,214,90,.9)');gr.addColorStop(1,'rgba(255,180,0,0)');g.fillStyle=gr;g.fillRect(0,0,128,128);return new THREE.CanvasTexture(c)}
+function init3d(){
+ if(!window.THREE||!THREE.OrbitControls){$('hudVerdict').textContent=t('no3D');return false}
+ try{renderer=new THREE.WebGLRenderer({antialias:true})}catch(e){$('hudVerdict').textContent=t('no3D');return false}
+ renderer.setPixelRatio(Math.min(devicePixelRatio,2));box.prepend(renderer.domElement);
+ scene=new THREE.Scene();camera=new THREE.PerspectiveCamera(50,1,0.0005,3000);camera.position.set(4,3,6);
+ controls=new THREE.OrbitControls(camera,renderer.domElement);controls.enableDamping=true;controls.maxPolarAngle=Math.PI*0.495;
+ hemi=new THREE.HemisphereLight(0xdfefff,0x6b5a3a,0.7);scene.add(hemi);
+ sunLight=new THREE.DirectionalLight(0xfff4d6,0.9);scene.add(sunLight);
+ groundMesh=new THREE.Mesh(new THREE.CircleGeometry(1,96),new THREE.MeshLambertMaterial({color:0xcbbf9c}));groundMesh.rotation.x=-Math.PI/2;scene.add(groundMesh);
+ glow=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex(),transparent:true,depthWrite:false}));scene.add(glow);
+ dyn=new THREE.Group();scene.add(dyn);
+ const ro=new ResizeObserver(()=>{const W=box.clientWidth,H=box.clientHeight;if(!W||!H)return;renderer.setSize(W,H,false);camera.aspect=W/H;camera.updateProjectionMatrix()});ro.observe(box);
+ (function loop(){requestAnimationFrame(loop);controls.update();renderer.render(scene,camera)})();
+ return true;
+}
+function clearDyn(){dyn.traverse(o=>{if(o.geometry)o.geometry.dispose();if(o.material){if(o.material.map)o.material.map.dispose();o.material.dispose()}});dyn.clear()}
+function line(pts,col,op=1,dash,sz=1){const g=new THREE.BufferGeometry().setFromPoints(pts.map(V));
+ const m=dash?new THREE.LineDashedMaterial({color:col,dashSize:0.06*sz,gapSize:0.04*sz,transparent:true,opacity:op}):new THREE.LineBasicMaterial({color:col,transparent:op<1,opacity:op});
+ const l=new THREE.Line(g,m);if(dash)l.computeLineDistances();return l}
+function quads(a,b,col,op){const pos=[];for(let i=0;i<4;i++){const j=(i+1)%4;for(const p of [a[i],a[j],b[j],a[i],b[j],b[i]]){const v=V(p);pos.push(v.x,v.y,v.z)}}
+ const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));
+ return new THREE.Mesh(g,new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:op,side:THREE.DoubleSide,depthWrite:false}))}
+function skyCol(el,P){const night=new THREE.Color(P.night),dawn=new THREE.Color(P.dawn),day=new THREE.Color(P.day);
+ if(el<=-6)return night;if(el<0)return night.clone().lerp(dawn,(el+6)/6);if(el<12)return dawn.clone().lerp(day,el/12);return day}
+function draw3d(R){
+ if(!scene)return;clearDyn();const P0=pal();
+ const H0=Math.max(R.h,R.w,S.hb);const ext=Math.max(H0*5,(R.horiz||0)*1.4+H0*3,S.target==='wall'?S.D*1.3+H0*3:0);const EP=H0*0.01;
+ groundMesh.scale.set(ext,ext,1);groundMesh.material.color.setHex(P0.ground);
+ const cell=[0.005,0.01,0.02,0.05,0.1,0.2,0.5,1,2,5,10,20,50].find(v=>v>=ext/8)||100;
+ const g=new THREE.GridHelper(Math.ceil(ext/cell)*cell*2,Math.ceil(ext/cell)*2,P0.g1,P0.g2);g.position.y=EP*0.2;g.material.transparent=true;g.material.opacity=.5;dyn.add(g);
+ const labs=LANG==='en'?[['N',0],['E',90],['S',180],['W',270]]:[['ជើង N',0],['កើត E',90],['ត្បូង S',180],['លិច W',270]];
+ labs.forEach(([tx,a])=>{const sp=textSprite(tx,a===0?P0.north:P0.ink,P0.halo);const rr=ext*0.92;sp.position.copy(V([rr*Math.sin(a*D2R),rr*Math.cos(a*D2R),ext*0.05]));const sc=ext/7;sp.scale.set(2*sc,0.6*sc,1);dyn.add(sp)});
+ scene.background=skyCol(R.sp.el,P0);box.style.background='#'+scene.background.getHexString();
+ const sd=ext*1.1;glow.position.copy(V(mul(R.s,sd)));const gs=ext*0.25;glow.scale.set(gs,gs,1);glow.visible=R.sp.el>-2;
+ sunLight.position.copy(V(mul(R.s,10)));sunLight.intensity=R.day?0.9:0.05;hemi.intensity=R.day?0.75:0.25;
+ const grp=new THREE.Group();
+ const front=new THREE.Mesh(new THREE.PlaneGeometry(R.w,R.h),new THREE.MeshPhongMaterial({color:0xd6ecfa,specular:0xffffff,shininess:120,emissive:R.lit?0x3a5a70:0x101820}));
+ front.position.z=H0*0.021;grp.add(front);
+ const back=new THREE.Mesh(new THREE.BoxGeometry(R.w*1.04,R.h*1.03,H0*0.04),new THREE.MeshPhongMaterial({color:P0.back,shininess:root.getAttribute('data-mode')==='gold'?90:10}));grp.add(back);
+ grp.position.copy(V(R.C));grp.lookAt(V(add(R.C,R.n)));dyn.add(grp);
+ if(S.hb>0.01)for(const sx of [-1,1]){const p=mul(R.u,sx*R.w*0.35);const leg=new THREE.Mesh(new THREE.CylinderGeometry(H0*0.02,H0*0.02,S.hb,8),new THREE.MeshLambertMaterial({color:0x444444}));leg.position.copy(V([p[0],p[1],S.hb/2]));dyn.add(leg)}
+ dyn.add(new THREE.ArrowHelper(V(R.n).normalize(),V(R.C),H0*0.9,0x4c9bff,H0*0.2,H0*0.12));
+ if(R.lit){
+  const inLen=Math.min(ext*0.6,H0*4);const inA=R.corners.map(p=>add(p,mul(R.s,inLen)));
+  dyn.add(quads(inA,R.corners,0xffd34d,0.18));R.corners.forEach((p,i)=>dyn.add(line([inA[i],p],0xffc93c,0.9)));
+  dyn.add(quads(R.corners,R.cHits,0xff9a1f,0.22));R.cHits.forEach((p,i)=>dyn.add(line([R.corners[i],p],0xff8a00,0.95)));
+  const off=mul(R.P.N,EP*0.6);
+  if(R.poly.length>2){const pts3=R.poly.map(v=>add(from2(R.P,v),off));
+   const pos=[];const c0=pts3.reduce((a,b)=>add(a,b),[0,0,0]).map(x=>x/pts3.length);
+   for(let i=0;i<pts3.length;i++){for(const p of [c0,pts3[i],pts3[(i+1)%pts3.length]]){const v=V(p);pos.push(v.x,v.y,v.z)}}
+   const gg=new THREE.BufferGeometry();gg.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));
+   dyn.add(new THREE.Mesh(gg,new THREE.MeshBasicMaterial({color:0xfff0a0,side:THREE.DoubleSide})));
+   dyn.add(line(pts3.concat([pts3[0]]),0xff8a00,1));}
+  let ax,bx;if(R.P.kind==='ground'){const rh=norm([R.r[0],R.r[1],0]);ax=[rh[1],-rh[0],0];bx=rh}else{ax=R.P.a1;bx=R.P.a2}
+  const c=add(R.spotC,mul(R.P.N,EP*1.2));const rc=[[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]].map(([a,b])=>add(c,add(mul(ax,a*R.w/2),mul(bx,b*R.h/2))));
+  dyn.add(line(rc,0x2f7fe6,1,true,H0));
+  if(R.P.kind==='wall'){const W=Math.max(H0*6,Math.sqrt(R.area)*4),H=Math.max(H0*3,R.spotC[2]+R.h*3);
+   const wm=new THREE.Mesh(new THREE.PlaneGeometry(W,H),new THREE.MeshBasicMaterial({color:0xece6da,side:THREE.DoubleSide,transparent:true,opacity:0.45,depthWrite:false}));
+   wm.position.copy(V(add(R.P.O,[0,0,H/2])));wm.lookAt(V(add(add(R.P.O,[0,0,H/2]),R.P.N)));dyn.add(wm)}
+ }
+ if(!fitted){fit(R);fitted=true}
+}
+let R=null;
+function fit(Rx){Rx=Rx||R;if(!Rx||!camera)return;const pts=[Rx.C];if(Rx.lit&&Rx.spotC)pts.push(Rx.spotC);
+ const c=pts.reduce((a,b)=>add(a,b),[0,0,0]).map(x=>x/pts.length);const span=Math.max(Math.max(Rx.h,Rx.w)*4,...pts.map(p=>len(sub(p,c))*2.2));
+ controls.target.copy(V(c));const side=Rx.lit?norm(cross(norm([Rx.r[0],Rx.r[1],0]),[0,0,1])):Rx.u;
+ const back=Rx.lit?mul(norm([Rx.r[0],Rx.r[1],0]),-0.4):mul(Rx.n,0.8);
+ camera.position.copy(V(add(c,add(mul(add(side,back),span*0.9),[0,0,span*0.55]))));controls.update()}
+
+/* ---------- results ---------- */
+const fmt=(x,d=2)=>Number(x).toFixed(d);
+const m2=a=>a<1e-4?fmt(a*1e6,0)+' mm²':a<0.01?fmt(a*1e4,a<1e-3?2:1)+' cm²':fmt(a,a<10?3:1)+' m²';
+const mlen=x=>x<0.1?fmt(x*1000,x<0.01?1:0)+' mm':x<1?Number((x*100).toFixed(1))+' cm':fmt(x,x<10?2:1)+' m';
+const DLO=0.005,DHI=150,s2d=v=>+(DLO*Math.pow(DHI/DLO,v/1000)).toPrecision(3),d2s=d=>Math.round(1000*Math.log(d/DLO)/Math.log(DHI/DLO));
+function renderMirror(){
+ const sp=R.sp;const rows=[];const warn=[];
+ rows.push([t('rSun'),`${fmt(sp.az,1)}° ${dirName(sp.az)} / ${fmt(sp.el,1)}°`]);
+ rows.push([t('rMir'),`${S.mAz}° ${dirName(S.mAz)}`]);
+ if(!R.day){$('hudBig').textContent=t('night');$('hudVerdict').textContent=t('below');$('hudSm').textContent=t('changeT')}
+ else if(!R.lit){$('hudBig').textContent=t('noRefl');$('hudVerdict').textContent=t('behind');$('hudSm').textContent=t('behindSm',{a:fmt(sp.az,0)})}
+ else{
+  const vt=R.ratio<0.9?'smaller':R.ratio>1.1?'bigger':'same';
+  $('hudBig').textContent='×'+fmt(R.ratio,R.ratio<10?2:1);
+  $('hudVerdict').textContent=t('spot')+t(vt);
+  $('hudSm').textContent=t('hudSm',{s:m2(R.area),m:m2(R.mA),l:mlen(R.L),d:`${fmt(R.rAz,0)}° ${dirName(R.rAz)}`});
+  rows.push([t('rInc'),fmt(R.inc,1)+'°']);
+  rows.push([t('rOut'),`${fmt(R.rAz,1)}° ${dirName(R.rAz)}, ${t('down')} ${fmt(sp.el,1)}°`]);
+  rows.push([t('rL'),mlen(R.L)]);
+  rows.push(R.P.kind==='ground'?[t('rHg'),mlen(R.horiz)]:[t('rHw'),mlen(R.spotC[2])]);
+  rows.push([t('r1'),m2(R.cross)]);
+  rows.push([t('r2',{a:fmt(R.tInc,0)}),m2(R.geo)]);
+  rows.push([t('r3'),'+'+mlen(R.blur)]);
+  rows.push([R.P.kind==='ground'?t('rDimG'):t('rDimW'),mlen(R.dims[0])+' × '+mlen(R.dims[1])]);
+  rows.push([t('rMsz'),mlen(R.w)+' × '+mlen(R.h)]);
+  rows.push([t('rArea'),m2(R.area)]);
+  rows.push([t('rMA'),m2(R.mA)]);
+  if(R.wallMiss)warn.push(t('wMiss'));if(R.clipped)warn.push(t('wClip'));if(sp.el<5)warn.push(t('wLow'));
+ }
+ const tb=$('resTable');tb.textContent='';
+ for(const [k,v] of rows){const tr=document.createElement('tr');const a=document.createElement('td'),b=document.createElement('td');a.textContent=k;b.textContent=v;tr.append(a,b);tb.append(tr)}
+ $('warn').textContent=warn.join(' ');
+ const lw=litWindows(S.date);
+ $('litWin').textContent=(lw.wins.length?t('litToday')+lw.wins.map(w=>hm(w[0])+'–'+hm(w[1])).join(t('and')):t('noLit'))+(lw.rise!==null?` · ${t('rise')} ${hm(lw.rise)} · ${t('set')} ${hm(lw.set)}`:'');
+}
+
+/* ---------- Khmer calendar ---------- */
+const FIXED={'1-1':['ទិវាចូលឆ្នាំសាកល','International New Year Day',1],'1-7':['ទិវាជ័យជម្នះលើរបបប្រល័យពូជសាសន៍','Victory over Genocide Day',1],'3-8':['ទិវានារីអន្តរជាតិ','International Women’s Day',1],'5-1':['ទិវាពលកម្មអន្តរជាតិ','International Labour Day',1],
+ '5-14':['ព្រះរាជពិធីបុណ្យចម្រើនព្រះជន្ម ព្រះមហាក្សត្រ','King’s Birthday',1],'6-1':['ទិវាកុមារអន្តរជាតិ','International Children’s Day',0],'6-18':['ព្រះរាជពិធីបុណ្យចម្រើនព្រះជន្ម ព្រះវររាជមាតា','Queen Mother’s Birthday',1],
+ '9-24':['ទិវាប្រកាសរដ្ឋធម្មនុញ្ញ','Constitution Day',1],'10-1':['ទិវាមនុស្សចាស់កម្ពុជា','Cambodian Older Persons Day',0],'10-5':['ទិវាគ្រូបង្រៀនពិភពលោក','World Teachers’ Day',0],'10-15':['ទិវាប្រារព្ធពិធីគោរពព្រះវិញ្ញាណក្ខន្ធ ព្រះបរមរតនកោដ្ឋ','King Father’s Commemoration Day',1],
+ '10-23':['ទិវារំលឹកកិច្ចព្រមព្រៀងសន្តិភាពទីក្រុងប៉ារីស','Paris Peace Agreement Day',0],'10-29':['ព្រះរាជពិធីគ្រងព្រះបរមរាជសម្បត្តិ','Coronation Day',1],'11-9':['ពិធីបុណ្យឯករាជ្យជាតិ','Independence Day',1],'12-29':['ទិវាសន្តិភាពនៅកម្ពុជា','Peace Day in Cambodia',1]};
+const khCache=new Map(),nyCache=new Map();
+function kh(y,m,d){const dt=new Date(Date.UTC(y,m-1,d));const k=dt.toISOString().slice(0,10);if(khCache.has(k))return khCache.get(k);
+ let v=null;try{v=KH.fromGregorian(dt.getUTCFullYear(),dt.getUTCMonth()+1,dt.getUTCDate()).khmer}catch(e){}khCache.set(k,v);return v}
+function newYear(y){if(nyCache.has(y))return nyCache.get(y);let v=null;try{v=KH.getNewYear(y)}catch(e){}nyCache.set(y,v);return v}
+const ev=(km,en,h)=>({km,en,h});
+const evT=x=>LANG==='en'?x.en:x.km;
+function events(y,m,d){
+ const out=[];const k=kh(y,m,d);const key=m+'-'+d;
+ if(FIXED[key]&&!(key==='12-29'&&y<2024)&&!(key==='5-14'&&y<2005)&&!(key==='10-15'&&y<2013)&&!(key==='10-29'&&y<2005))out.push(ev(...FIXED[key]));
+ const ny=newYear(y);if(ny&&ny.month===4){const i=Math.round((Date.UTC(y,m-1,d)-Date.UTC(y,3,ny.day))/864e5);
+  if(i>=0&&i<3){const tm=hm(ny.hour*60+ny.minute);out.push([ev('មហាសង្ក្រាន្ត (ចូលឆ្នាំខ្មែរ) '+tm,'Moha Songkran (Khmer New Year) '+tm,1),ev('វារៈវ័នបត (ចូលឆ្នាំខ្មែរ)','Virak Vanabat (Khmer New Year)',1),ev('វារៈឡើងស័ក (ចូលឆ្នាំខ្មែរ)','Vearak Laeung Sak (Khmer New Year)',1)][i])}}
+ if(!k)return {out,k,sila:0};
+ const M=k.monthIndex,ph=k.moonPhase,dd=k.day;
+ if(M===2&&ph===0&&dd===15)out.push(ev('ពិធីបុណ្យមាឃបូជា','Meak Bochea',0));
+ if(M===5&&ph===0&&dd===15)out.push(ev('ពិធីបុណ្យវិសាខបូជា','Visak Bochea',1));
+ if(M===5&&ph===1&&dd===4)out.push(ev('ព្រះរាជពិធីច្រត់ព្រះនង្គ័ល','Royal Ploughing Ceremony',1));
+ if((M===7||M===13)&&ph===1&&dd===1)out.push(ev('ចូលព្រះវស្សា','Start of Buddhist Lent',0));
+ if(M===9&&ph===1&&dd<=13)out.push(ev('បិណ្ឌ '+KN(dd),'Ben '+dd,0));
+ if((M===9&&ph===1&&dd>=14)||(M===10&&ph===0&&dd===1))out.push(ev('ពិធីបុណ្យភ្ជុំបិណ្ឌ','Pchum Ben Festival',1));
+ if(M===10&&ph===0&&dd===15)out.push(ev('ចេញព្រះវស្សា','End of Buddhist Lent',0));
+ if(M===10&&ph===1&&dd===1)out.push(ev('កឋិនកាល','Kathen season',0));
+ if((M===11&&ph===0&&dd>=14)||(M===11&&ph===1&&dd===1))out.push(dd===15&&ph===0?ev('ព្រះរាជពិធីបុណ្យអុំទូក បណ្តែតប្រទីប សំពះព្រះខែ អកអំបុក','Water Festival · Moon Salutation',1):ev('ព្រះរាជពិធីបុណ្យអុំទូក','Water Festival',1));
+ let sila=0;if(ph===0&&dd===8)sila=1;if(ph===0&&dd===15)sila=2;if(ph===1&&dd===8)sila=3;
+ if(ph===1&&dd>=14){const nx=kh(y,m,d+1);if(nx&&nx.moonPhase===0&&nx.day===1)sila=4}
+ return {out,k,sila};
+}
+const MOON=['','<svg class="moon" viewBox="0 0 12 12"><circle cx="6" cy="6" r="5" fill="none" stroke="#c99400" stroke-width="1.3"/><path d="M6 1a5 5 0 0 1 0 10z" fill="#f2a900"/></svg>',
+ '<svg class="moon" viewBox="0 0 12 12"><circle cx="6" cy="6" r="5" fill="#f2a900" stroke="#c99400" stroke-width="1.3"/></svg>',
+ '<svg class="moon" viewBox="0 0 12 12"><circle cx="6" cy="6" r="5" fill="none" stroke="#c99400" stroke-width="1.3"/><path d="M6 1a5 5 0 0 0 0 10z" fill="#f2a900"/></svg>',
+ '<svg class="moon" viewBox="0 0 12 12"><circle cx="6" cy="6" r="5" fill="none" stroke="#c99400" stroke-width="1.3"/></svg>'];
+const view={y:S.date.y,m:S.date.m};
+const monthName=k=>LANG==='en'?LM_E[k.monthIndex]:k.monthName;
+const lunarLabel=k=>LANG==='en'?`${k.day} ${PH_E[k.moonPhase]}`:KN(k.day)+' '+k.moonPhaseName;
+function fullKh(y,m,d){const k=kh(y,m,d);if(!k)return '';
+ if(LANG==='en')return `${WDF_E[new Date(Date.UTC(y,m-1,d)).getUTCDay()]}, ${k.day} ${PH_E[k.moonPhase]} (${k.moonPhase?'waning':'waxing'}) of ${LM_E[k.monthIndex]}, Year of the ${AN_E[k.animalYear]}, ${SAK_E[k.sak]} Sak, BE ${k.beYear}`;
+ return KN(`ថ្ងៃ${k.dayOfWeekName} ${k.day}${k.moonPhaseName} ខែ${k.monthName} ឆ្នាំ${k.animalYearName} ${k.sakName} ពុទ្ធសករាជ ${k.beYear}`)}
+function shortKh(y,m,d){const k=kh(y,m,d);if(!k)return '';
+ return LANG==='en'?`${WD_E[new Date(Date.UTC(y,m-1,d)).getUTCDay()]} · ${k.day} ${PH_E[k.moonPhase]}, ${LM_E[k.monthIndex]}`:`${k.dayOfWeekName} ${KN(k.day)}${k.moonPhaseName} ខែ${k.monthName}`}
+function renderCal(){
+ const {y,m}=view;const SM=LANG==='en'?SOLAR_E:SOLAR_K;
+ $('calTtl').textContent=LANG==='en'?`${SOLAR_E[m-1]} ${y}`:`${SOLAR_K[m-1]} ${SOLAR_E[m-1]} ${y}`;$('mSel').value=m;$('ySel').value=y;
+ const last=new Date(Date.UTC(y,m,0)).getUTCDate();const k1=kh(y,m,1),k2=kh(y,m,last);
+ $('calLun').textContent=!KH?t('noKH'):k1&&k2?(LANG==='en'?`${LM_E[k1.monthIndex]}${k1.monthIndex!==k2.monthIndex?' – '+LM_E[k2.monthIndex]:''} · Year of the ${AN_E[k2.animalYear]} · ${SAK_E[k2.sak]} Sak · BE ${k2.beYear}`
+  :`${k1.monthName}${k1.monthName!==k2.monthName?' – '+k2.monthName:''} ឆ្នាំ${k2.animalYearName} ${k2.sakName} ព.ស. ${KN(k2.beYear)}`):'';
+ const first=new Date(Date.UTC(y,m-1,1)).getUTCDay();const cells=Math.ceil((first+last)/7)*7;
+ const tn=nowLocal(S.tz);const WD=LANG==='en'?WD_E:WD_K;let html=WD.map(w=>`<div class="wd">${w}</div>`).join('');const evs=[];
+ for(let i=0;i<cells;i++){const dt=new Date(Date.UTC(y,m-1,1+i-first));const Y=dt.getUTCFullYear(),M=dt.getUTCMonth()+1,D=dt.getUTCDate();
+  const e=events(Y,M,D);const out=M!==m;const hol=e.out.some(x=>x.h),obs=!hol&&e.out.length;
+  if(!out&&e.out.length)evs.push({D,wd:dt.getUTCDay(),list:e.out});
+  const isSel=Y===S.date.y&&M===S.date.m&&D===S.date.d,isT=Y===tn.y&&M===tn.m&&D===tn.d;
+  const lun=e.k?(e.k.day===1&&e.k.moonPhase===0?`<span class="l mn">${monthName(e.k)}</span>`:`<span class="l">${lunarLabel(e.k)}</span>`):'';
+  const evh=e.out.length?`<span class="ev">${evT(e.out[0])}</span>`:'';
+  html+=`<button type="button" class="day${out?' out':''}${hol?' hol':''}${obs?' obs':''}${isSel?' sel':''}${isT?' today':''}" data-d="${Y}-${M}-${D}" aria-label="${D} ${SM[M-1]} ${Y}">${MOON[e.sila]}<span class="g">${D}</span>${lun}${evh}</button>`}
+ $('cal').innerHTML=html;
+ $('evList').innerHTML=evs.length?evs.map(v=>`<li><div class="dd">${WD[v.wd]}<b>${v.D}</b></div><div>${v.list.map(x=>`<div class="tx ${x.h?'h':'o'}">${evT(x)}</div>`).join('')}</div></li>`).join(''):`<li class="note">${t('noEv')}</li>`;
+ renderSel();
+}
+function renderSel(){
+ const {y,m,d}=S.date;const full=fullKh(y,m,d);const e=events(y,m,d);const lw=litWindows(S.date);
+ const bx=$('selInfo');bx.textContent='';
+ const a=document.createElement('div');a.className='kd';a.textContent=full||`${d}/${m}/${y}`;
+ const b=document.createElement('div');b.className='note';
+ b.textContent=t('corr',{d:NUM(d),m:(LANG==='en'?SOLAR_E:SOLAR_K)[m-1],y:NUM(y)})+(lw.rise!==null?` · ${t('rise')} ${hm(lw.rise)} · ${t('set')} ${hm(lw.set)}`:'');
+ const c=document.createElement('div');c.style.marginTop='6px';
+ c.textContent=lw.wins.length?t('selLit',{a:S.mAz+'° '+dirName(S.mAz)})+lw.wins.map(w=>hm(w[0])+'–'+hm(w[1])).join(t('and')):t('selNoLit');
+ bx.append(a,b,c);
+ for(const x of e.out){const el=document.createElement('div');el.style.color=x.h?'var(--red)':'var(--blue)';el.textContent=evT(x);bx.append(el)}
+ $('hdrDate').textContent=(full||'')+' · '+hm(S.min);
+ const sk=shortKh(y,m,d);$('dockKh').textContent=sk+(e.out.length?' · '+evT(e.out[0]):'');$('dockKh').title=$('dockKh').textContent;
+}
+
+/* ---------- map ---------- */
+function renderMap(){
+ const svg=$('plan');const W=svg.clientWidth||400,H=svg.clientHeight||400;if(!svg.clientWidth)return;
+ const cx=W/2,cy=H/2,rad=Math.min(W,H)/2-34;
+ const dist=R.lit?Math.hypot(R.spotC[0],R.spotC[1]):0;
+ const nice=[0.005,0.01,0.02,0.05,0.1,0.2,0.5,1,2,5,10,20,50,100,200,500,1000];const maxD=Math.max(R.h*1.5,dist*1.15);const step=nice.find(v=>v>=maxD/3)||1000;const sc=rad/(step*3);
+ const P=(e,n)=>[cx+e*sc,cy-n*sc];let s='';
+ for(let i=1;i<=3;i++)s+=`<circle cx="${cx}" cy="${cy}" r="${i*step*sc}" fill="none" stroke="currentColor" stroke-opacity=".18"/><text x="${cx+i*step*sc*0.71+4}" y="${cy+i*step*sc*0.71+14}" font-size="12" fill="currentColor" fill-opacity=".6">${mlen(i*step)}</text>`;
+ const L4=LANG==='en'?['N','E','S','W']:['ជ','ក','ត','ល'];
+ [0,90,180,270].forEach((a,i)=>{const p=[cx+(rad+18)*Math.sin(a*D2R),cy-(rad+18)*Math.cos(a*D2R)];s+=`<text x="${p[0]}" y="${p[1]+5}" text-anchor="middle" font-size="15" font-weight="700" fill="${a===0?'var(--red)':'currentColor'}">${L4[i]}</text>`});
+ const sa=R.sp.az*D2R;const sp=[cx+rad*Math.sin(sa),cy-rad*Math.cos(sa)];
+ if(R.day)s+=`<line x1="${sp[0]}" y1="${sp[1]}" x2="${cx}" y2="${cy}" stroke="#f2a900" stroke-width="3" stroke-dasharray="6 5"/><circle cx="${sp[0]}" cy="${sp[1]}" r="13" fill="#f2a900"/><text x="${sp[0]}" y="${sp[1]+4}" text-anchor="middle" font-size="10" fill="#4a3000">${t('sunG')}</text>`;
+ const half=Math.max(10,R.w*sc/2);const u=R.u;const a=[cx-u[0]*half,cy+u[1]*half],b=[cx+u[0]*half,cy-u[1]*half];
+ s+=`<line x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}" stroke="var(--acc)" stroke-width="6" stroke-linecap="round"/><line x1="${cx}" y1="${cy}" x2="${cx+R.n[0]*24}" y2="${cy-R.n[1]*24}" stroke="var(--acc)" stroke-width="2"/>`;
+ if(R.lit){const e=P(R.spotC[0],R.spotC[1]);s+=`<line x1="${cx}" y1="${cy}" x2="${e[0]}" y2="${e[1]}" stroke="#ff8a00" stroke-width="3.5"/><circle cx="${e[0]}" cy="${e[1]}" r="9" fill="#fff0a0" stroke="#ff8a00" stroke-width="3"/>`;
+  const lx=Math.min(W-8,Math.max(8,e[0]));const ly=e[1]>cy?e[1]+24:e[1]-16;s+=`<text x="${lx}" y="${Math.min(H-6,Math.max(14,ly))}" text-anchor="${e[0]>cx+60?'end':e[0]<cx-60?'start':'middle'}" font-size="13" font-weight="700" fill="currentColor">${t('spotL')} ${mlen(dist)}</text>`}
+ svg.setAttribute('viewBox',`0 0 ${W} ${H}`);svg.innerHTML=s;svg.style.color='var(--ink)';svg.setAttribute('aria-label',t('planT'));
+ const q=(la,lo)=>`${la.toFixed(6)},${lo.toFixed(6)}`;const Lk=$('links');Lk.textContent='';
+ const mk=(txt,url,sub2)=>{const el=document.createElement('a');el.href=url;el.target='_blank';el.rel='noopener';el.textContent=txt;const s2=document.createElement('span');s2.textContent=sub2;el.append(s2);Lk.append(el)};
+ mk(t('openMir'),`https://www.google.com/maps/search/?api=1&query=${q(S.lat,S.lon)}`,q(S.lat,S.lon));
+ if(R.lit){const la=S.lat+R.spotC[1]/111320,lo=S.lon+R.spotC[0]/(111320*Math.cos(S.lat*D2R));
+  mk(t('openSpot'),`https://www.google.com/maps/search/?api=1&query=${q(la,lo)}`,q(la,lo));
+  mk(t('walk'),`https://www.google.com/maps/dir/?api=1&origin=${q(S.lat,S.lon)}&destination=${q(la,lo)}&travelmode=walking`,mlen(dist))}
+}
+
+/* ---------- glue ---------- */
+function update(full){
+ R=compute();draw3d(R);renderMirror();if(!$('p-map').hidden)renderMap();
+ $('time').value=S.min;if(document.activeElement!==$('tIn'))$('tIn').value=hm(S.min);
+ $('sunL').textContent=R.day?t('sunL',{a:fmt(R.sp.az,0),d:dirName(R.sp.az),e:fmt(R.sp.el,0)}):t('night');
+ if(full)renderCal();else renderSel();
+ save();
+}
+window.__redraw=()=>{if(R){draw3d(R);if(!$('p-map').hidden)renderMap()}};
+const CMPA=[0,45,90,135,180,225,270,315];
+function renderCompass(){$('compass').innerHTML=CMPA.map((a,i)=>`<button type="button" data-a="${a}"><span>${LANG==='en'?DIRF[i]:DIRK[i]}</span><small>${a}°</small></button>`).join('')}
+function syncInputs(){
+ $('mAz').value=S.mAz;if(document.activeElement!==$('mAzN'))$('mAzN').value=S.mAz;$('mAzL').textContent=S.mAz+'° '+dirName(S.mAz);
+ document.querySelectorAll('#compass button').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.a===S.mAz));
+ $('mW').value=S.w;$('mH').value=S.h;$('mB').value=+(S.hb*100).toFixed(1);$('wD').value=d2s(S.D);$('wDL').textContent=S.target==='wall'?t('wallAt')+mlen(S.D):'';
+ $('tgGround').setAttribute('aria-pressed',S.target==='ground');$('tgWall').setAttribute('aria-pressed',S.target==='wall');$('wallBox').hidden=S.target!=='wall';
+ $('dIn').value=`${S.date.y}-${pad(S.date.m)}-${pad(S.date.d)}`;$('tzIn').value=S.tz;$('latIn').value=S.lat;$('lonIn').value=S.lon;
+ const ci=CITIES.findIndex(c=>c[1]!==null&&Math.abs(c[1]-S.lat)<1e-4&&Math.abs(c[2]-S.lon)<1e-4);$('cityS').value=ci<0?CITIES.length-1:ci;
+}
+function applyLang(){
+ root.setAttribute('lang',LANG);
+ document.querySelectorAll('[data-i18n]').forEach(el=>el.textContent=t(el.dataset.i18n));
+ document.querySelectorAll('[data-i18n-aria]').forEach(el=>el.setAttribute('aria-label',t(el.dataset.i18nAria)));
+ document.querySelectorAll('[data-i18n-title]').forEach(el=>{el.title=t(el.dataset.i18nTitle);el.setAttribute('aria-label',el.title)});
+ $('langB').textContent=LANG==='en'?'ខ្មែរ':'EN';$('lgKm').setAttribute('aria-pressed',LANG==='km');$('lgEn').setAttribute('aria-pressed',LANG==='en');
+ $('playBtn').textContent=playing?t('pause'):t('play');
+ $('mSel').innerHTML=SOLAR_E.map((n,i)=>`<option value="${i+1}">${LANG==='en'?n:SOLAR_K[i]+' · '+n}</option>`).join('');
+ $('cityS').innerHTML=CITIES.map((c,i)=>`<option value="${i}">${c[0][LANG==='en'?1:0]}</option>`).join('');
+ document.title=(LANG==='en'?'Sun Mirror Reflection':'ចំណាំងផ្លាត់ព្រះអាទិត្យ')+' · SunMirror';
+ renderCompass();syncInputs();
+}
+const setLang=l=>{LANG=l;store.set('sm-lang',l);applyLang();if(R)update(true)};
+$('langB').onclick=()=>setLang(LANG==='en'?'km':'en');$('lgKm').onclick=()=>setLang('km');$('lgEn').onclick=()=>setLang('en');
+
+const setAz=v=>{if(!isFinite(v))return syncInputs();S.mAz=Math.round((((v%360)+360)%360)*10)/10;if(S.mAz>=360)S.mAz=0;syncInputs();$('mAzN').value=S.mAz;update(false)};
+$('mAz').addEventListener('input',e=>setAz(+e.target.value));
+$('mAzN').addEventListener('change',e=>setAz(parseFloat(e.target.value)));
+$('mAzN').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();setAz(parseFloat(e.target.value))}});
+document.querySelector('.azrow').addEventListener('click',e=>{const b=e.target.closest('button[data-n]');if(b)setAz(S.mAz+ +b.dataset.n)});
+$('compass').addEventListener('click',e=>{const b=e.target.closest('button');if(b)setAz(+b.dataset.a)});
+const num=(id,key,lo,hi)=>$(id).addEventListener('change',e=>{const v=parseFloat(e.target.value);if(isFinite(v))S[key]=Math.min(hi,Math.max(lo,v));syncInputs();fitted=false;update(false)});
+num('mW','w',5,5000);num('mH','h',5,5000);num('tzIn','tz',-12,14);
+$('mB').addEventListener('change',e=>{const v=parseFloat(e.target.value);if(isFinite(v))S.hb=Math.min(50,Math.max(0,v/100));syncInputs();fitted=false;update(false)});
+$('wD').addEventListener('input',e=>{S.D=s2d(+e.target.value);$('wDL').textContent=t('wallAt')+mlen(S.D);update(false)});
+$('tgGround').onclick=()=>{S.target='ground';syncInputs();fitted=false;update(false)};
+$('tgWall').onclick=()=>{if(R&&R.lit&&R.P.kind==='ground'&&S.D>=R.horiz*0.95)S.D=Math.max(0.005,+(R.horiz*0.6).toFixed(3));S.target='wall';syncInputs();fitted=false;update(false)};
+$('dIn').addEventListener('change',e=>{const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(e.target.value);if(m){S.date={y:+m[1],m:+m[2],d:+m[3]};view.y=S.date.y;view.m=S.date.m;update(true)}});
+$('time').addEventListener('input',e=>{S.min=+e.target.value;update(false)});
+$('fitBtn').onclick=()=>fit();
+const goToday=()=>{const tt=nowLocal(S.tz);S.date={y:tt.y,m:tt.m,d:tt.d};view.y=tt.y;view.m=tt.m;syncInputs();update(true)};
+$('todayB').onclick=goToday;$('dToday').onclick=goToday;
+const shiftD=k=>{const tt=new Date(Date.UTC(S.date.y,S.date.m-1,S.date.d+k));const y=tt.getUTCFullYear();if(y<1900||y>2100)return;S.date={y,m:tt.getUTCMonth()+1,d:tt.getUTCDate()};view.y=S.date.y;view.m=S.date.m;syncInputs();update(true)};
+$('dPrev').onclick=()=>shiftD(-1);$('dNext').onclick=()=>shiftD(1);
+const setMin=v=>{S.min=((Math.round(v)%1440)+1440)%1440;update(false)};
+$('tMinus').onclick=()=>setMin(S.min-10);$('tPlus').onclick=()=>setMin(S.min+10);
+$('tIn').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();e.target.blur()}});
+$('tIn').addEventListener('change',e=>{const v=e.target.value.trim();const m=/^(\d{1,2})[:.h ]?(\d{2})$/.exec(v)||/^(\d{1,2})()$/.exec(v);if(m&&+m[1]<24&&+(m[2]||0)<60)setMin(+m[1]*60+ +(m[2]||0));else $('tIn').value=hm(S.min)});
+let playing=null;
+$('playBtn').onclick=()=>{const b=$('playBtn');if(playing){clearInterval(playing);playing=null;b.textContent=t('play');b.setAttribute('aria-pressed','false');return}
+ const lw=litWindows(S.date);const lo=(lw.rise??360)-20,hi=(lw.set??1080)+20;if(S.min<lo||S.min>hi)S.min=lo;
+ b.textContent=t('pause');b.setAttribute('aria-pressed','true');
+ playing=setInterval(()=>{S.min+=4;if(S.min>hi)S.min=lo;update(false)},matchMedia('(prefers-reduced-motion: reduce)').matches?400:60)};
+document.querySelector('.tabs').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
+ document.querySelectorAll('.tabs button').forEach(x=>x.setAttribute('aria-selected',x===b));
+ document.querySelectorAll('.pane').forEach(p=>p.hidden=p.id!=='p-'+b.dataset.p);if(b.dataset.p==='map'&&R)renderMap()});
+const shiftM=k=>{let m=view.m+k,y=view.y;if(m<1){m=12;y--}if(m>12){m=1;y++}if(y<1900||y>2100)return;view.y=y;view.m=m;renderCal()};
+$('prevM').onclick=()=>shiftM(-1);$('nextM').onclick=()=>shiftM(1);
+$('mSel').onchange=e=>{view.m=+e.target.value;renderCal()};
+$('ySel').onchange=e=>{const y=parseInt(e.target.value);if(y>=1900&&y<=2100){view.y=y;renderCal()}};
+$('cal').addEventListener('click',e=>{const b=e.target.closest('.day');if(!b)return;const [y,m,d]=b.dataset.d.split('-').map(Number);
+ if(y<1900||y>2100)return;S.date={y,m,d};view.y=y;view.m=m;syncInputs();update(true)});
+$('cityS').onchange=e=>{const c=CITIES[+e.target.value];if(c[1]!==null){S.lat=c[1];S.lon=c[2];S.tz=7;syncInputs();update(true)}};
+const setLL=(la,lo)=>{if(isFinite(la)&&isFinite(lo)&&Math.abs(la)<=89&&Math.abs(lo)<=180){S.lat=+la.toFixed(6);S.lon=+lo.toFixed(6);syncInputs();update(true);return true}return false};
+$('latIn').onchange=e=>{setLL(parseFloat(e.target.value),S.lon)||syncInputs()};
+$('lonIn').onchange=e=>{setLL(S.lat,parseFloat(e.target.value))||syncInputs()};
+$('pasteB').onclick=()=>{const v=$('paste').value;const m=/(-?\d{1,2}\.\d+)\s*,\s*(-?\d{1,3}\.\d+)/.exec(v)||/!3d(-?\d+\.\d+)!4d(-?\d+\.\d+)/.exec(v);
+ $('pasteMsg').textContent=m&&setLL(parseFloat(m[1]),parseFloat(m[2]))?t('pasteOk')+`${S.lat}, ${S.lon}`:t('pasteErr')};
+$('gmapB').onclick=()=>{const f=$('gmap');f.hidden=false;f.src=`https://maps.google.com/maps?q=${S.lat},${S.lon}&t=k&z=19&output=embed`};
+new ResizeObserver(()=>{if(R&&!$('p-map').hidden)renderMap()}).observe($('plan'));
+$('replayB').onclick=playIntro;
+
+/* ---------- install (PWA) ---------- */
+let deferred=null;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferred=e;$('installB').hidden=false});
+$('installB').onclick=async()=>{if(!deferred)return;deferred.prompt();try{await deferred.userChoice}catch(e){}deferred=null;$('installB').hidden=true};
+try{if('serviceWorker' in navigator&&window.top===window&&(location.protocol==='https:'||location.hostname==='localhost'||location.hostname==='127.0.0.1'))
+ navigator.serviceWorker.register('sw.js').catch(()=>{})}catch(e){}
+
+applyLang();applyMode();
+if(!init3d()){}
+update(true);
+document.fonts&&document.fonts.ready.then(()=>{if(R)draw3d(R)});
+window.__sm={S,compute,sunPos,events,kh,setMode,setLang};
+}
+</script>
+</body>
+</html>
