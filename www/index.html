@@ -142,7 +142,7 @@ html[lang=en] [data-lang=km],html[lang=km] [data-lang=en]{display:none!important
 .hud[data-bg=glass] .sm,.hud[data-bg=clear] .sm{color:var(--ink);opacity:.85}
 .hudtools .face{width:auto;padding:0 12px;font-size:14px;background:var(--accBg)!important;color:var(--accInk);border-color:transparent;box-shadow:var(--shine)}
 .hudtools .face[hidden]{display:none}
-.fitbtn{position:absolute;right:12px;top:12px}
+.viewbtns{position:absolute;right:12px;top:12px;display:flex;gap:6px}
 .legend{position:absolute;right:12px;bottom:12px;font-size:13px;background:var(--hud);border-radius:10px;padding:6px 10px;display:flex;flex-direction:column;gap:2px;pointer-events:none}
 .legend i{display:inline-block;width:18px;height:4px;border-radius:2px;margin-inline-end:6px;vertical-align:middle}
 
@@ -154,9 +154,43 @@ html[lang=en] [data-lang=km],html[lang=km] [data-lang=en]{display:none!important
 
 .dock{padding:10px max(2vw,12px) 8px;display:flex;flex-direction:column;gap:8px;background:var(--bg);border-bottom:1px solid var(--line)}
 .ctl{background:var(--card);border-radius:12px;padding:8px 10px}
+.stepn{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--accBg);color:var(--accInk);font-size:12px;font-weight:700;margin-inline-end:7px;vertical-align:1px;box-shadow:var(--shine)}
+.ch b{display:flex;align-items:center}
+.objs{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;padding:2px 2px 6px;scrollbar-width:thin}
+.objs button{flex:none;width:96px;scroll-snap-align:start;border:2px solid var(--line);border-radius:12px;background:var(--card2);color:var(--ink);cursor:pointer;padding:6px 4px 6px;display:flex;flex-direction:column;align-items:center;gap:2px;line-height:1.2}
+.objs svg{width:58px;height:50px}
+.objs b{font-size:12px;font-weight:700;text-align:center}
+.objs small{font-size:11px;color:var(--mute);font-variant-numeric:tabular-nums}
+.objs button[aria-pressed=true]{border-color:var(--acc);background:var(--acc2)}
+:root[data-mode=gold] .objs button[aria-pressed=true]{border-color:#e0b04a;background:#2a1e0c}
+.sizes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin-top:4px}
+.sizes label{display:block;font-size:12px;color:var(--mute);margin-bottom:2px}
+.sizes input{min-height:40px;text-align:center;font-weight:700}
+.dirbox{display:grid;grid-template-columns:152px minmax(0,1fr);gap:10px;align-items:center}
+#dial{width:152px;height:152px;touch-action:none;cursor:grab;display:block}
+#dial:active{cursor:grabbing}
+#dial:focus-visible{outline:3px solid var(--focus);border-radius:50%}
+.nudge{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-top:6px}
+.nudge .btn{padding:4px 0;min-width:0}
+.hint{font-size:12px;color:var(--mute);margin:6px 0 0;line-height:1.4}
+.tquick{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 8px}
+.tquick button{min-height:36px;padding:2px 10px;border-radius:18px;border:1px solid var(--line);background:var(--card2);color:var(--ink);cursor:pointer;font-size:13px;line-height:1.15;display:flex;flex-direction:column;align-items:center}
+.tquick button small{font-size:10px;color:var(--mute);font-variant-numeric:tabular-nums}
+.khs{font-size:13px;color:var(--mute);margin-top:6px;line-height:1.4}
+details.more{padding:0}
+details.more>summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:8px;min-height:48px;padding:6px 12px;font-size:14px}
+details.more>summary::-webkit-details-marker{display:none}
+details.more>summary::after{content:"";width:9px;height:9px;border-right:2px solid var(--mute);border-bottom:2px solid var(--mute);transform:rotate(45deg);margin-top:-4px;transition:transform .2s;flex:none}
+details.more[open]>summary::after{transform:rotate(-135deg);margin-top:4px}
+details.more>summary span{color:var(--mute);font-size:12px;margin-inline-start:auto;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.morebody{padding:0 10px 10px;display:flex;flex-direction:column;gap:12px}
+.sub{font-size:13px;font-weight:700;margin:0 0 6px;display:flex;justify-content:space-between;gap:6px}
+.sub span{font-weight:400;color:var(--mute)}
+@media(max-width:380px){.dirbox{grid-template-columns:128px minmax(0,1fr)}#dial{width:128px;height:128px}}
 :root[data-mode=gold] .ctl{border:1px solid var(--line);background:linear-gradient(180deg,#1b140b,#120d07)}
 .ch{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:14px;margin-bottom:4px}
-.ch span{color:var(--mute);font-size:13px;text-align:end;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ch>span{color:var(--mute);font-size:13px;text-align:end;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ch b span{color:var(--ink)}.ch b .stepn{color:var(--accInk)}
 .azrow{display:grid;grid-template-columns:auto auto minmax(0,1fr) auto auto;gap:6px;align-items:center;margin:0 0 2px}
 .azin{position:relative}.azin input{text-align:center;font-size:22px;font-weight:700;padding-inline-end:26px}
 .azin span{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:20px;font-weight:700;color:var(--mute);pointer-events:none}
@@ -164,8 +198,8 @@ html[lang=en] [data-lang=km],html[lang=km] [data-lang=en]{display:none!important
 .trow{grid-template-columns:auto auto minmax(0,1fr) auto}
 .drow{grid-template-columns:auto minmax(0,1fr) auto auto}
 .trow input,.drow input{text-align:center;font-weight:700;font-size:18px}
-.compass{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;margin-top:4px}
-.compass button{min-height:42px;padding:2px;line-height:1.15;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:13px;border:1px solid var(--line);border-radius:8px;background:var(--card2);cursor:pointer;color:var(--ink)}
+.compass{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;margin-top:8px}
+.compass button{min-height:38px;padding:1px;line-height:1.15;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:13px;border:1px solid var(--line);border-radius:8px;background:var(--card2);cursor:pointer;color:var(--ink)}
 .compass small{font-size:11px;color:var(--mute)}
 .compass button[aria-pressed=true]{border-color:var(--acc);background:var(--acc2);font-weight:700}
 :root[data-mode=gold] .compass button[aria-pressed=true]{background:var(--accBg);color:var(--accInk);box-shadow:var(--shine)}
@@ -303,11 +337,7 @@ table.kv{width:100%;border-collapse:collapse;font-size:15px}
  .dock{flex:none}
  .tabs{position:sticky;top:0}
 }
-@media(min-width:700px) and (min-height:860px){
- .panel{overflow:hidden}
- .scrollarea{flex:1;overflow-y:auto}
- .tabs{position:static}
-}
+
 @media(min-width:1500px){.app{grid-template-columns:minmax(0,1.8fr) minmax(400px,1fr)}}
 @media not all and (min-width:700px) and (min-height:560px){
  .fig{flex:none;height:52vh;min-height:300px;max-height:560px}
@@ -318,8 +348,8 @@ table.kv{width:100%;border-collapse:collapse;font-size:15px}
  .modes button{width:38px}
  .hud{left:8px;top:8px;--hb:.8}
  .legend{display:none}
- .fitbtn{top:auto;bottom:10px;right:10px}
- .credit3d{left:8px;bottom:8px;max-width:calc(100% - 150px);font-size:10px}
+ .viewbtns{top:auto;bottom:10px;right:10px;flex-direction:column;align-items:flex-end}
+ .credit3d{left:8px;bottom:8px;max-width:calc(100% - 140px);font-size:10px}
  .modecards{grid-template-columns:repeat(2,minmax(0,1fr))}
  .day{min-height:58px;padding:3px 1px}
  .day .g{font-size:16px}.day .l{font-size:11px}
@@ -398,7 +428,7 @@ table.kv{width:100%;border-collapse:collapse;font-size:15px}
     </div>
    </div>
    <div class="credit3d" lang="km" aria-label="ដឹកនាំបង្រៀនដោយព្រឹទ្ធាចារ្យ ឃុន សូ · រៀបចំដោយបញ្ញាវន្ដ សៀក ឡេងគួង"><span>ដឹកនាំបង្រៀនដោយព្រឹទ្ធាចារ្យ ឃុន សូ</span><span>រៀបចំដោយបញ្ញាវន្ដ សៀក ឡេងគួង</span></div>
-   <button class="btn sm fitbtn" id="fitBtn" type="button" data-i18n="fit">មើលទាំងមូល</button>
+   <div class="viewbtns"><button class="btn sm" id="ovBtn" type="button" data-i18n="skyShort">មេឃទាំងមូល</button><button class="btn sm" id="fitBtn" type="button" data-i18n="fit">មើលទាំងមូល</button></div>
    <div class="legend" aria-hidden="true">
     <span><i style="background:#ffc93c"></i><span data-i18n="lgIn">កាំពន្លឺមក</span></span>
     <span><i style="background:#ff8a00"></i><span data-i18n="lgOut">កាំពន្លឺផ្លាត</span></span>
@@ -411,19 +441,35 @@ table.kv{width:100%;border-collapse:collapse;font-size:15px}
  <aside class="panel">
   <div class="dock">
    <div class="ctl">
-    <div class="ch"><b data-i18n="dirTitle">ទិសមុខកញ្ចក់</b><span id="mAzL">90°</span></div>
-    <div class="azrow">
-     <button type="button" class="btn sm" data-n="-5">−5°</button>
-     <button type="button" class="btn sm" data-n="-1">−1°</button>
-     <div class="azin"><input type="number" id="mAzN" min="0" max="359.9" step="0.1" inputmode="decimal" data-i18n-aria="dirTitle" aria-label="ទិសមុខកញ្ចក់"><span>°</span></div>
-     <button type="button" class="btn sm" data-n="1">+1°</button>
-     <button type="button" class="btn sm" data-n="5">+5°</button>
+    <div class="ch"><b><span class="stepn">1</span><span data-i18n="objT">ជ្រើសកញ្ចក់ បង្អួច ឬទ្វារ</span></b><span id="objL"></span></div>
+    <div class="objs" id="objs" role="group" data-i18n-aria="objT" aria-label="ជ្រើសកញ្ចក់ បង្អួច ឬទ្វារ"></div>
+    <div class="sizes">
+     <div><label for="mW"><span data-i18n="width">ទទឹង</span> (mm)</label><input type="number" id="mW" min="5" max="20000" step="1" inputmode="numeric"></div>
+     <div><label for="mH"><span data-i18n="height">កម្ពស់</span> (mm)</label><input type="number" id="mH" min="5" max="20000" step="1" inputmode="numeric"></div>
+     <div><label for="mB"><span data-i18n="baseS">បាតពីដី</span> (cm)</label><input type="number" id="mB" min="0" max="5000" step="0.5" inputmode="decimal"></div>
     </div>
-    <input type="range" id="mAz" min="0" max="359.9" step="0.1" data-i18n-aria="dirTitle" aria-label="ទិសមុខកញ្ចក់">
+   </div>
+
+   <div class="ctl">
+    <div class="ch"><b><span class="stepn">2</span><span data-i18n="dirTitle">ទិសមុខកញ្ចក់</span></b><span id="mAzL">90°</span></div>
+    <div class="dirbox">
+     <svg id="dial" viewBox="0 0 160 160" role="slider" tabindex="0" aria-valuemin="0" aria-valuemax="359" data-i18n-aria="dirTitle" aria-label="ទិសមុខកញ្ចក់"></svg>
+     <div>
+      <div class="azin"><input type="number" id="mAzN" min="0" max="359.9" step="0.1" inputmode="decimal" data-i18n-aria="dirTitle" aria-label="ទិសមុខកញ្ចក់"><span>°</span></div>
+      <div class="nudge">
+       <button type="button" class="btn sm" data-n="-5">−5</button>
+       <button type="button" class="btn sm" data-n="-1">−1</button>
+       <button type="button" class="btn sm" data-n="1">+1</button>
+       <button type="button" class="btn sm" data-n="5">+5</button>
+      </div>
+      <p class="hint" data-i18n="dialHint">អូសរង្វង់ ឬវាយអង្សា។ ពណ៌ខៀវ = ផ្នែកដែលព្រះអាទិត្យចាំងចូលបាន។</p>
+     </div>
+    </div>
     <div class="compass" id="compass"></div>
    </div>
+
    <div class="ctl">
-    <div class="ch"><b data-i18n="time">ម៉ោង</b><span id="sunL">—</span></div>
+    <div class="ch"><b><span class="stepn">3</span><span data-i18n="whenT">ថ្ងៃ និងម៉ោង</span></b><span id="sunL">—</span></div>
     <div class="trow">
      <button class="btn pri" id="playBtn" type="button" aria-pressed="false">លេង</button>
      <button class="btn sm" id="tMinus" type="button">−10′</button>
@@ -431,37 +477,42 @@ table.kv{width:100%;border-collapse:collapse;font-size:15px}
      <button class="btn sm" id="tPlus" type="button">+10′</button>
     </div>
     <input type="range" id="time" min="0" max="1439" step="1" data-i18n-aria="time" aria-label="ម៉ោង">
-   </div>
-   <div class="ctl">
-    <div class="ch"><b data-i18n="date">ថ្ងៃ</b><span id="dockKh">—</span></div>
+    <div class="tquick" id="tQuick"></div>
     <div class="drow">
      <button class="btn sm" id="dPrev" type="button" data-i18n-aria="prevDay" aria-label="ថ្ងៃមុន">‹</button>
      <input type="date" id="dIn" min="1900-01-01" max="2100-12-31" data-i18n-aria="date" aria-label="ថ្ងៃ">
      <button class="btn sm" id="dNext" type="button" data-i18n-aria="nextDay" aria-label="ថ្ងៃបន្ទាប់">›</button>
      <button class="btn sm" id="dToday" type="button" data-i18n="today">ថ្ងៃនេះ</button>
     </div>
+    <div class="khs" id="dockKh">—</div>
    </div>
-   <div class="ctl">
-    <div class="ch"><b data-i18n="surf">ស្នាមពន្លឺធ្លាក់លើ</b><span id="wDL"></span></div>
-    <div class="seg" role="group">
-     <button type="button" id="tgGround" aria-pressed="true" data-i18n="ground">ដី</button>
-     <button type="button" id="tgWall" aria-pressed="false" data-i18n="wall">ជញ្ជាំងទល់មុខ</button>
+
+   <details class="ctl more" id="moreOpts">
+    <summary><b data-i18n="viewT">ជម្រើសបង្ហាញ</b><span id="moreL"></span></summary>
+    <div class="morebody">
+     <div>
+      <div class="sub"><span style="color:var(--ink);font-weight:700" data-i18n="surf">ស្នាមពន្លឺធ្លាក់លើ</span><span id="wDL"></span></div>
+      <div class="seg" role="group">
+       <button type="button" id="tgGround" aria-pressed="true" data-i18n="ground">ដី</button>
+       <button type="button" id="tgWall" aria-pressed="false" data-i18n="wall">ជញ្ជាំងទល់មុខ</button>
+      </div>
+      <div id="wallBox" hidden><input type="range" id="wD" min="0" max="1000" step="1" data-i18n-aria="wallDist" aria-label="ចម្ងាយជញ្ជាំង"></div>
+     </div>
+     <div>
+      <div class="sub"><span style="color:var(--ink);font-weight:700" data-i18n="skyT">អង្សា និងគន្លងព្រះអាទិត្យ</span><span id="skyL"></span></div>
+      <div class="chips" id="skyChips">
+       <button type="button" data-k="deg" aria-pressed="true" data-i18n="skyDeg">អង្សា</button>
+       <button type="button" data-k="today" aria-pressed="true" data-i18n="skyToday">គន្លងថ្ងៃនេះ</button>
+       <button type="button" data-k="sol" aria-pressed="true" data-i18n="skySol">រដូវក្តៅ / រងា</button>
+       <button type="button" class="ov" id="overviewB" data-i18n="overview">មើលមេឃទាំងមូល</button>
+      </div>
+     </div>
+     <div>
+      <div class="sub"><span style="color:var(--ink);font-weight:700" data-i18n="groundT">ពណ៌ដី</span><span id="earthL"></span></div>
+      <div class="earth" id="earth" role="group" data-i18n-aria="groundT" aria-label="ពណ៌ដី"></div>
+     </div>
     </div>
-    <div id="wallBox" hidden><input type="range" id="wD" min="0" max="1000" step="1" data-i18n-aria="wallDist" aria-label="ចម្ងាយជញ្ជាំង"></div>
-   </div>
-   <div class="ctl">
-    <div class="ch"><b data-i18n="skyT">អង្សា និងគន្លងព្រះអាទិត្យ</b><span id="skyL"></span></div>
-    <div class="chips" id="skyChips">
-     <button type="button" data-k="deg" aria-pressed="true" data-i18n="skyDeg">អង្សា</button>
-     <button type="button" data-k="today" aria-pressed="true" data-i18n="skyToday">គន្លងថ្ងៃនេះ</button>
-     <button type="button" data-k="sol" aria-pressed="true" data-i18n="skySol">រដូវក្តៅ / រងា</button>
-     <button type="button" class="ov" id="overviewB" data-i18n="overview">មើលមេឃទាំងមូល</button>
-    </div>
-   </div>
-   <div class="ctl">
-    <div class="ch"><b data-i18n="groundT">ពណ៌ដី</b><span id="earthL"></span></div>
-    <div class="earth" id="earth" role="group" data-i18n-aria="groundT" aria-label="ពណ៌ដី"></div>
-   </div>
+   </details>
   </div>
 
   <div class="tabs" role="tablist">
@@ -529,12 +580,9 @@ table.kv{width:100%;border-collapse:collapse;font-size:15px}
     <p class="note" data-i18n="autoNote">ស្វ័យប្រវត្តិ = តាមការកំណត់ភ្លឺ/ងងឹតរបស់ឧបករណ៍។</p>
     <h2 data-i18n="language">ភាសា</h2>
     <div class="seg" role="group"><button type="button" id="lgKm" aria-pressed="true">ខ្មែរ</button><button type="button" id="lgEn" aria-pressed="false">English</button></div>
-    <h2 data-i18n="mirrorSize">ទំហំកញ្ចក់</h2>
+    <h2 data-i18n="tz">ម៉ោងតំបន់</h2>
     <div class="grid2">
-     <div><label class="f" for="mW"><span data-i18n="width">ទទឹង</span> <small>mm</small></label><input type="number" id="mW" min="5" max="5000" step="1"></div>
-     <div><label class="f" for="mH"><span data-i18n="height">កម្ពស់</span> <small>mm</small></label><input type="number" id="mH" min="5" max="5000" step="1"></div>
-     <div><label class="f" for="mB"><span data-i18n="base">កម្ពស់បាតពីដី</span> <small>cm</small></label><input type="number" id="mB" min="0" max="5000" step="0.5"></div>
-     <div><label class="f" for="tzIn"><span data-i18n="tz">ម៉ោងតំបន់</span> <small>UTC±</small></label><input type="number" id="tzIn" min="-12" max="14" step="0.5"></div>
+     <div><label class="f" for="tzIn">UTC±</label><input type="number" id="tzIn" min="-12" max="14" step="0.5"></div>
     </div>
     <p class="note" data-i18n="sizeNote">កញ្ចក់ឈរបញ្ឈរ ៩០° នឹងដី។ បាតពីដី 0 = ឈរផ្ទាល់លើដី។</p>
     <h2 data-i18n="appT">កម្មវិធី</h2>
@@ -559,6 +607,13 @@ table.kv{width:100%;border-collapse:collapse;font-size:15px}
    <div class="pane prose" id="p-learn" role="tabpanel" hidden>
     <div class="creditbox" lang="km" style="margin-top:0;margin-bottom:16px"><b>ដឹកនាំបង្រៀនដោយព្រឹទ្ធាចារ្យ ឃុន សូ</b><span>រៀបចំដោយបញ្ញាវន្ដ សៀក ឡេងគួង</span></div>
     <div data-lang="km">
+     <h2>របៀបប្រើ</h2>
+     <ol>
+      <li><b>ជ្រើសកញ្ចក់ បង្អួច ឬទ្វារ</b> — ចុចលើរូប ហើយកែទំហំកញ្ចក់បើចាំបាច់ (ទំហំ = ផ្ទៃកញ្ចក់ មិនរាប់ស៊ុម)។</li>
+      <li><b>កំណត់ទិសមុខ</b> — អូសរង្វង់ ឬវាយអង្សា។ ផ្នែកពណ៌ខៀវលើរង្វង់ គឺទិសដែលព្រះអាទិត្យអាចចាំងចូលបាន ហើយចំណុចលឿងគឺព្រះអាទិត្យ។</li>
+      <li><b>ជ្រើសថ្ងៃ និងម៉ោង</b> — ចុច ថ្ងៃរះ / ព្រឹក / ថ្ងៃត្រង់ / រសៀល / ថ្ងៃលិច ឬចុច «លេង» មើលពេញមួយថ្ងៃ។</li>
+     </ol>
+     <p>ប្រអប់លទ្ធផលនៅលើ 3D ប្រាប់ភ្លាមថាស្នាមពន្លឺធំ តូច ឬប្រហាក់ប្រហែលកញ្ចក់។ ស៊ុម និងរនាបបង្អួច មិនត្រូវបានដកចេញពីផ្ទៃកញ្ចក់ទេ។</p>
      <h2>ទិសដៅនៃចំណាំងផ្លាត</h2>
      <p>កញ្ចក់រាបស្មើផ្លាតពន្លឺតាមច្បាប់ចំណាំងផ្លាត៖ «មុំចំណាំងមក = មុំចំណាំងផ្លាត»។ ដោយសារកញ្ចក់ឈរបញ្ឈរ កែង ៩០° នឹងដី កាំពន្លឺផ្លាតរក្សាមុំកម្ពស់ស្មើនឹងព្រះអាទិត្យដដែល ប៉ុន្តែចាំងចុះក្រោម។</p>
      <div class="formula">ទិសកាំពន្លឺផ្លាត = ២ × ទិសមុខកញ្ចក់ − ទិសព្រះអាទិត្យ<br>មុំចាំងចុះ = មុំកម្ពស់ព្រះអាទិត្យ</div>
@@ -576,6 +631,13 @@ table.kv{width:100%;border-collapse:collapse;font-size:15px}
      <p>កម្មវិធីគណនាពីជ្រុងទាំង ៤ នៃកញ្ចក់ និង ២៤ ចំណុចនៅលើគែមថាសព្រះអាទិត្យ ដើម្បីវាស់ផ្ទៃស្នាមពន្លឺពិតប្រាកដ។ ទីតាំងព្រះអាទិត្យគណនាតាមរូបមន្ត NOAA ហើយប្រតិទិនចន្ទគតិគ្របដណ្តប់ឆ្នាំ ១៩០០–២១០០។</p>
     </div>
     <div data-lang="en">
+     <h2>How to use</h2>
+     <ol>
+      <li><b>Choose a mirror, window or door</b> — tap a picture, then adjust the glass size if needed (size = the glass, not the frame).</li>
+      <li><b>Set the direction</b> — drag the dial or type the angle. The blue part of the dial shows where the sun can shine on the glass; the yellow dot is the sun.</li>
+      <li><b>Choose the date and time</b> — tap Sunrise / Morning / Noon / Afternoon / Sunset, or press Play to watch the whole day.</li>
+     </ol>
+     <p>The result card on the 3D view tells you at once whether the light spot is bigger, smaller or about the same as the glass. Frames and window bars are not subtracted from the glass area.</p>
      <h2>Direction of the reflection</h2>
      <p>A flat mirror follows the law of reflection: the angle of incidence equals the angle of reflection. Because the mirror stands upright (at 90° to the ground), the reflected ray keeps the same elevation angle as the sun, but points downward.</p>
      <div class="formula">Reflected azimuth = 2 × mirror azimuth − sun azimuth<br>Downward angle = sun elevation</div>
@@ -624,7 +686,7 @@ const I={
  language:['ភាសា','Language'],mirrorSize:['ទំហំកញ្ចក់','Mirror size'],width:['ទទឹង','Width'],height:['កម្ពស់','Height'],base:['កម្ពស់បាតពីដី','Base height above ground'],tz:['ម៉ោងតំបន់','Time zone'],
  sizeNote:['កញ្ចក់ឈរបញ្ឈរ កែង ៩០° នឹងដី។ កម្ពស់បាត 0 មានន័យថាកញ្ចក់ឈរផ្ទាល់លើដី ហើយស្នាមពន្លឺចាប់ផ្តើមត្រង់ជើងកញ្ចក់។','The mirror stands upright, at 90° to the ground. A base height of 0 means it stands directly on the ground, so the light spot starts at its foot.'],
  appT:['កម្មវិធី','App'],replay:['បង្ហាញផ្ទាំងស្វាគមន៍ម្តងទៀត','Replay the intro'],install:['ដំឡើងកម្មវិធី','Install app'],
- fit:['មើលទាំងមូល','Fit view'],lgIn:['កាំពន្លឺមក','Incident light'],lgOut:['កាំពន្លឺផ្លាត','Reflected light'],lgRef:['ទំហំកញ្ចក់ (សម្រាប់ប្រៀបធៀប)','Mirror outline (for comparison)'],
+ fit:['មើលកញ្ចក់ជិត','Close-up'],lgIn:['កាំពន្លឺមក','Incident light'],lgOut:['កាំពន្លឺផ្លាត','Reflected light'],lgRef:['ទំហំកញ្ចក់ (សម្រាប់ប្រៀបធៀប)','Mirror outline (for comparison)'],
  dirTitle:['ទិសមុខកញ្ចក់','Mirror direction'],time:['ម៉ោង','Time'],play:['លេង','Play'],pause:['ផ្អាក','Pause'],
  date:['ថ្ងៃ','Date'],today:['ថ្ងៃនេះ','Today'],prevDay:['ថ្ងៃមុន','Previous day'],nextDay:['ថ្ងៃបន្ទាប់','Next day'],
  surf:['ស្នាមពន្លឺធ្លាក់លើ','Light spot falls on'],ground:['ដី','Ground'],wall:['ជញ្ជាំងទល់មុខ','Opposite wall'],wallAt:['ជញ្ជាំងឆ្ងាយ ','Wall at '],wallDist:['ចម្ងាយជញ្ជាំង','Wall distance'],
@@ -658,11 +720,14 @@ const I={
  no3D:['មិនអាចផ្ទុកម៉ាស៊ីន 3D បានទេ','Could not load the 3D engine'],
  hudSmaller:['បង្រួមប្រអប់លទ្ធផល','Make the result card smaller'],hudBigger:['ពង្រីកប្រអប់លទ្ធផល','Make the result card bigger'],hudBg:['ផ្ទៃខាងក្រោយ៖ ','Background: '],
  bgGlass:['ថ្លាស្រាល','glass'],bgClear:['ថ្លាទាំងស្រុង','clear'],bgSolid:['មិនថ្លា','solid'],
- groundT:['ពណ៌ដី','Ground colour'],skyT:['អង្សា និងគន្លងព្រះអាទិត្យ','Degrees & sun path'],skyDeg:['អង្សា','Degrees'],skyToday:['គន្លងថ្ងៃនេះ','Today’s path'],skySol:['រដូវក្តៅ / រងា','Summer / winter'],overview:['មើលមេឃទាំងមូល','Whole-sky view'],
+ groundT:['ពណ៌ដី','Ground colour'],objT:['ជ្រើសកញ្ចក់ បង្អួច ឬទ្វារ','Choose a mirror, window or door'],skyShort:['មេឃទាំងមូល','Whole sky'],baseS:['បាតពីដី','Base height'],
+ whenT:['ថ្ងៃ និងម៉ោង','Date and time'],viewT:['ជម្រើសបង្ហាញ','Display options'],
+ dialHint:['អូសរង្វង់ ឬវាយអង្សា។ ពណ៌ខៀវ = ផ្នែកដែលព្រះអាទិត្យចាំងចូលបាន។','Drag the dial or type the angle. Blue = the side the sun can shine on.'],
+ qRise:['ថ្ងៃរះ','Sunrise'],qNoon:['ថ្ងៃត្រង់','Noon'],qSet:['ថ្ងៃលិច','Sunset'],qMorn:['ព្រឹក','Morning'],qAft:['រសៀល','Afternoon'],skyT:['អង្សា និងគន្លងព្រះអាទិត្យ','Degrees & sun path'],skyDeg:['អង្សា','Degrees'],skyToday:['គន្លងថ្ងៃនេះ','Today’s path'],skySol:['រដូវក្តៅ / រងា','Summer / winter'],overview:['មើលមេឃទាំងមូល','Whole-sky view'],
  pSummer:['គន្លងរដូវក្តៅ · ២១ មិថុនា','Summer sun path · Jun 21'],pWinter:['គន្លងរដូវរងា · ២១ ធ្នូ','Winter sun path · Dec 21'],skyNoon:['ថ្ងៃត្រង់ {t} · ខ្ពស់ {e}°','Noon {t} · {e}° high'],faceSun:['បង្វិលទៅរកព្រះអាទិត្យ','Turn to the sun'],
  lgArc:['ទិសដែលព្រះអាទិត្យអាចចាំងចូលកញ្ចក់បាន','Directions from which the sun can light the mirror'],noKH:['មិនអាចផ្ទុកប្រតិទិនខ្មែរបានទេ','Could not load the Khmer calendar'],custom:['ផ្ទាល់ខ្លួន','Custom'],
 };
-const t=(k,v)=>{let s=(I[k]||[k,k])[LANG==='en'?1:0];if(v)for(const x in v)s=s.split('{'+x+'}').join(v[x]);return s};
+const t=(k,v)=>{let s=(I[k]||[k,k])[LANG==='en'?1:0];if(v)for(const x in v)s=s.split('{'+x+'}').join(v[x]);if(LANG==='en'&&k!=='objT'&&!/mirror/i.test((()=>{try{return S.obj}catch(e){return 'mirror'}})()))s=s.replace(/\bmirror(s?)\b/g,'glass').replace(/\bMirror\b/g,'Glass');return s};
 const NUM=s=>LANG==='en'?String(s):KN(s);
 const DIRK=['ជើង','ឦសាន','កើត','អាគ្នេយ៍','ត្បូង','និរតី','លិច','ពាយព្យ'],DIRE=['N','NE','E','SE','S','SW','W','NW'],DIRF=['North','Northeast','East','Southeast','South','Southwest','West','Northwest'];
 const dirName=a=>(LANG==='en'?DIRE:DIRK)[Math.round((((a%360)+360)%360)/45)%8];
@@ -736,7 +801,31 @@ const CITIES=[
  [['ភ្នំពេញ','Phnom Penh'],11.5564,104.9282],[['សៀមរាប (អង្គរវត្ត)','Siem Reap (Angkor Wat)'],13.4125,103.8670],[['បាត់ដំបង','Battambang'],13.0957,103.2022],
  [['កំពត','Kampot'],10.6104,104.1815],[['ព្រះសីហនុ','Sihanoukville'],10.6253,103.5234],[['តាកែវ','Takeo'],10.9908,104.7850],[['កំពង់ចាម','Kampong Cham'],11.9934,105.4635],[['ផ្ទាល់ខ្លួន','Custom'],null,null]];
 function nowLocal(tz){const d=new Date(Date.now()+tz*36e5);return {y:d.getUTCFullYear(),m:d.getUTCMonth()+1,d:d.getUTCDate(),min:d.getUTCHours()*60+d.getUTCMinutes()}}
-const S={lat:11.5564,lon:104.9282,tz:7,mAz:90,w:36,h:63,hb:0,target:'ground',D:0.03};
+const S={lat:11.5564,lon:104.9282,tz:7,mAz:90,w:36,h:63,hb:0,target:'ground',D:0.03,obj:'mirror'};
+/* glass objects: sizes are the glass (reflecting) area */
+const OBJS=[
+ {id:'mirror',n:['កញ្ចក់ឆ្លុះតូច','Small mirror'],w:36,h:63,hb:0,frame:0x5a4330,fw:0.03,style:'mirror'},
+ {id:'bigmirror',n:['កញ្ចក់ឆ្លុះធំ','Large mirror'],w:600,h:1200,hb:0.4,frame:0x6b4a2e,fw:0.035,style:'mirror'},
+ {id:'casement',n:['បង្អួចបើក','Casement window'],w:1200,h:1400,hb:0.9,frame:0xeeeeea,fw:0.055,style:'casement'},
+ {id:'sliding',n:['បង្អួចរអិល','Sliding window'],w:1500,h:1200,hb:1.0,frame:0x9aa2aa,fw:0.05,style:'sliding'},
+ {id:'door',n:['ទ្វារកញ្ចក់','Glass door'],w:900,h:2100,hb:0,frame:0x2b2d30,fw:0.06,style:'door'},
+ {id:'door2',n:['ទ្វារកញ្ចក់ពីរ','Double glass door'],w:1800,h:2100,hb:0,frame:0x3a3d42,fw:0.06,style:'door2'},
+ {id:'curtain',n:['ជញ្ជាំងកញ្ចក់','Glass wall'],w:3000,h:2700,hb:0,frame:0x4a4f55,fw:0.06,style:'curtain'}];
+const objOf=()=>OBJS.find(o=>o.id===S.obj)||OBJS[0];
+function objIcon(o){const hx='#'+o.frame.toString(16).padStart(6,'0');const g='url(#gGlassIc)';const ol='stroke="#4a5560" stroke-width=".6"';
+ const fr=(x,y,w,h)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="1.5" fill="${hx}" ${ol}/>`;
+ const gl=(x,y,w,h)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${g}"/>`;
+ const shine=(x,y,h)=>`<path d="M${x} ${y+h*.75}l${h*.35} ${-h*.5}" stroke="#fff" stroke-width="1.6" opacity=".7"/>`;
+ let a='';
+ switch(o.style){
+  case 'mirror':a=o.id==='mirror'?fr(22,4,16,40)+gl(24,6,12,36)+shine(25,8,30):fr(16,4,28,42)+gl(18,6,24,38)+shine(20,9,32);break;
+  case 'casement':a=fr(6,6,48,36)+gl(9,9,20,30)+gl(31,9,20,30)+`<rect x="29" y="9" width="2" height="30" fill="${hx}" ${ol}/>`+`<rect x="4" y="42" width="52" height="3" rx="1" fill="${hx}" ${ol}/>`+`<rect x="26" y="22" width="1.5" height="5" fill="#555"/><rect x="32.5" y="22" width="1.5" height="5" fill="#555"/>`+shine(11,11,24);break;
+  case 'sliding':a=fr(4,8,52,32)+gl(7,11,24,26)+gl(29,11,24,26)+`<rect x="29" y="11" width="2.2" height="26" fill="${hx}" ${ol}/><path d="M14 24h10m-3-3 3 3-3 3M46 24H36m3-3-3 3 3 3" stroke="#2f6fb0" stroke-width="1.4" fill="none"/>`;break;
+  case 'door':a=fr(18,2,24,45)+gl(21,5,18,42)+`<rect x="35.5" y="20" width="1.8" height="10" rx=".9" fill="#c9ccd0" stroke="#555" stroke-width=".4"/>`+shine(22,8,30);break;
+  case 'door2':a=fr(8,2,44,45)+gl(11,5,18,42)+gl(31,5,18,42)+`<rect x="29" y="5" width="2" height="42" fill="${hx}"/><rect x="26" y="20" width="1.6" height="10" rx=".8" fill="#c9ccd0"/><rect x="32.4" y="20" width="1.6" height="10" rx=".8" fill="#c9ccd0"/>`;break;
+  case 'curtain':a=fr(3,4,54,42)+[0,1,2].map(i=>gl(5+i*17.3,6,15.8,18)+gl(5+i*17.3,25.5,15.8,18.5)).join('')+shine(7,8,14)+shine(41,27,14);break;
+ }
+ return `<svg viewBox="0 0 60 50" aria-hidden="true"><defs><linearGradient id="gGlassIc" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e6f4fd"/><stop offset=".5" stop-color="#a9cde6"/><stop offset="1" stop-color="#d7ebf7"/></linearGradient></defs>${a}</svg>`}
 try{const sv=JSON.parse(store.get('sunmirror-mm','{}'));for(const k in S)if(typeof sv[k]===typeof S[k])S[k]=sv[k]}catch(e){}
 const T0=nowLocal(S.tz);S.date={y:T0.y,m:T0.m,d:T0.d};S.min=(T0.min>360&&T0.min<1080)?T0.min:540;
 const save=()=>{const o={...S};delete o.date;delete o.min;store.set('sunmirror-mm',JSON.stringify(o))};
@@ -882,22 +971,51 @@ function buildSky(P0){
 }
 /* the mirror: one solid frame + a real reflecting surface, rebuilt only when its size or theme changes */
 function buildMirror(R,H0,P0){
- const md=root.getAttribute('data-mode');const key=[R.w,R.h,md].join('|');
+ const md=root.getAttribute('data-mode');const O=objOf();const key=[R.w,R.h,md,O.id,S.hb].join('|');
  if(key!==mirrorKey){
   if(mirrorObj){mirrorObj.traverse(o=>{if(o.type==='Reflector'&&o.dispose)o.dispose();else{if(o.geometry)o.geometry.dispose();if(o.material)o.material.dispose()}});scene.remove(mirrorObj)}
   mirrorKey=key;mirrorObj=new THREE.Group();
-  const th=Math.max(H0*0.045,0.0015);
-  const frame=new THREE.Mesh(new THREE.BoxGeometry(R.w*1.05,R.h*1.035,th),new THREE.MeshPhongMaterial({color:P0.back,shininess:md==='gold'?90:20}));
-  mirrorObj.add(frame);
-  const face=th/2+Math.max(H0*0.004,0.0002);
+  const W=R.w,Hh=R.h,small=O.style==='mirror';
+  const fw=small?Math.max(Math.min(W,Hh)*O.fw*1.2,0.0012):O.fw;           // frame width (m)
+  const th=small?Math.max(H0*0.045,0.0015):0.07;                         // frame depth (m)
+  const fMat=new THREE.MeshPhongMaterial({color:O.frame,shininess:O.style==='mirror'?40:60,specular:0x444444});
+  const boxAt=(w,h,d,x,y,z,mat)=>{const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat||fMat);m.position.set(x,y,z);mirrorObj.add(m);return m};
+  // outer frame (outside the glass edge)
+  boxAt(W+2*fw,fw,th,0,Hh/2+fw/2,0);boxAt(W+2*fw,fw,th,0,-Hh/2-fw/2,0);
+  boxAt(fw,Hh,th,-W/2-fw/2,0,0);boxAt(fw,Hh,th,W/2+fw/2,0,0);
+  // back: solid for mirrors, dark interior for windows/doors
+  boxAt(W,Hh,th*0.25,0,0,-th*0.35,new THREE.MeshPhongMaterial({color:small?O.frame:0x1b2530,shininess:10}));
+  const face=th*0.12;
   let surf;
-  if(THREE.Reflector){const px=Math.min(1024,Math.round(512*Math.max(1,R.w/R.h))),py=Math.min(1024,Math.round(512*Math.max(1,R.h/R.w)));
-   surf=new THREE.Reflector(new THREE.PlaneGeometry(R.w,R.h),{textureWidth:px,textureHeight:py,color:0xc9dbe8,clipBias:0.003,multisample:2})}
-  else surf=new THREE.Mesh(new THREE.PlaneGeometry(R.w,R.h),new THREE.MeshPhongMaterial({color:0xd6ecfa,specular:0xffffff,shininess:120,emissive:0x2a4050}));
+  if(THREE.Reflector){const px=Math.min(1024,Math.round(512*Math.max(1,W/Hh))),py=Math.min(1024,Math.round(512*Math.max(1,Hh/W)));
+   surf=new THREE.Reflector(new THREE.PlaneGeometry(W,Hh),{textureWidth:px,textureHeight:py,color:small?0xc9dbe8:0xb7cddd,clipBias:0.003,multisample:2})}
+  else surf=new THREE.Mesh(new THREE.PlaneGeometry(W,Hh),new THREE.MeshPhongMaterial({color:0xd6ecfa,specular:0xffffff,shininess:120,emissive:0x2a4050}));
   surf.position.z=face;mirrorObj.add(surf);
-  // thin highlight line across the glass so it reads as glass even in shade
-  const hl=new THREE.Mesh(new THREE.PlaneGeometry(R.w*0.06,R.h*0.8),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.22,depthWrite:false}));
-  hl.position.set(-R.w*0.3,R.h*0.04,face+Math.max(H0*0.002,0.0001));hl.rotation.z=-0.18;mirrorObj.add(hl);
+  const zf=face+th*0.2, bar=fw*0.7, dd=th*0.6;
+  const vbar=x=>boxAt(bar,Hh,dd,x,0,zf-dd/2+th*0.05), hbar=y=>boxAt(W,bar,dd,0,y,zf-dd/2+th*0.05);
+  const handle=(x,y,len)=>{const hm=new THREE.MeshPhongMaterial({color:0xd0d4d8,shininess:120,specular:0xffffff});
+   const c=new THREE.Mesh(new THREE.CylinderGeometry(0.012,0.012,len,12),hm);c.position.set(x,y,zf+0.05);mirrorObj.add(c);
+   for(const k of [-1,1]){const st=new THREE.Mesh(new THREE.CylinderGeometry(0.008,0.008,0.05,8),hm);st.rotation.x=Math.PI/2;st.position.set(x,y+k*len*0.4,zf+0.025);mirrorObj.add(st)}};
+  const yAt=hFromGround=>hFromGround-S.hb-Hh/2;   // local y for a height above ground
+  // windows and doors sit in a short section of wall
+  if(O.style!=='mirror'&&O.style!=='curtain'){
+   const wallC=md==='light'?0xe9e3d6:md==='gold'?0x5a4628:0x5b5e63;const wMat=new THREE.MeshLambertMaterial({color:wallC});
+   const wt=0.2,zc=-th*0.15-wt/2,mg=0.6,top=0.35,gY=yAt(0),Wf=W+2*fw,Htot=S.hb+Hh+fw+top;
+   boxAt(mg,Htot,wt,-(Wf/2+mg/2),gY+Htot/2,zc,wMat);boxAt(mg,Htot,wt,Wf/2+mg/2,gY+Htot/2,zc,wMat);
+   boxAt(Wf,top,wt,0,Hh/2+fw+top/2,zc,wMat);
+   const below=S.hb-fw;if(below>0.01)boxAt(Wf,below,wt,0,gY+below/2,zc,wMat);
+  }
+  switch(O.style){
+   case 'casement':vbar(0);handle(-0.05,0,0.12);handle(0.05,0,0.12);
+    boxAt(W+4*fw,fw*0.8,th*2.2,0,-Hh/2-fw-fw*0.4,th*0.6);break;               // sill
+   case 'sliding':vbar(0);boxAt(W/2,bar*0.6,dd*0.6,W/4,Hh/2-bar*0.3,zf+dd*0.3);boxAt(W/2,bar*0.6,dd*0.6,W/4,-Hh/2+bar*0.3,zf+dd*0.3);
+    handle(-W/2+fw*1.5,0,0.18);boxAt(W+4*fw,fw*0.8,th*2.2,0,-Hh/2-fw-fw*0.4,th*0.6);break;
+   case 'door':hbar(-Hh/2+0.12);handle(W/2-0.09,yAt(1.0),0.45);break;      // kick rail + pull handle at 1 m
+   case 'door2':vbar(0);hbar(-Hh/2+0.12);handle(-0.07,yAt(1.0),0.6);handle(0.07,yAt(1.0),0.6);break;
+   case 'curtain':vbar(-W/6);vbar(W/6);hbar(0);break;
+   default: {const hl=new THREE.Mesh(new THREE.PlaneGeometry(W*0.06,Hh*0.8),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.22,depthWrite:false}));
+    hl.position.set(-W*0.3,Hh*0.04,face+Math.max(H0*0.002,0.0001));hl.rotation.z=-0.18;mirrorObj.add(hl)}
+  }
   scene.add(mirrorObj);
  }
  mirrorObj.position.copy(V(R.C));mirrorObj.lookAt(V(add(R.C,R.n)));
@@ -941,7 +1059,7 @@ function draw3d(R){
   const u=R.s;dyn.add(line([[0,0,ext*0.004],[sd*u[0],sd*u[1],ext*0.004]],0xffb020,0.5,true,ext*0.08));dyn.add(line([[sd*u[0],sd*u[1],ext*0.004],add(mul(u,sd),[0,0,ext*0.004])],0xffb020,0.5,true,ext*0.08))}
  sunLight.position.copy(V(mul(R.s,10)));sunLight.intensity=R.day?0.9:0.05;hemi.intensity=R.day?0.75:0.25;
   buildMirror(R,H0,P0);
- if(S.hb>0.01)for(const sx of [-1,1]){const p=mul(R.u,sx*R.w*0.35);const leg=new THREE.Mesh(new THREE.CylinderGeometry(H0*0.02,H0*0.02,S.hb,8),new THREE.MeshLambertMaterial({color:0x444444}));leg.position.copy(V([p[0],p[1],S.hb/2]));dyn.add(leg)}
+ if(S.hb>0.01&&objOf().style==='mirror')for(const sx of [-1,1]){const p=mul(R.u,sx*R.w*0.35);const leg=new THREE.Mesh(new THREE.CylinderGeometry(H0*0.02,H0*0.02,S.hb,8),new THREE.MeshLambertMaterial({color:0x444444}));leg.position.copy(V([p[0],p[1],S.hb/2]));dyn.add(leg)}
  dyn.add(new THREE.ArrowHelper(V(R.n).normalize(),V(add(R.C,mul(R.n,H0*0.03))),H0*0.9,0x4c9bff,H0*0.2,H0*0.12));
  if(R.lit){
   const inLen=Math.min(ext*0.6,H0*4);const inA=R.corners.map(p=>add(p,mul(R.s,inLen)));
@@ -1127,14 +1245,41 @@ function update(full){
  R=compute();draw3d(R);renderMirror();if(!$('p-map').hidden)renderMap();
  $('time').value=S.min;if(document.activeElement!==$('tIn'))$('tIn').value=hm(S.min);
  $('sunL').textContent=R.day?t('sunL',{a:fmt(R.sp.az,0),d:dirName(R.sp.az),e:fmt(R.sp.el,0)}):t('night');
- if(full){renderCal();applySky()}else renderSel();
+ renderDial();renderMore();
+ if(full){renderCal();applySky();renderQuick()}else renderSel();
  save();
 }
 window.__redraw=()=>{if(R){draw3d(R);if(!$('p-map').hidden)renderMap()}};
 const CMPA=[0,45,90,135,180,225,270,315];
+function renderDial(){const d=$('dial');if(!d)return;const c=80,ro=70;const P=(a,r)=>[c+r*Math.sin(a*D2R),c-r*Math.cos(a*D2R)];
+ const arc=(a0,a1,r)=>{const p0=P(a0,r),p1=P(a1,r);return `M${p0[0].toFixed(1)} ${p0[1].toFixed(1)}A${r} ${r} 0 ${((a1-a0+360)%360)>180?1:0} 1 ${p1[0].toFixed(1)} ${p1[1].toFixed(1)}`};
+ let h=`<circle cx="${c}" cy="${c}" r="${ro}" fill="var(--card2)" stroke="var(--line)" stroke-width="2"/>`;
+ h+=`<path d="${arc(S.mAz-90,S.mAz+90,ro-6)}" fill="none" stroke="#2f7fe6" stroke-opacity=".35" stroke-width="10"/>`;
+ for(let a=0;a<360;a+=15){const q=P(a,ro),r2=P(a,ro-(a%90===0?11:a%45===0?8:5));h+=`<line x1="${q[0]}" y1="${q[1]}" x2="${r2[0]}" y2="${r2[1]}" stroke="var(--mute)" stroke-width="${a%90===0?2:1}"/>`}
+ const L4=LANG==='en'?['N','E','S','W']:['ជ','ក','ត','ល'];
+ [0,90,180,270].forEach((a,i)=>{const q=P(a,ro-21);h+=`<text x="${q[0]}" y="${q[1]+5}" text-anchor="middle" font-size="14" font-weight="700" fill="${i===0?'var(--red)':'var(--ink)'}">${L4[i]}</text>`});
+ const u=[Math.cos(S.mAz*D2R),Math.sin(S.mAz*D2R)];const m1=[c-u[0]*30,c-u[1]*30],m2=[c+u[0]*30,c+u[1]*30];
+ h+=`<line x1="${m1[0]}" y1="${m1[1]}" x2="${m2[0]}" y2="${m2[1]}" stroke="var(--ink)" stroke-width="6" stroke-linecap="round"/>`;
+ const f=P(S.mAz,44);h+=`<line x1="${c}" y1="${c}" x2="${f[0]}" y2="${f[1]}" stroke="var(--acc)" stroke-width="3"/><circle cx="${f[0]}" cy="${f[1]}" r="10" fill="var(--acc)" stroke="var(--bg)" stroke-width="2"/>`;
+ if(R&&R.day){const sp=P(R.sp.az,ro);h+=`<circle cx="${sp[0]}" cy="${sp[1]}" r="8" fill="#ffcf3a" stroke="#b47800" stroke-width="2"/>`}
+ d.innerHTML=h;d.setAttribute('aria-valuenow',Math.round(S.mAz));d.setAttribute('aria-valuetext',S.mAz+'° '+dirName(S.mAz))}
+{let drag=false,raf=0,pend=null;const dl=$('dial');
+ const ang=e=>{const r=dl.getBoundingClientRect();const x=e.clientX-r.left-r.width/2,y=e.clientY-r.top-r.height/2;return (Math.atan2(x,-y)*R2D+360)%360};
+ const go=a=>{pend=Math.round(a)%360;if(!raf)raf=requestAnimationFrame(()=>{raf=0;if(pend!==null)setAz(pend);pend=null})};
+ dl.addEventListener('pointerdown',e=>{drag=true;dl.setPointerCapture(e.pointerId);go(ang(e));e.preventDefault()});
+ dl.addEventListener('pointermove',e=>{if(drag)go(ang(e))});
+ const end=()=>{drag=false};dl.addEventListener('pointerup',end);dl.addEventListener('pointercancel',end);
+ dl.addEventListener('keydown',e=>{const k={ArrowRight:1,ArrowUp:1,ArrowLeft:-1,ArrowDown:-1,PageUp:10,PageDown:-10}[e.key];if(k){e.preventDefault();setAz(S.mAz+k)}});}
+function renderQuick(){const lw=litWindows(S.date);const np=sunPath(S.date).noon;const q=[];
+ if(lw.rise!==null)q.push(['qRise',lw.rise+10]);q.push(['qMorn',540]);if(np)q.push(['qNoon',np.m]);q.push(['qAft',900]);if(lw.set!==null)q.push(['qSet',lw.set-10]);
+ $('tQuick').innerHTML=q.map(([k,m])=>`<button type="button" data-m="${Math.round(m)}">${t(k)}<small>${hm(m)}</small></button>`).join('')}
+function renderObjs(){const L=LANG==='en'?1:0;const O=objOf();
+ $('objs').innerHTML=OBJS.map(o=>`<button type="button" data-o="${o.id}" aria-pressed="${o.id===S.obj}">${objIcon(o)}<b>${o.n[L]}</b><small>${o.w>=1000?(o.w/1000)+'×'+(o.h/1000)+' m':o.w>=100?(o.w/10)+'×'+(o.h/10)+' cm':o.w+'×'+o.h+' mm'}</small></button>`).join('');
+ $('objL').textContent=O.n[L]}
+function renderMore(){const L=LANG==='en'?1:0;const bits=[S.target==='wall'?t('wall'):t('ground'),(EARTH.find(e=>e.id===GROUND)||EARTH[0]).n[L]];if(SKY.deg||SKY.today||SKY.sol)bits.push(t('skyT'));$('moreL').textContent=bits.join(' · ')}
 function renderCompass(){$('compass').innerHTML=CMPA.map((a,i)=>`<button type="button" data-a="${a}"><span>${LANG==='en'?DIRF[i]:DIRK[i]}</span><small>${a}°</small></button>`).join('')}
 function syncInputs(){
- $('mAz').value=S.mAz;if(document.activeElement!==$('mAzN'))$('mAzN').value=S.mAz;$('mAzL').textContent=S.mAz+'° '+dirName(S.mAz);
+ if(document.activeElement!==$('mAzN'))$('mAzN').value=S.mAz;$('mAzL').textContent=S.mAz+'° '+dirName(S.mAz);renderDial();
  document.querySelectorAll('#compass button').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.a===S.mAz));
  $('mW').value=S.w;$('mH').value=S.h;$('mB').value=+(S.hb*100).toFixed(1);$('wD').value=d2s(S.D);$('wDL').textContent=S.target==='wall'?t('wallAt')+mlen(S.D):'';
  $('tgGround').setAttribute('aria-pressed',S.target==='ground');$('tgWall').setAttribute('aria-pressed',S.target==='wall');$('wallBox').hidden=S.target!=='wall';
@@ -1154,7 +1299,11 @@ $('hudPlus').onclick=()=>{if(HS<HMAX){HS++;applyHud()}};
 function applySky(){document.querySelectorAll('#skyChips button[data-k]').forEach(b=>b.setAttribute('aria-pressed',!!SKY[b.dataset.k]));store.set('sm-sky',JSON.stringify(SKY));
  if(R&&R.day!==undefined){const sp=sunPath(S.date);$('skyL').textContent=sp.noon?t('skyNoon',{t:hm(sp.noon.m),e:fmt(sp.noon.el,0)}):''}}
 $('skyChips').addEventListener('click',e=>{const b=e.target.closest('button[data-k]');if(!b)return;SKY[b.dataset.k]=!SKY[b.dataset.k];applySky();if(R){draw3d(R);if(!$('p-map').hidden)renderMap()}});
-$('overviewB').onclick=overview;
+$('overviewB').onclick=overview;$('ovBtn').onclick=overview;
+$('objs').addEventListener('click',e=>{const b=e.target.closest('button[data-o]');if(!b)return;const o=OBJS.find(x=>x.id===b.dataset.o);
+ S.obj=o.id;S.w=o.w;S.h=o.h;S.hb=o.hb;if(S.target==='wall')S.D=Math.max(S.D,o.h/1000);fitted=false;renderObjs();syncInputs();update(false)});
+$('tQuick').addEventListener('click',e=>{const b=e.target.closest('button[data-m]');if(b)setMin(+b.dataset.m)});
+$('moreOpts').addEventListener('toggle',()=>store.set('sm-more',$('moreOpts').open?'1':'0'));
 $('faceSun').onclick=()=>{if(R&&R.day){fitted=false;setAz(Math.round(R.sp.az))}};
 $('hudBg').onclick=()=>{HB=BGS[(BGS.indexOf(HB)+1)%BGS.length];applyHud()};
 function applyGround(){const L=LANG==='en'?1:0;
@@ -1171,19 +1320,19 @@ function applyLang(){
  $('mSel').innerHTML=SOLAR_E.map((n,i)=>`<option value="${i+1}">${LANG==='en'?n:SOLAR_K[i]+' · '+n}</option>`).join('');
  $('cityS').innerHTML=CITIES.map((c,i)=>`<option value="${i}">${c[0][LANG==='en'?1:0]}</option>`).join('');
  document.title=(LANG==='en'?'Sunlight Reflection on a Mirror':'ចំណាំងផ្លាតពន្លឺព្រះអាទិត្យ')+' · SunMirror';
- renderCompass();syncInputs();applyHud();applyGround();applySky();
+ renderCompass();renderObjs();syncInputs();applyHud();applyGround();applySky();renderMore();
 }
 const setLang=l=>{LANG=l;store.set('sm-lang',l);applyLang();if(R)update(true)};
 $('langB').onclick=()=>setLang(LANG==='en'?'km':'en');$('lgKm').onclick=()=>setLang('km');$('lgEn').onclick=()=>setLang('en');
 
 const setAz=v=>{if(!isFinite(v))return syncInputs();S.mAz=Math.round((((v%360)+360)%360)*10)/10;if(S.mAz>=360)S.mAz=0;syncInputs();$('mAzN').value=S.mAz;update(false)};
-$('mAz').addEventListener('input',e=>setAz(+e.target.value));
+
 $('mAzN').addEventListener('change',e=>setAz(parseFloat(e.target.value)));
 $('mAzN').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();setAz(parseFloat(e.target.value))}});
-document.querySelector('.azrow').addEventListener('click',e=>{const b=e.target.closest('button[data-n]');if(b)setAz(S.mAz+ +b.dataset.n)});
+document.querySelector('.nudge').addEventListener('click',e=>{const b=e.target.closest('button[data-n]');if(b)setAz(S.mAz+ +b.dataset.n)});
 $('compass').addEventListener('click',e=>{const b=e.target.closest('button');if(b)setAz(+b.dataset.a)});
 const num=(id,key,lo,hi)=>$(id).addEventListener('change',e=>{const v=parseFloat(e.target.value);if(isFinite(v))S[key]=Math.min(hi,Math.max(lo,v));syncInputs();fitted=false;update(false)});
-num('mW','w',5,5000);num('mH','h',5,5000);num('tzIn','tz',-12,14);
+num('mW','w',5,20000);num('mH','h',5,20000);num('tzIn','tz',-12,14);
 $('mB').addEventListener('change',e=>{const v=parseFloat(e.target.value);if(isFinite(v))S.hb=Math.min(50,Math.max(0,v/100));syncInputs();fitted=false;update(false)});
 $('wD').addEventListener('input',e=>{S.D=s2d(+e.target.value);$('wDL').textContent=t('wallAt')+mlen(S.D);update(false)});
 $('tgGround').onclick=()=>{S.target='ground';syncInputs();fitted=false;update(false)};
@@ -1232,6 +1381,7 @@ if(NATIVE){$('installHelp').hidden=true;root.classList.add('native')}
 try{if('serviceWorker' in navigator&&window.top===window&&(location.protocol==='https:'||location.hostname==='localhost'||location.hostname==='127.0.0.1'))
  navigator.serviceWorker.register('sw.js').catch(()=>{})}catch(e){}
 
+{const o=store.get('sm-more','');$('moreOpts').open=o?o==='1':matchMedia('(min-width:700px) and (min-height:760px)').matches}
 applyLang();applyMode();
 if(!init3d()){}
 update(true);
