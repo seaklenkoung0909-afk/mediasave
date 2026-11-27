@@ -1,4 +1,4 @@
-# SunMirror · ចំណាំងផ្លាត់ព្រះអាទិត្យ
+# SunMirror · ចំណាំងផ្លាតពន្លឺព្រះអាទិត្យ
 
 Installable web app (PWA): sunlight reflection on a vertical mirror in 3D, Khmer lunar calendar, maps.
 Static files only — served by Render (branch `sunmirror`). Open the site in Safari → Share → Add to Home Screen.

@@ -10,7 +10,7 @@
 <meta name="application-name" content="SunMirror">
 <meta name="theme-color" content="#1f6fc4" id="themeColor">
 <meta name="description" content="Sunlight reflection on a vertical mirror in 3D, with the Khmer lunar calendar.">
-<title>ចំណាំងផ្លាត់ព្រះអាទិត្យ · SunMirror</title>
+<title>ចំណាំងផ្លាតពន្លឺព្រះអាទិត្យ · SunMirror</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
@@ -358,7 +358,7 @@ table.kv{width:100%;border-collapse:collapse;font-size:15px}
 <div class="intro" id="intro" role="dialog" aria-label="SunMirror">
  <div class="in">
   <svg viewBox="0 0 120 120" aria-hidden="true" id="introLogo"></svg>
-  <div class="t1" data-i18n="title">ចំណាំងផ្លាត់ព្រះអាទិត្យលើកញ្ចក់</div>
+  <div class="t1" data-i18n="title">ចំណាំងផ្លាតពន្លឺព្រះអាទិត្យលើកញ្ចក់</div>
   <div class="t2" data-i18n="tagline">3D · ប្រតិទិនខ្មែរ · ផែនទី</div>
   <div class="credit" lang="km"><span>ដឹកនាំបង្រៀនដោយព្រឹទ្ធាចារ្យ ឃុន សូ</span><span>រៀបចំដោយបញ្ញាវន្ដ សៀក ឡេងគួង</span></div>
  </div>
@@ -368,7 +368,7 @@ table.kv{width:100%;border-collapse:collapse;font-size:15px}
 <header class="top">
  <div class="brandrow">
   <svg viewBox="0 0 120 120" aria-hidden="true"><use href="#logo"/></svg>
-  <div><h1 data-i18n="title">ចំណាំងផ្លាត់ព្រះអាទិត្យលើកញ្ចក់</h1><p id="hdrDate">—</p></div>
+  <div><h1 data-i18n="title">ចំណាំងផ្លាតពន្លឺព្រះអាទិត្យលើកញ្ចក់</h1><p id="hdrDate">—</p></div>
  </div>
  <div class="qset">
   <div class="modes" role="group" data-i18n-aria="appearance" aria-label="រចនាបថ" id="qModes">
@@ -400,8 +400,8 @@ table.kv{width:100%;border-collapse:collapse;font-size:15px}
    <div class="credit3d" lang="km" aria-label="ដឹកនាំបង្រៀនដោយព្រឹទ្ធាចារ្យ ឃុន សូ · រៀបចំដោយបញ្ញាវន្ដ សៀក ឡេងគួង"><span>ដឹកនាំបង្រៀនដោយព្រឹទ្ធាចារ្យ ឃុន សូ</span><span>រៀបចំដោយបញ្ញាវន្ដ សៀក ឡេងគួង</span></div>
    <button class="btn sm fitbtn" id="fitBtn" type="button" data-i18n="fit">មើលទាំងមូល</button>
    <div class="legend" aria-hidden="true">
-    <span><i style="background:#ffc93c"></i><span data-i18n="lgIn">ពន្លឺចូល</span></span>
-    <span><i style="background:#ff8a00"></i><span data-i18n="lgOut">ពន្លឺផ្លាត់</span></span>
+    <span><i style="background:#ffc93c"></i><span data-i18n="lgIn">កាំពន្លឺមក</span></span>
+    <span><i style="background:#ff8a00"></i><span data-i18n="lgOut">កាំពន្លឺផ្លាត</span></span>
     <span><i style="background:#1f6fc4"></i><span data-i18n="lgRef">ទំហំកញ្ចក់ (គំរូ)</span></span>
     <span><i style="background:rgba(47,127,230,.5);height:8px"></i><span data-i18n="lgArc">ទិសដែលពន្លឺចាំងចូលកញ្ចក់បាន</span></span>
    </div>
@@ -442,7 +442,7 @@ table.kv{width:100%;border-collapse:collapse;font-size:15px}
     </div>
    </div>
    <div class="ctl">
-    <div class="ch"><b data-i18n="surf">ស្នាមធ្លាក់លើ</b><span id="wDL"></span></div>
+    <div class="ch"><b data-i18n="surf">ស្នាមពន្លឺធ្លាក់លើ</b><span id="wDL"></span></div>
     <div class="seg" role="group">
      <button type="button" id="tgGround" aria-pressed="true" data-i18n="ground">ដី</button>
      <button type="button" id="tgWall" aria-pressed="false" data-i18n="wall">ជញ្ជាំងទល់មុខ</button>
@@ -533,13 +533,13 @@ table.kv{width:100%;border-collapse:collapse;font-size:15px}
     <div class="grid2">
      <div><label class="f" for="mW"><span data-i18n="width">ទទឹង</span> <small>mm</small></label><input type="number" id="mW" min="5" max="5000" step="1"></div>
      <div><label class="f" for="mH"><span data-i18n="height">កម្ពស់</span> <small>mm</small></label><input type="number" id="mH" min="5" max="5000" step="1"></div>
-     <div><label class="f" for="mB"><span data-i18n="base">បាតពីដី</span> <small>cm</small></label><input type="number" id="mB" min="0" max="5000" step="0.5"></div>
+     <div><label class="f" for="mB"><span data-i18n="base">កម្ពស់បាតពីដី</span> <small>cm</small></label><input type="number" id="mB" min="0" max="5000" step="0.5"></div>
      <div><label class="f" for="tzIn"><span data-i18n="tz">ម៉ោងតំបន់</span> <small>UTC±</small></label><input type="number" id="tzIn" min="-12" max="14" step="0.5"></div>
     </div>
     <p class="note" data-i18n="sizeNote">កញ្ចក់ឈរបញ្ឈរ ៩០° នឹងដី។ បាតពីដី 0 = ឈរផ្ទាល់លើដី។</p>
     <h2 data-i18n="appT">កម្មវិធី</h2>
     <div class="row">
-     <button class="btn" id="replayB" type="button" data-i18n="replay">ចាក់ឡូហ្គោឡើងវិញ</button>
+     <button class="btn" id="replayB" type="button" data-i18n="replay">បង្ហាញផ្ទាំងស្វាគមន៍ម្តងទៀត</button>
      <button class="btn pri" id="installB" type="button" hidden data-i18n="install">ដំឡើងកម្មវិធី</button>
     </div>
     <div class="prose" id="installHelp" style="margin-top:12px">
@@ -551,7 +551,7 @@ table.kv{width:100%;border-collapse:collapse;font-size:15px}
      <div data-lang="en"><ul>
       <li><b>iPhone / iPad:</b> open in Safari → tap Share → “Add to Home Screen”.</li>
       <li><b>Mac:</b> Safari → File → Add to Dock. <b>Windows / Mac (Chrome, Edge):</b> click the install icon in the address bar, or the “Install app” button above.</li>
-      <li>Once installed it opens full-screen and works offline (except Google Maps).</li>
+      <li>Once installed, it opens full-screen and works offline (except for Google Maps).</li>
      </ul></div>
     </div>
    </div>
@@ -559,34 +559,38 @@ table.kv{width:100%;border-collapse:collapse;font-size:15px}
    <div class="pane prose" id="p-learn" role="tabpanel" hidden>
     <div class="creditbox" lang="km" style="margin-top:0;margin-bottom:16px"><b>ដឹកនាំបង្រៀនដោយព្រឹទ្ធាចារ្យ ឃុន សូ</b><span>រៀបចំដោយបញ្ញាវន្ដ សៀក ឡេងគួង</span></div>
     <div data-lang="km">
-     <h2>ទិសដៅនៃចំណាំងផ្លាត់</h2>
-     <p>កញ្ចក់រាបស្មើ ផ្លាត់ពន្លឺតាមច្បាប់ «មុំចូល = មុំផ្លាត់»។ ព្រោះកញ្ចក់ឈរបញ្ឈរ ៩០° នឹងដី ពន្លឺផ្លាត់រក្សាមុំកម្ពស់ដដែលនឹងព្រះអាទិត្យ ប៉ុន្តែចុះក្រោមវិញ។</p>
-     <div class="formula">ទិសពន្លឺផ្លាត់ = ២ × ទិសមុខកញ្ចក់ − ទិសព្រះអាទិត្យ<br>មុំធ្លាក់ចុះ = មុំកម្ពស់ព្រះអាទិត្យ</div>
-     <p>កញ្ចក់ទទួលពន្លឺបាន លុះត្រាតែព្រះអាទិត្យនៅខាងមុខកញ្ចក់ គឺទិសព្រះអាទិត្យខុសពីទិសមុខកញ្ចក់តិចជាង ៩០°។</p>
+     <h2>ទិសដៅនៃចំណាំងផ្លាត</h2>
+     <p>កញ្ចក់រាបស្មើផ្លាតពន្លឺតាមច្បាប់ចំណាំងផ្លាត៖ «មុំចំណាំងមក = មុំចំណាំងផ្លាត»។ ដោយសារកញ្ចក់ឈរបញ្ឈរ កែង ៩០° នឹងដី កាំពន្លឺផ្លាតរក្សាមុំកម្ពស់ស្មើនឹងព្រះអាទិត្យដដែល ប៉ុន្តែចាំងចុះក្រោម។</p>
+     <div class="formula">ទិសកាំពន្លឺផ្លាត = ២ × ទិសមុខកញ្ចក់ − ទិសព្រះអាទិត្យ<br>មុំចាំងចុះ = មុំកម្ពស់ព្រះអាទិត្យ</div>
+     <p>កញ្ចក់ទទួលពន្លឺបាន លុះត្រាតែព្រះអាទិត្យនៅខាងមុខកញ្ចក់ មានន័យថា ទិសព្រះអាទិត្យឃ្លាតពីទិសមុខកញ្ចក់មិនលើសពី ៩០°។</p>
      <h2>ហេតុអ្វីស្នាមពន្លឺធំ ឬតូចជាងកញ្ចក់?</h2>
      <ol>
-      <li><b>មុំចូលទ្រេត៖</b> មុខកាត់បាច់ពន្លឺ = ផ្ទៃកញ្ចក់ × cos(មុំចូល) — តូចជាងកញ្ចក់ជានិច្ច។</li>
-      <li><b>ផ្ទៃទទួលទ្រេត៖</b> ស្នាមលាតវែង — ផ្ទៃ ÷ cos(មុំធ្លាក់លើផ្ទៃ)។ ព្រះអាទិត្យទាប ស្នាមលើដីវែងខ្លាំង។</li>
-      <li><b>ថាសព្រះអាទិត្យ ០,៥៣°៖</b> ចម្ងាយកាន់តែឆ្ងាយ គែមស្នាមកាន់តែព្រាល ≈ ចម្ងាយ ÷ ១០៧។</li>
+      <li><b>មុំចំណាំងមកទ្រេត៖</b> មុខកាត់បាច់ពន្លឺ = ផ្ទៃកញ្ចក់ × cos(មុំចំណាំងមក) — តូចជាងផ្ទៃកញ្ចក់ជានិច្ច។</li>
+      <li><b>ផ្ទៃទទួលទ្រេត៖</b> បាច់ពន្លឺលាតវែងលើដី ឬជញ្ជាំង — ផ្ទៃ ÷ cos(មុំធ្លាក់លើផ្ទៃនោះ)។ ពេលព្រះអាទិត្យទាប ស្នាមលើដីវែងខ្លាំង។</li>
+      <li><b>ថាសព្រះអាទិត្យ ០,៥៣°៖</b> ពន្លឺធ្វើដំណើរកាន់តែឆ្ងាយ គែមស្នាមកាន់តែព្រាល ហើយរីកធំ ≈ ចម្ងាយ ÷ ១០៧។</li>
      </ol>
-     <div class="formula">លើដី៖ ផ្ទៃស្នាម ÷ ផ្ទៃកញ្ចក់ ≈ cos(មុំចូល) ÷ sin(កម្ពស់ព្រះអាទិត្យ)</div>
-     <p>កញ្ចក់ឈរលើដី៖ ស្នាមចាប់ផ្តើមត្រង់ជើងកញ្ចក់ ហើយវែង ≈ កម្ពស់កញ្ចក់ ÷ tan(កម្ពស់ព្រះអាទិត្យ)។</p>
-     <p>កម្មវិធីគណនាជាក់ស្តែង ពីជ្រុងទាំង ៤ នៃកញ្ចក់ និងគែមថាសព្រះអាទិត្យ ២៤ ចំណុច។ ទីតាំងព្រះអាទិត្យតាមរូបមន្ត NOAA។ ប្រតិទិនចន្ទគតិ ១៩០០–២១០០។</p>
+     <div class="formula">លើដី៖ ផ្ទៃស្នាមពន្លឺ ÷ ផ្ទៃកញ្ចក់ ≈ cos(មុំចំណាំងមក) ÷ sin(កម្ពស់ព្រះអាទិត្យ)</div>
+     <p>កញ្ចក់ឈរផ្ទាល់លើដី៖ ស្នាមពន្លឺចាប់ផ្តើមត្រង់ជើងកញ្ចក់ ហើយមានប្រវែង ≈ កម្ពស់កញ្ចក់ ÷ tan(កម្ពស់ព្រះអាទិត្យ)។</p>
+     <h2>គន្លងព្រះអាទិត្យ</h2>
+     <p>ខ្សែគន្លងបង្ហាញទីតាំងព្រះអាទិត្យលើមេឃពេញមួយថ្ងៃ ហើយគ្រាប់នីមួយៗតំណាងឲ្យម៉ោងនីមួយៗ។ នៅកម្ពុជា ព្រះអាទិត្យនៅថ្ងៃ ២១ មិថុនា ឆ្លងកាត់ខាងជើងកំពូលមេឃ ចំណែកនៅថ្ងៃ ២១ ធ្នូ វានៅទាបជាងគេនៅខាងត្បូង។</p>
+     <p>កម្មវិធីគណនាពីជ្រុងទាំង ៤ នៃកញ្ចក់ និង ២៤ ចំណុចនៅលើគែមថាសព្រះអាទិត្យ ដើម្បីវាស់ផ្ទៃស្នាមពន្លឺពិតប្រាកដ។ ទីតាំងព្រះអាទិត្យគណនាតាមរូបមន្ត NOAA ហើយប្រតិទិនចន្ទគតិគ្របដណ្តប់ឆ្នាំ ១៩០០–២១០០។</p>
     </div>
     <div data-lang="en">
      <h2>Direction of the reflection</h2>
-     <p>A flat mirror reflects light so that the angle in equals the angle out. Because the mirror stands vertical (90° to the ground), the reflected beam keeps the sun's elevation angle but heads downward.</p>
+     <p>A flat mirror follows the law of reflection: the angle of incidence equals the angle of reflection. Because the mirror stands upright (at 90° to the ground), the reflected ray keeps the same elevation angle as the sun, but points downward.</p>
      <div class="formula">Reflected azimuth = 2 × mirror azimuth − sun azimuth<br>Downward angle = sun elevation</div>
-     <p>The mirror only catches sunlight when the sun is in front of it — the sun's azimuth must be within 90° of the mirror's facing direction.</p>
+     <p>The mirror only receives sunlight when the sun is in front of it, which means the sun’s azimuth must be within 90° of the direction the mirror faces.</p>
      <h2>Why is the spot bigger or smaller than the mirror?</h2>
      <ol>
-      <li><b>Oblique incidence:</b> beam cross-section = mirror area × cos(incidence) — always smaller than the mirror.</li>
-      <li><b>Oblique surface:</b> the beam spreads on the ground or wall — area ÷ cos(angle on that surface). A low sun makes a long spot on the ground.</li>
-      <li><b>The sun is a 0.53° disc:</b> the further the light travels, the blurrier and wider the edges ≈ distance ÷ 107.</li>
+      <li><b>Oblique incidence:</b> the beam’s cross-section = mirror area × cos(angle of incidence), which is always smaller than the mirror.</li>
+      <li><b>Oblique surface:</b> the beam spreads out on the ground or wall — area ÷ cos(angle on that surface). A low sun makes a long spot on the ground.</li>
+      <li><b>The sun is a 0.53° disc:</b> the farther the light travels, the blurrier and wider the spot’s edges become (≈ distance ÷ 107).</li>
      </ol>
-     <div class="formula">On the ground: spot area ÷ mirror area ≈ cos(incidence) ÷ sin(sun elevation)</div>
-     <p>Mirror standing on the ground: the spot starts at the mirror's foot and its length ≈ mirror height ÷ tan(sun elevation).</p>
-     <p>The app traces the 4 mirror corners and 24 points on the sun's rim onto the surface and measures the real spot. Sun position uses the NOAA formulas; the lunar calendar covers 1900–2100.</p>
+     <div class="formula">On the ground: spot area ÷ mirror area ≈ cos(angle of incidence) ÷ sin(sun elevation)</div>
+     <p>Mirror standing directly on the ground: the spot starts at the mirror’s foot, and its length ≈ mirror height ÷ tan(sun elevation).</p>
+     <h2>Sun path</h2>
+     <p>The sun path shows where the sun is in the sky throughout the day; each dot marks one hour. In Cambodia, on 21 June the sun passes north of the zenith, while on 21 December it stays lowest, in the south.</p>
+     <p>The app traces the mirror’s 4 corners and 24 points on the rim of the sun’s disc onto the surface to measure the real spot. The sun’s position uses the NOAA formulas, and the lunar calendar covers 1900–2100.</p>
     </div>
    </div>
   </div>
@@ -611,40 +615,40 @@ const store={get(k,d){try{const v=localStorage.getItem(k);return v===null?d:v}ca
 /* ---------- i18n ---------- */
 let LANG=root.getAttribute('lang')==='en'?'en':'km';
 const I={
- title:['ចំណាំងផ្លាត់ព្រះអាទិត្យលើកញ្ចក់','Sunlight Reflection on a Mirror'],
+ title:['ចំណាំងផ្លាតពន្លឺព្រះអាទិត្យលើកញ្ចក់','Sunlight Reflection on a Mirror'],
  tagline:['3D · ប្រតិទិនខ្មែរ · ផែនទី','3D · Khmer calendar · Map'],
  tapSkip:['ចុចដើម្បីរំលង','Tap to skip'],
  appearance:['រចនាបថ','Appearance'],view3d:['ទិដ្ឋភាព 3D','3D view'],
  mAuto:['ស្វ័យប្រវត្តិ','Auto'],mLight:['ពណ៌ស','Light'],mDark:['ពណ៌ខ្មៅ','Dark'],mGold:['មាសរលោង','Gold'],
  autoNote:['ស្វ័យប្រវត្តិ = តាមការកំណត់ភ្លឺ/ងងឹតរបស់ឧបករណ៍ ហើយប្តូរដោយខ្លួនឯង។','Auto follows your device’s light/dark setting and switches by itself.'],
- language:['ភាសា','Language'],mirrorSize:['ទំហំកញ្ចក់','Mirror size'],width:['ទទឹង','Width'],height:['កម្ពស់','Height'],base:['បាតពីដី','Base above ground'],tz:['ម៉ោងតំបន់','Time zone'],
- sizeNote:['កញ្ចក់ឈរបញ្ឈរ ៩០° នឹងដី។ បាតពីដី 0 = ឈរផ្ទាល់លើដី ហើយស្នាមចាប់ផ្តើមត្រង់ជើងកញ្ចក់។','The mirror stands vertical, 90° to the ground. Base 0 = standing on the ground, so the spot starts at its foot.'],
- appT:['កម្មវិធី','App'],replay:['ចាក់ឡូហ្គោឡើងវិញ','Replay intro'],install:['ដំឡើងកម្មវិធី','Install app'],
- fit:['មើលទាំងមូល','Fit view'],lgIn:['ពន្លឺចូល','Incoming light'],lgOut:['ពន្លឺផ្លាត់','Reflected light'],lgRef:['ទំហំកញ្ចក់ (គំរូ)','Mirror size (reference)'],
- dirTitle:['ទិសមុខកញ្ចក់','Mirror facing'],time:['ម៉ោង','Time'],play:['លេង','Play'],pause:['ផ្អាក','Pause'],
+ language:['ភាសា','Language'],mirrorSize:['ទំហំកញ្ចក់','Mirror size'],width:['ទទឹង','Width'],height:['កម្ពស់','Height'],base:['កម្ពស់បាតពីដី','Base height above ground'],tz:['ម៉ោងតំបន់','Time zone'],
+ sizeNote:['កញ្ចក់ឈរបញ្ឈរ កែង ៩០° នឹងដី។ កម្ពស់បាត 0 មានន័យថាកញ្ចក់ឈរផ្ទាល់លើដី ហើយស្នាមពន្លឺចាប់ផ្តើមត្រង់ជើងកញ្ចក់។','The mirror stands upright, at 90° to the ground. A base height of 0 means it stands directly on the ground, so the light spot starts at its foot.'],
+ appT:['កម្មវិធី','App'],replay:['បង្ហាញផ្ទាំងស្វាគមន៍ម្តងទៀត','Replay the intro'],install:['ដំឡើងកម្មវិធី','Install app'],
+ fit:['មើលទាំងមូល','Fit view'],lgIn:['កាំពន្លឺមក','Incident light'],lgOut:['កាំពន្លឺផ្លាត','Reflected light'],lgRef:['ទំហំកញ្ចក់ (សម្រាប់ប្រៀបធៀប)','Mirror outline (for comparison)'],
+ dirTitle:['ទិសមុខកញ្ចក់','Mirror direction'],time:['ម៉ោង','Time'],play:['លេង','Play'],pause:['ផ្អាក','Pause'],
  date:['ថ្ងៃ','Date'],today:['ថ្ងៃនេះ','Today'],prevDay:['ថ្ងៃមុន','Previous day'],nextDay:['ថ្ងៃបន្ទាប់','Next day'],
- surf:['ស្នាមធ្លាក់លើ','Spot lands on'],ground:['ដី','Ground'],wall:['ជញ្ជាំងទល់មុខ','Facing wall'],wallAt:['ជញ្ជាំងឆ្ងាយ ','Wall at '],wallDist:['ចម្ងាយជញ្ជាំង','Wall distance'],
+ surf:['ស្នាមពន្លឺធ្លាក់លើ','Light spot falls on'],ground:['ដី','Ground'],wall:['ជញ្ជាំងទល់មុខ','Opposite wall'],wallAt:['ជញ្ជាំងឆ្ងាយ ','Wall at '],wallDist:['ចម្ងាយជញ្ជាំង','Wall distance'],
  tRes:['លទ្ធផល','Results'],tCal:['ប្រតិទិនខ្មែរ','Khmer calendar'],tMap:['ផែនទី','Map'],tSet:['ការកំណត់','Settings'],tLearn:['ពន្យល់','Explain'],
- loading:['កំពុងផ្ទុក…','Loading…'],night:['យប់','Night'],below:['ព្រះអាទិត្យនៅក្រោមជើងមេឃ','The sun is below the horizon'],changeT:['ប្តូរម៉ោង ដើម្បីមើលចំណាំងផ្លាត់','Change the time to see the reflection'],
- noRefl:['គ្មានចំណាំង','No reflection'],behind:['ព្រះអាទិត្យនៅខាងក្រោយកញ្ចក់','The sun is behind the mirror'],
- behindSm:['ទិសព្រះអាទិត្យ {a}° ខុសពីមុខកញ្ចក់លើស ៩០°','Sun azimuth {a}° is more than 90° from the mirror’s facing'],
+ loading:['កំពុងផ្ទុក…','Loading…'],night:['យប់','Night'],below:['ព្រះអាទិត្យនៅក្រោមជើងមេឃ','The sun is below the horizon'],changeT:['សូមប្តូរម៉ោង ដើម្បីមើលចំណាំងផ្លាត','Change the time to see the reflection'],
+ noRefl:['គ្មានចំណាំងផ្លាត','No reflection'],behind:['ព្រះអាទិត្យនៅខាងក្រោយកញ្ចក់','The sun is behind the mirror'],
+ behindSm:['ទិសព្រះអាទិត្យ {a}° ឃ្លាតពីទិសមុខកញ្ចក់លើសពី ៩០°','The sun’s azimuth ({a}°) is more than 90° away from the direction the mirror faces'],
  spot:['ស្នាមពន្លឺ','The spot is '],smaller:['តូចជាងកញ្ចក់','smaller than the mirror'],bigger:['ធំជាងកញ្ចក់','bigger than the mirror'],same:['ប្រហាក់ប្រហែលកញ្ចក់','about the same as the mirror'],
- hudSm:['ស្នាម {s} · កញ្ចក់ {m} · ចម្ងាយ {l} · ទិសផ្លាត់ {d}','Spot {s} · mirror {m} · distance {l} · towards {d}'],
- rSun:['ព្រះអាទិត្យ (ទិស / កម្ពស់)','Sun (azimuth / elevation)'],rMir:['មុខកញ្ចក់','Mirror faces'],rInc:['មុំចូលលើកញ្ចក់','Angle of incidence'],
- rOut:['ទិសពន្លឺផ្លាត់','Reflected direction'],down:['ចុះ','down'],rL:['ចម្ងាយតាមកាំពន្លឺ','Distance along the ray'],
- rHg:['ចម្ងាយលើដីពីជើងកញ្ចក់','Ground distance from mirror'],rHw:['កម្ពស់ស្នាមលើជញ្ជាំង','Spot height on wall'],
- r1:['① មុខកាត់បាច់ពន្លឺ (×cos មុំចូល)','① Beam cross-section (×cos incidence)'],r2:['② លាតលើផ្ទៃទទួល (÷cos {a}°)','② Spread on surface (÷cos {a}°)'],
- r3:['③ ព្រាលគែមដោយថាសព្រះអាទិត្យ','③ Edge blur from the sun’s disc'],rDimG:['ទំហំស្នាម (ទទឹង × បណ្តោយ)','Spot size (width × length)'],rDimW:['ទំហំស្នាម (ទទឹង × កម្ពស់)','Spot size (width × height)'],
- rMsz:['ទំហំកញ្ចក់','Mirror size'],rArea:['ផ្ទៃស្នាមពិត','Actual spot area'],rMA:['ផ្ទៃកញ្ចក់','Mirror area'],
+ hudSm:['ស្នាម {s} · កញ្ចក់ {m} · ចម្ងាយ {l} · ទិសផ្លាត {d}','Spot {s} · mirror {m} · distance {l} · towards {d}'],
+ rSun:['ព្រះអាទិត្យ (ទិស / កម្ពស់)','Sun (azimuth / elevation)'],rMir:['មុខកញ្ចក់','Mirror faces'],rInc:['មុំចំណាំងមក','Angle of incidence'],
+ rOut:['ទិសកាំពន្លឺផ្លាត','Direction of the reflected ray'],down:['ចុះ','down'],rL:['ចម្ងាយតាមកាំពន្លឺ','Distance along the ray'],
+ rHg:['ចម្ងាយលើដីពីជើងកញ្ចក់','Distance on the ground from the mirror'],rHw:['កម្ពស់ស្នាមលើជញ្ជាំង','Spot height on wall'],
+ r1:['① មុខកាត់បាច់ពន្លឺ (× cos មុំចំណាំងមក)','① Beam cross-section (× cos of incidence)'],r2:['② ការលាតលើផ្ទៃទទួល (÷ cos {a}°)','② Spread over the surface (÷ cos {a}°)'],
+ r3:['③ គែមព្រាលដោយសារថាសព្រះអាទិត្យ','③ Edge blur from the sun’s disc'],rDimG:['ទំហំស្នាម (ទទឹង × បណ្តោយ)','Spot size (width × length)'],rDimW:['ទំហំស្នាម (ទទឹង × កម្ពស់)','Spot size (width × height)'],
+ rMsz:['ទំហំកញ្ចក់','Mirror size'],rArea:['ផ្ទៃស្នាមពន្លឺពិត','Actual spot area'],rMA:['ផ្ទៃកញ្ចក់','Mirror area'],
  wMiss:['ពន្លឺធ្លាក់ដល់ដីមុនដល់ជញ្ជាំង — បង្ហាញស្នាមលើដីជំនួស។','The light reaches the ground before the wall — showing the ground spot instead.'],
  wClip:['ស្នាមខ្លះធ្លាក់លើដីមុនដល់ជញ្ជាំង (គិតតែផ្នែកលើជញ្ជាំង)។','Part of the spot hits the ground before the wall (only the wall part is counted).'],
- wLow:['ព្រះអាទិត្យទាបណាស់ — ស្នាមលើដីលាតវែងខ្លាំង ហើយអាចមានអ្វីបាំង។','The sun is very low — the ground spot is very long and may be blocked.'],
- litToday:['ថ្ងៃនេះ កញ្ចក់ទទួលពន្លឺព្រះអាទិត្យ៖ ','Mirror is sunlit today: '],and:[' និង ',' and '],noLit:['ថ្ងៃនេះ កញ្ចក់មុខនេះមិនទទួលពន្លឺព្រះអាទិត្យទេ','The mirror gets no direct sun today'],
- rise:['ថ្ងៃរះ','Sunrise'],set:['ថ្ងៃលិច','Sunset'],sunL:['ព្រះអាទិត្យ {a}° {d} · ខ្ពស់ {e}°','Sun {a}° {d} · elev {e}°'],
+ wLow:['ព្រះអាទិត្យទាបណាស់ — ស្នាមពន្លឺលើដីលាតវែងខ្លាំង ហើយអាចមានវត្ថុបាំង។','The sun is very low — the spot on the ground is very long and may be blocked.'],
+ litToday:['ថ្ងៃនេះ កញ្ចក់ទទួលពន្លឺព្រះអាទិត្យ៖ ','The mirror gets sunlight today: '],and:[' និង ',' and '],noLit:['ថ្ងៃនេះ កញ្ចក់មុខនេះមិនទទួលពន្លឺព្រះអាទិត្យទេ','The mirror gets no direct sun today'],
+ rise:['ថ្ងៃរះ','Sunrise'],set:['ថ្ងៃលិច','Sunset'],sunL:['ព្រះអាទិត្យ {a}° {d} · ខ្ពស់ {e}°','Sun {a}° {d} · {e}° high'],
  prevMonth:['ខែមុន','Previous month'],nextMonth:['ខែក្រោយ','Next month'],month:['ខែ','Month'],year:['ឆ្នាំ','Year'],
  evTitle:['ថ្ងៃបុណ្យ និងទិវាក្នុងខែ','Holidays and observances this month'],noEv:['មិនមានថ្ងៃបុណ្យក្នុងខែនេះ','No holidays this month'],
  calNote:['ក្រហម = ថ្ងៃឈប់សម្រាក · ខៀវ = ទិវា / ថ្ងៃពុទ្ធសាសនា · រូបព្រះចន្ទ = ថ្ងៃសីល។ ថ្ងៃចន្ទគតិគណនាតាមក្បួន (១៩០០–២១០០)។ ថ្ងៃឈប់សម្រាកផ្លូវការអាចប្រែប្រួលតាមអនុក្រឹត្យប្រចាំឆ្នាំ។','Red = public holiday · blue = observance / Buddhist day · moon = Sila (precept) day. Lunar dates are computed (1900–2100). Official holidays can change by yearly sub-decree.'],
- corr:['ត្រូវនឹងថ្ងៃទី {d} ខែ{m} ឆ្នាំ {y}','Gregorian: {m} {d}, {y}'],selLit:['កញ្ចក់ (មុខ {a}) ទទួលពន្លឺ៖ ','Mirror (facing {a}) sunlit: '],selNoLit:['កញ្ចក់មុខនេះមិនទទួលពន្លឺនៅថ្ងៃនេះទេ','This mirror gets no direct sun on this day'],
+ corr:['ត្រូវនឹងថ្ងៃទី {d} ខែ{m} ឆ្នាំ {y}','Gregorian date: {m} {d}, {y}'],selLit:['កញ្ចក់ (បែរមុខ {a}) ទទួលពន្លឺ៖ ','Mirror (facing {a}) gets sunlight: '],selNoLit:['កញ្ចក់មុខនេះមិនទទួលពន្លឺនៅថ្ងៃនេះទេ','This mirror gets no direct sun on this day'],
  loc:['ទីតាំងកញ្ចក់','Mirror location'],choose:['ជ្រើសទីតាំង','Choose a place'],lat:['រយៈទទឹង','Latitude'],lon:['រយៈបណ្តោយ','Longitude'],
  pasteL:['បិទភ្ជាប់តំណ ឬកូអរដោនេពី Google Maps','Paste a Google Maps link or coordinates'],use:['ប្រើ','Use'],
  pasteOk:['បានកំណត់ទីតាំង ','Location set: '],pasteErr:['រកមិនឃើញកូអរដោនេ — សូមចម្លងលេខដូចជា 11.5564, 104.9282 ពី Google Maps (ចុចសង្កត់លើផែនទី)។','No coordinates found — copy numbers like 11.5564, 104.9282 from Google Maps (long-press on the map).'],
@@ -653,10 +657,10 @@ const I={
  gmapB:['បង្ហាញ Google Map (ផ្កាយរណប)','Show Google Map (satellite)'],gmapNote:['បើផែនទីមិនបង្ហាញក្នុងផ្ទាំងនេះ សូមចុចតំណ «Google Maps» ខាងលើ។','If the map does not appear here, use the Google Maps links above.'],
  no3D:['មិនអាចផ្ទុកម៉ាស៊ីន 3D បានទេ','Could not load the 3D engine'],
  hudSmaller:['បង្រួមប្រអប់លទ្ធផល','Make the result card smaller'],hudBigger:['ពង្រីកប្រអប់លទ្ធផល','Make the result card bigger'],hudBg:['ផ្ទៃខាងក្រោយ៖ ','Background: '],
- bgGlass:['ថ្លាស្រាល','glass'],bgClear:['ថ្លាទាំងស្រុង','clear'],bgSolid:['ពេញ','solid'],
+ bgGlass:['ថ្លាស្រាល','glass'],bgClear:['ថ្លាទាំងស្រុង','clear'],bgSolid:['មិនថ្លា','solid'],
  groundT:['ពណ៌ដី','Ground colour'],skyT:['អង្សា និងគន្លងព្រះអាទិត្យ','Degrees & sun path'],skyDeg:['អង្សា','Degrees'],skyToday:['គន្លងថ្ងៃនេះ','Today’s path'],skySol:['រដូវក្តៅ / រងា','Summer / winter'],overview:['មើលមេឃទាំងមូល','Whole-sky view'],
  pSummer:['គន្លងរដូវក្តៅ · ២១ មិថុនា','Summer sun path · Jun 21'],pWinter:['គន្លងរដូវរងា · ២១ ធ្នូ','Winter sun path · Dec 21'],skyNoon:['ថ្ងៃត្រង់ {t} · ខ្ពស់ {e}°','Noon {t} · {e}° high'],faceSun:['បង្វិលទៅរកព្រះអាទិត្យ','Turn to the sun'],
- lgArc:['ទិសដែលពន្លឺចាំងចូលកញ្ចក់បាន','Sun can reach the mirror from here'],noKH:['មិនអាចផ្ទុកប្រតិទិនខ្មែរបានទេ','Could not load the Khmer calendar'],custom:['ផ្ទាល់ខ្លួន','Custom'],
+ lgArc:['ទិសដែលព្រះអាទិត្យអាចចាំងចូលកញ្ចក់បាន','Directions from which the sun can light the mirror'],noKH:['មិនអាចផ្ទុកប្រតិទិនខ្មែរបានទេ','Could not load the Khmer calendar'],custom:['ផ្ទាល់ខ្លួន','Custom'],
 };
 const t=(k,v)=>{let s=(I[k]||[k,k])[LANG==='en'?1:0];if(v)for(const x in v)s=s.split('{'+x+'}').join(v[x]);return s};
 const NUM=s=>LANG==='en'?String(s):KN(s);
@@ -1004,9 +1008,9 @@ function renderMirror(){
 }
 
 /* ---------- Khmer calendar ---------- */
-const FIXED={'1-1':['ទិវាចូលឆ្នាំសាកល','International New Year Day',1],'1-7':['ទិវាជ័យជម្នះលើរបបប្រល័យពូជសាសន៍','Victory over Genocide Day',1],'3-8':['ទិវានារីអន្តរជាតិ','International Women’s Day',1],'5-1':['ទិវាពលកម្មអន្តរជាតិ','International Labour Day',1],
+const FIXED={'1-1':['ទិវាចូលឆ្នាំសកល','International New Year’s Day',1],'1-7':['ទិវាជ័យជម្នះលើរបបប្រល័យពូជសាសន៍','Victory over Genocide Day',1],'3-8':['ទិវានារីអន្តរជាតិ','International Women’s Day',1],'5-1':['ទិវាពលកម្មអន្តរជាតិ','International Labour Day',1],
  '5-14':['ព្រះរាជពិធីបុណ្យចម្រើនព្រះជន្ម ព្រះមហាក្សត្រ','King’s Birthday',1],'6-1':['ទិវាកុមារអន្តរជាតិ','International Children’s Day',0],'6-18':['ព្រះរាជពិធីបុណ្យចម្រើនព្រះជន្ម ព្រះវររាជមាតា','Queen Mother’s Birthday',1],
- '9-24':['ទិវាប្រកាសរដ្ឋធម្មនុញ្ញ','Constitution Day',1],'10-1':['ទិវាមនុស្សចាស់កម្ពុជា','Cambodian Older Persons Day',0],'10-5':['ទិវាគ្រូបង្រៀនពិភពលោក','World Teachers’ Day',0],'10-15':['ទិវាប្រារព្ធពិធីគោរពព្រះវិញ្ញាណក្ខន្ធ ព្រះបរមរតនកោដ្ឋ','King Father’s Commemoration Day',1],
+ '9-24':['ទិវាប្រកាសរដ្ឋធម្មនុញ្ញ','Constitution Day',1],'10-1':['ទិវាមនុស្សចាស់កម្ពុជា','Cambodian Older Persons’ Day',0],'10-5':['ទិវាគ្រូបង្រៀនពិភពលោក','World Teachers’ Day',0],'10-15':['ទិវាប្រារព្ធពិធីគោរពព្រះវិញ្ញាណក្ខន្ធ ព្រះបរមរតនកោដ្ឋ','King Father’s Commemoration Day',1],
  '10-23':['ទិវារំលឹកកិច្ចព្រមព្រៀងសន្តិភាពទីក្រុងប៉ារីស','Paris Peace Agreement Day',0],'10-29':['ព្រះរាជពិធីគ្រងព្រះបរមរាជសម្បត្តិ','Coronation Day',1],'11-9':['ពិធីបុណ្យឯករាជ្យជាតិ','Independence Day',1],'12-29':['ទិវាសន្តិភាពនៅកម្ពុជា','Peace Day in Cambodia',1]};
 const khCache=new Map(),nyCache=new Map();
 function kh(y,m,d){const dt=new Date(Date.UTC(y,m-1,d));const k=dt.toISOString().slice(0,10);if(khCache.has(k))return khCache.get(k);
@@ -1166,7 +1170,7 @@ function applyLang(){
  $('playBtn').textContent=playing?t('pause'):t('play');
  $('mSel').innerHTML=SOLAR_E.map((n,i)=>`<option value="${i+1}">${LANG==='en'?n:SOLAR_K[i]+' · '+n}</option>`).join('');
  $('cityS').innerHTML=CITIES.map((c,i)=>`<option value="${i}">${c[0][LANG==='en'?1:0]}</option>`).join('');
- document.title=(LANG==='en'?'Sun Mirror Reflection':'ចំណាំងផ្លាត់ព្រះអាទិត្យ')+' · SunMirror';
+ document.title=(LANG==='en'?'Sunlight Reflection on a Mirror':'ចំណាំងផ្លាតពន្លឺព្រះអាទិត្យ')+' · SunMirror';
  renderCompass();syncInputs();applyHud();applyGround();applySky();
 }
 const setLang=l=>{LANG=l;store.set('sm-lang',l);applyLang();if(R)update(true)};
