@@ -583,6 +583,7 @@ table.kv{width:100%;border-collapse:collapse;font-size:15px}
 
 <script src="lib/three.min.js"></script>
 <script src="lib/OrbitControls.js"></script>
+<script src="lib/Reflector.js"></script>
 <script src="lib/momentkh.js"></script>
 <script>
 {
@@ -797,7 +798,7 @@ const PAL={
  dark:{secs:[0x40261f,0x3e311d,0x38361d,0x2b3822,0x1f3529,0x1e303b,0x2a2b42,0x37273d],ground:0x2a2925,g1:0x6a6455,g2:0x3e3b34,day:0x1b3656,dawn:0x5a3520,night:0x000000,ink:'#e8edf3',north:'#ff6b62',halo:'rgba(0,0,0,.85)',back:0x3a3a3a},
  gold:{secs:[0x5e4314,0x3a2a0e,0x4d3712,0x33250c,0x4d3712,0x3a2a0e,0x4d3712,0x33250c],ground:0x3a2a10,g1:0xd4a437,g2:0x6e5320,day:0x3b2a0f,dawn:0x7a4a12,night:0x0b0804,ink:'#f6dc8c',north:'#fff0b3',halo:'rgba(0,0,0,.85)',back:0x8a6216}};
 const pal=()=>PAL[root.getAttribute('data-mode')]||PAL.light;
-const box=$('view3d');let renderer,scene,camera,controls,dyn,sky,skyKey='',lastExt=1,sunLight,hemi,fitted=false,glow,groundMesh;
+const box=$('view3d');let renderer,scene,camera,controls,dyn,sky,skyKey='',lastExt=1,mirrorObj=null,mirrorKey='',sunLight,hemi,fitted=false,glow,groundMesh;
 const V=p=>new THREE.Vector3(p[0],p[2],-p[1]);
 function textSprite(txt,col,halo){const c=document.createElement('canvas');c.width=320;c.height=96;const g=c.getContext('2d');
  g.font='700 44px "Kantumruy Pro",sans-serif';g.textAlign='center';g.textBaseline='middle';g.lineWidth=8;g.strokeStyle=halo;g.strokeText(txt,160,48);g.fillStyle=col;g.fillText(txt,160,48);
@@ -863,6 +864,28 @@ function buildSky(P0){
   if(p.lbl&&sp.noon){const u=sunVec(sp.noon.az,sp.noon.el);const lb=labelSprite(p.lbl,'#'+p.col.toString(16).padStart(6,'0'),halo,0.042);lb.position.set(Rd*u[0],Rd*u[2]+Y+0.09,-Rd*u[1]);sky.add(lb)}
  }
 }
+/* the mirror: one solid frame + a real reflecting surface, rebuilt only when its size or theme changes */
+function buildMirror(R,H0,P0){
+ const md=root.getAttribute('data-mode');const key=[R.w,R.h,md].join('|');
+ if(key!==mirrorKey){
+  if(mirrorObj){mirrorObj.traverse(o=>{if(o.type==='Reflector'&&o.dispose)o.dispose();else{if(o.geometry)o.geometry.dispose();if(o.material)o.material.dispose()}});scene.remove(mirrorObj)}
+  mirrorKey=key;mirrorObj=new THREE.Group();
+  const th=Math.max(H0*0.045,0.0015);
+  const frame=new THREE.Mesh(new THREE.BoxGeometry(R.w*1.05,R.h*1.035,th),new THREE.MeshPhongMaterial({color:P0.back,shininess:md==='gold'?90:20}));
+  mirrorObj.add(frame);
+  const face=th/2+Math.max(H0*0.004,0.0002);
+  let surf;
+  if(THREE.Reflector){const px=Math.min(1024,Math.round(512*Math.max(1,R.w/R.h))),py=Math.min(1024,Math.round(512*Math.max(1,R.h/R.w)));
+   surf=new THREE.Reflector(new THREE.PlaneGeometry(R.w,R.h),{textureWidth:px,textureHeight:py,color:0xc9dbe8,clipBias:0.003,multisample:2})}
+  else surf=new THREE.Mesh(new THREE.PlaneGeometry(R.w,R.h),new THREE.MeshPhongMaterial({color:0xd6ecfa,specular:0xffffff,shininess:120,emissive:0x2a4050}));
+  surf.position.z=face;mirrorObj.add(surf);
+  // thin highlight line across the glass so it reads as glass even in shade
+  const hl=new THREE.Mesh(new THREE.PlaneGeometry(R.w*0.06,R.h*0.8),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.22,depthWrite:false}));
+  hl.position.set(-R.w*0.3,R.h*0.04,face+Math.max(H0*0.002,0.0001));hl.rotation.z=-0.18;mirrorObj.add(hl);
+  scene.add(mirrorObj);
+ }
+ mirrorObj.position.copy(V(R.C));mirrorObj.lookAt(V(add(R.C,R.n)));
+}
 function overview(){if(!camera)return;const e=lastExt;controls.target.set(0,0,0);
  const cur=camera.position.clone();const th=Math.atan2(cur.x,cur.z);const ph=0.9,rr=e*2.45*Math.max(1,1.25/camera.aspect);
  camera.position.set(rr*Math.sin(ph)*Math.sin(th),rr*Math.cos(ph),rr*Math.sin(ph)*Math.cos(th));controls.update();
@@ -881,6 +904,7 @@ function draw3d(R){
  const H0=Math.max(R.h,R.w,S.hb);const ext=Math.max(H0*5,(R.horiz||0)*1.4+H0*3,S.target==='wall'?S.D*1.3+H0*3:0);const EP=H0*0.01;
  const md=root.getAttribute('data-mode');const E0=(EARTH.find(e=>e.id===GROUND)||EARTH[0]).c;
  const gc=new THREE.Color(E0);if(md==='dark')gc.multiplyScalar(0.55);if(md==='gold')gc.lerp(new THREE.Color(0x3a2a10),0.45).multiplyScalar(0.8);
+ camera.near=Math.max(Math.min(ext,H0)*0.01,1e-5);camera.far=ext*80;camera.updateProjectionMatrix();controls.minDistance=H0*0.3;controls.maxDistance=ext*8;
  groundMesh.scale.set(ext*1.18,ext*1.18,1);groundMesh.material.color.copy(gc);lastExt=ext;buildSky(P0);sky.scale.setScalar(ext);
  const lum=gc.r*0.3+gc.g*0.59+gc.b*0.11;const gA=gc.clone().multiplyScalar(lum>0.35?0.62:1.9),gB=gc.clone().multiplyScalar(lum>0.35?0.8:1.4);
  const G1=md==='gold'?new THREE.Color(P0.g1):gA,G2=md==='gold'?new THREE.Color(P0.g2):gB;
@@ -900,13 +924,9 @@ function draw3d(R){
  if(R.sp.el>-1){const sb=new THREE.Mesh(new THREE.SphereGeometry(ext*0.034,24,16),new THREE.MeshBasicMaterial({color:0xffcf3a}));sb.position.copy(glow.position);dyn.add(sb);
   const u=R.s;dyn.add(line([[0,0,ext*0.004],[sd*u[0],sd*u[1],ext*0.004]],0xffb020,0.5,true,ext*0.08));dyn.add(line([[sd*u[0],sd*u[1],ext*0.004],add(mul(u,sd),[0,0,ext*0.004])],0xffb020,0.5,true,ext*0.08))}
  sunLight.position.copy(V(mul(R.s,10)));sunLight.intensity=R.day?0.9:0.05;hemi.intensity=R.day?0.75:0.25;
- const grp=new THREE.Group();
- const front=new THREE.Mesh(new THREE.PlaneGeometry(R.w,R.h),new THREE.MeshPhongMaterial({color:0xd6ecfa,specular:0xffffff,shininess:120,emissive:R.lit?0x3a5a70:0x101820}));
- front.position.z=H0*0.021;grp.add(front);
- const back=new THREE.Mesh(new THREE.BoxGeometry(R.w*1.04,R.h*1.03,H0*0.04),new THREE.MeshPhongMaterial({color:P0.back,shininess:root.getAttribute('data-mode')==='gold'?90:10}));grp.add(back);
- grp.position.copy(V(R.C));grp.lookAt(V(add(R.C,R.n)));dyn.add(grp);
+  buildMirror(R,H0,P0);
  if(S.hb>0.01)for(const sx of [-1,1]){const p=mul(R.u,sx*R.w*0.35);const leg=new THREE.Mesh(new THREE.CylinderGeometry(H0*0.02,H0*0.02,S.hb,8),new THREE.MeshLambertMaterial({color:0x444444}));leg.position.copy(V([p[0],p[1],S.hb/2]));dyn.add(leg)}
- dyn.add(new THREE.ArrowHelper(V(R.n).normalize(),V(R.C),H0*0.9,0x4c9bff,H0*0.2,H0*0.12));
+ dyn.add(new THREE.ArrowHelper(V(R.n).normalize(),V(add(R.C,mul(R.n,H0*0.03))),H0*0.9,0x4c9bff,H0*0.2,H0*0.12));
  if(R.lit){
   const inLen=Math.min(ext*0.6,H0*4);const inA=R.corners.map(p=>add(p,mul(R.s,inLen)));
   dyn.add(quads(inA,R.corners,0xffd34d,0.18));R.corners.forEach((p,i)=>dyn.add(line([inA[i],p],0xffc93c,0.9)));
