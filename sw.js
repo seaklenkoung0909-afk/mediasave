@@ -1,5 +1,5 @@
 /* SunMirror service worker: offline app shell */
-const CACHE='sunmirror-v4';
+const CACHE='sunmirror-v5';
 const ASSETS=['./','index.html','manifest.webmanifest','lib/three.min.js','lib/OrbitControls.js','lib/momentkh.js',
 'fonts/kp-khmer-400.woff2','fonts/kp-khmer-600.woff2','fonts/kp-khmer-700.woff2','fonts/kp-latin-400.woff2','fonts/kp-latin-600.woff2','fonts/kp-latin-700.woff2',
 'icons/icon-192.png','icons/icon-512.png','icons/apple-touch-icon.png','icons/favicon-32.png'];

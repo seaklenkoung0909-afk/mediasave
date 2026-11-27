@@ -170,6 +170,15 @@ html[lang=en] [data-lang=km],html[lang=km] [data-lang=en]{display:none!important
 .compass button[aria-pressed=true]{border-color:var(--acc);background:var(--acc2);font-weight:700}
 :root[data-mode=gold] .compass button[aria-pressed=true]{background:var(--accBg);color:var(--accInk);box-shadow:var(--shine)}
 :root[data-mode=gold] .compass button[aria-pressed=true] small{color:#3a2806}
+.chips{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.chips button{min-height:44px;border:1px solid var(--line);border-radius:10px;background:var(--card2);color:var(--ink);cursor:pointer;font-size:13px;font-weight:600;line-height:1.2;padding:4px 4px;display:flex;align-items:center;justify-content:center;gap:5px;text-align:center}
+.chips button[aria-pressed]::before{content:"";width:9px;height:9px;flex:none;border-radius:50%;border:2px solid var(--mute)}
+.chips button[aria-pressed=true]{border-color:var(--acc);background:var(--acc2)}
+.chips button[aria-pressed=true]::before{background:var(--acc);border-color:var(--acc)}
+:root[data-mode=gold] .chips button[aria-pressed=true]{border-color:#e0b04a;background:#2a1e0c}
+:root[data-mode=gold] .chips button[aria-pressed=true]::before{background:#e0b04a;border-color:#e0b04a}
+.chips .ov{background:var(--accBg);color:var(--accInk);border-color:transparent;box-shadow:var(--shine)}
+@media(max-width:420px){.chips{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .earth{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
 .earth button{min-height:58px;border:2px solid var(--line);border-radius:10px;background:var(--card2);color:var(--ink);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:4px 2px;font-size:12px;line-height:1.15}
 .earth i{width:26px;height:26px;border-radius:50%;box-shadow:inset 0 -3px 6px rgba(0,0,0,.25),inset 0 2px 3px rgba(255,255,255,.35),0 1px 3px rgba(0,0,0,.2)}
@@ -430,6 +439,15 @@ table.kv{width:100%;border-collapse:collapse;font-size:15px}
     <div id="wallBox" hidden><input type="range" id="wD" min="0" max="1000" step="1" data-i18n-aria="wallDist" aria-label="ចម្ងាយជញ្ជាំង"></div>
    </div>
    <div class="ctl">
+    <div class="ch"><b data-i18n="skyT">អង្សា និងគន្លងព្រះអាទិត្យ</b><span id="skyL"></span></div>
+    <div class="chips" id="skyChips">
+     <button type="button" data-k="deg" aria-pressed="true" data-i18n="skyDeg">អង្សា</button>
+     <button type="button" data-k="today" aria-pressed="true" data-i18n="skyToday">គន្លងថ្ងៃនេះ</button>
+     <button type="button" data-k="sol" aria-pressed="true" data-i18n="skySol">រដូវក្តៅ / រងា</button>
+     <button type="button" class="ov" id="overviewB" data-i18n="overview">មើលមេឃទាំងមូល</button>
+    </div>
+   </div>
+   <div class="ctl">
     <div class="ch"><b data-i18n="groundT">ពណ៌ដី</b><span id="earthL"></span></div>
     <div class="earth" id="earth" role="group" data-i18n-aria="groundT" aria-label="ពណ៌ដី"></div>
    </div>
@@ -623,7 +641,8 @@ const I={
  no3D:['មិនអាចផ្ទុកម៉ាស៊ីន 3D បានទេ','Could not load the 3D engine'],
  hudSmaller:['បង្រួមប្រអប់លទ្ធផល','Make the result card smaller'],hudBigger:['ពង្រីកប្រអប់លទ្ធផល','Make the result card bigger'],hudBg:['ផ្ទៃខាងក្រោយ៖ ','Background: '],
  bgGlass:['ថ្លាស្រាល','glass'],bgClear:['ថ្លាទាំងស្រុង','clear'],bgSolid:['ពេញ','solid'],
- groundT:['ពណ៌ដី','Ground colour'],faceSun:['បង្វិលទៅរកព្រះអាទិត្យ','Turn to the sun'],
+ groundT:['ពណ៌ដី','Ground colour'],skyT:['អង្សា និងគន្លងព្រះអាទិត្យ','Degrees & sun path'],skyDeg:['អង្សា','Degrees'],skyToday:['គន្លងថ្ងៃនេះ','Today’s path'],skySol:['រដូវក្តៅ / រងា','Summer / winter'],overview:['មើលមេឃទាំងមូល','Whole-sky view'],
+ pSummer:['គន្លងរដូវក្តៅ · ២១ មិថុនា','Summer sun path · Jun 21'],pWinter:['គន្លងរដូវរងា · ២១ ធ្នូ','Winter sun path · Dec 21'],skyNoon:['ថ្ងៃត្រង់ {t} · ខ្ពស់ {e}°','Noon {t} · {e}° high'],faceSun:['បង្វិលទៅរកព្រះអាទិត្យ','Turn to the sun'],
  lgArc:['ទិសដែលពន្លឺចាំងចូលកញ្ចក់បាន','Sun can reach the mirror from here'],noKH:['មិនអាចផ្ទុកប្រតិទិនខ្មែរបានទេ','Could not load the Khmer calendar'],custom:['ផ្ទាល់ខ្លួន','Custom'],
 };
 const t=(k,v)=>{let s=(I[k]||[k,k])[LANG==='en'?1:0];if(v)for(const x in v)s=s.split('{'+x+'}').join(v[x]);return s};
@@ -706,6 +725,13 @@ const T0=nowLocal(S.tz);S.date={y:T0.y,m:T0.m,d:T0.d};S.min=(T0.min>360&&T0.min<
 const save=()=>{const o={...S};delete o.date;delete o.min;store.set('sunmirror-mm',JSON.stringify(o))};
 const EARTH=[{id:'sand',n:['ខ្សាច់','Sand'],c:0xd6c69c},{id:'grass',n:['ស្មៅ','Grass'],c:0x7ea65a},{id:'red',n:['ដីក្រហម','Red soil'],c:0xb2643f},{id:'stone',n:['បេតុង','Concrete'],c:0xa6a49e},{id:'dark',n:['ដីខ្មៅ','Dark soil'],c:0x4d3d2d}];
 let GROUND=store.get('sm-earth','sand');if(!EARTH.some(e=>e.id===GROUND))GROUND='sand';
+const SKY={deg:true,today:true,sol:true};try{Object.assign(SKY,JSON.parse(store.get('sm-sky','{}')))}catch(e){}
+/* sun path for one date: points every 6 min while the sun is up, plus full-hour marks */
+function sunPath(dt){const pts=[],hrs=[];let noon=null;
+ for(let m=0;m<=1440;m+=6){const sp=sunPos(utcMs(dt,m,S.tz),S.lat,S.lon);if(sp.el>-0.5){pts.push([sp.az,Math.max(0,sp.el),m]);if(!noon||sp.el>noon.el)noon={el:sp.el,az:sp.az,m}}
+  if(m%60===0&&sp.el>0&&m<1440)hrs.push([sp.az,sp.el,m/60])}
+ return {pts,hrs,noon}}
+const hourLbl=h=>LANG==='en'?h+'h':'ម៉ោង'+KN(h);
 const utcMs=(dt,min,tz)=>Date.UTC(dt.y,dt.m-1,dt.d)+(min-tz*60)*6e4;
 
 /* ---------- geometry ---------- */
@@ -771,7 +797,7 @@ const PAL={
  dark:{secs:[0x40261f,0x3e311d,0x38361d,0x2b3822,0x1f3529,0x1e303b,0x2a2b42,0x37273d],ground:0x2a2925,g1:0x6a6455,g2:0x3e3b34,day:0x1b3656,dawn:0x5a3520,night:0x000000,ink:'#e8edf3',north:'#ff6b62',halo:'rgba(0,0,0,.85)',back:0x3a3a3a},
  gold:{secs:[0x5e4314,0x3a2a0e,0x4d3712,0x33250c,0x4d3712,0x3a2a0e,0x4d3712,0x33250c],ground:0x3a2a10,g1:0xd4a437,g2:0x6e5320,day:0x3b2a0f,dawn:0x7a4a12,night:0x0b0804,ink:'#f6dc8c',north:'#fff0b3',halo:'rgba(0,0,0,.85)',back:0x8a6216}};
 const pal=()=>PAL[root.getAttribute('data-mode')]||PAL.light;
-const box=$('view3d');let renderer,scene,camera,controls,dyn,sunLight,hemi,fitted=false,glow,groundMesh;
+const box=$('view3d');let renderer,scene,camera,controls,dyn,sky,skyKey='',lastExt=1,sunLight,hemi,fitted=false,glow,groundMesh;
 const V=p=>new THREE.Vector3(p[0],p[2],-p[1]);
 function textSprite(txt,col,halo){const c=document.createElement('canvas');c.width=320;c.height=96;const g=c.getContext('2d');
  g.font='700 44px "Kantumruy Pro",sans-serif';g.textAlign='center';g.textBaseline='middle';g.lineWidth=8;g.strokeStyle=halo;g.strokeText(txt,160,48);g.fillStyle=col;g.fillText(txt,160,48);
@@ -788,11 +814,59 @@ function init3d(){
  sunLight=new THREE.DirectionalLight(0xfff4d6,0.9);scene.add(sunLight);
  groundMesh=new THREE.Mesh(new THREE.CircleGeometry(1,96),new THREE.MeshLambertMaterial({color:0xcbbf9c}));groundMesh.rotation.x=-Math.PI/2;scene.add(groundMesh);
  glow=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex(),transparent:true,depthWrite:false}));scene.add(glow);
- dyn=new THREE.Group();scene.add(dyn);
+ dyn=new THREE.Group();scene.add(dyn);sky=new THREE.Group();scene.add(sky);
  const ro=new ResizeObserver(()=>{const W=box.clientWidth,H=box.clientHeight;if(!W||!H)return;renderer.setSize(W,H,false);camera.aspect=W/H;camera.updateProjectionMatrix()});ro.observe(box);
  (function loop(){requestAnimationFrame(loop);controls.update();renderer.render(scene,camera)})();
  return true;
 }
+function labelSprite(txt,col,halo,hgt){const c=document.createElement('canvas');const g=c.getContext('2d');const f='700 44px "Kantumruy Pro",sans-serif';g.font=f;
+ const w=Math.ceil(g.measureText(txt).width)+24;c.width=w;c.height=64;const g2=c.getContext('2d');g2.font=f;g2.textAlign='center';g2.textBaseline='middle';
+ g2.lineWidth=8;g2.lineJoin='round';g2.strokeStyle=halo;g2.strokeText(txt,w/2,34);g2.fillStyle=col;g2.fillText(txt,w/2,34);
+ const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(c),depthTest:false,transparent:true}));sp.scale.set(hgt*w/64,hgt,1);return sp}
+function flatText(txt,col,halo,w,h,px){const c=document.createElement('canvas');c.width=Math.round(px*w/h);c.height=px;const g=c.getContext('2d');
+ g.font=`700 ${Math.round(px*0.72)}px "Kantumruy Pro",sans-serif`;g.textAlign='center';g.textBaseline='middle';
+ if(halo){g.lineWidth=px*0.16;g.strokeStyle=halo;g.lineJoin='round';g.strokeText(txt,c.width/2,px*0.54)}g.fillStyle=col;g.fillText(txt,c.width/2,px*0.54);
+ const tx=new THREE.CanvasTexture(c);tx.anisotropy=4;
+ return new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({map:tx,transparent:true,depthWrite:false}))}
+function onGround(obj,az,r,y){const holder=new THREE.Object3D();holder.rotation.y=-az*D2R;obj.rotation.x=-Math.PI/2;obj.position.set(0,y,-r);holder.add(obj);return holder}
+function buildSky(P0){
+ const md=root.getAttribute('data-mode');const key=[LANG,md,S.date.y,S.date.m,S.date.d,S.lat,S.lon,S.tz,SKY.deg,SKY.today,SKY.sol].join('|');
+ if(key===skyKey)return;skyKey=key;
+ sky.traverse(o=>{if(o.geometry)o.geometry.dispose();if(o.material){if(o.material.map)o.material.map.dispose();o.material.dispose()}});sky.clear();
+ const ring=md==='gold'?0xe0b04a:md==='dark'?0xd5dde6:0x26313d,ringCss=md==='gold'?'#f6dc8c':md==='dark'?'#e8edf3':'#1b2430',halo=md==='light'?'rgba(255,255,255,.85)':'rgba(0,0,0,.75)';
+ const Rd=0.9,Y=0.004;
+ if(SKY.deg){
+  const pos=[];for(let d=0;d<360;d++){const r0=d%10===0?0.9:d%5===0?0.925:0.95;const a=d*D2R;pos.push(r0*Math.sin(a),Y,-r0*Math.cos(a),Math.sin(a),Y,-Math.cos(a))}
+  const tg=new THREE.BufferGeometry();tg.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));
+  sky.add(new THREE.LineSegments(tg,new THREE.LineBasicMaterial({color:ring,transparent:true,opacity:.8})));
+  for(const r of [1,0.9]){const cp=[];for(let i=0;i<=180;i++){const a=i*2*D2R;cp.push(new THREE.Vector3(r*Math.sin(a),Y,-r*Math.cos(a)))}
+   sky.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(cp),new THREE.LineBasicMaterial({color:ring,transparent:true,opacity:r===1?.9:.5})))}
+  for(let d=0;d<360;d+=10){if(d%90===0)continue;sky.add(onGround(flatText(String(d),ringCss,halo,0.11,0.05,64),d,1.055,Y))}
+  const C4=LANG==='en'?['N','E','S','W']:['ជើង','កើត','ត្បូង','លិច'];
+  C4.forEach((tx,i)=>{const a=i*90;sky.add(onGround(flatText(tx,i===0?P0.north:ringCss,halo,0.2,0.08,96),a,0.835,Y*1.5));
+   sky.add(onGround(flatText(String(a)+'°',i===0?P0.north:ringCss,halo,0.11,0.05,64),a,1.055,Y))});
+ }
+ const paths=[];
+ if(SKY.sol){paths.push({dt:{y:S.date.y,m:6,d:21},col:0xff8a3d,ball:0xffb070,lbl:t('pSummer'),r:0.016,dash:[0.022,0.016],op:.85});
+  paths.push({dt:{y:S.date.y,m:12,d:21},col:0x5fa8ff,ball:0x9cc8ff,lbl:t('pWinter'),r:0.016,dash:[0.022,0.016],op:.85})}
+ if(SKY.today)paths.push({dt:S.date,col:0xffc21a,ball:0xe8de3a,lbl:'',r:0.024,dash:[0.03,0.012],op:1,today:true});
+ const tNoon=SKY.today?sunPath(S.date).noon:null;
+ for(const p of paths){const sp=sunPath(p.dt);if(sp.pts.length<2)continue;const near=!p.today&&tNoon&&sp.noon&&Math.abs(sp.noon.el-tNoon.el)<6;
+  const v=sp.pts.map(([az,el])=>{const u=sunVec(az,el);return new THREE.Vector3(Rd*u[0],Rd*u[2]+Y,-Rd*u[1])});
+  const lg=new THREE.BufferGeometry().setFromPoints(v);const ln=new THREE.Line(lg,new THREE.LineDashedMaterial({color:p.col,dashSize:p.dash[0],gapSize:p.dash[1],transparent:true,opacity:p.op}));ln.computeLineDistances();sky.add(ln);
+  // shadow of the path on the ground (azimuth only)
+  if(p.today){const gp=sp.pts.map(([az,el])=>{const r=Rd*Math.cos(el*D2R);return new THREE.Vector3(r*Math.sin(az*D2R),Y,-r*Math.cos(az*D2R))});
+   sky.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(gp),new THREE.LineBasicMaterial({color:p.col,transparent:true,opacity:.35})))}
+  for(const [az,el,h] of sp.hrs){const u=sunVec(az,el);const b=new THREE.Mesh(new THREE.SphereGeometry(p.r,16,12),new THREE.MeshBasicMaterial({color:p.ball}));
+   b.position.set(Rd*u[0],Rd*u[2]+Y,-Rd*u[1]);sky.add(b);
+   if(!near&&(h%2===0||p.today&&sp.hrs.length<8)){const lb=labelSprite(hourLbl(h),p.today?ringCss:'#'+p.col.toString(16).padStart(6,'0'),halo,p.today?0.045:0.036);lb.position.set(Rd*1.07*u[0],Rd*1.07*u[2]+Y+0.03,-Rd*1.07*u[1]);sky.add(lb)}}
+  if(p.lbl&&sp.noon){const u=sunVec(sp.noon.az,sp.noon.el);const lb=labelSprite(p.lbl,'#'+p.col.toString(16).padStart(6,'0'),halo,0.042);lb.position.set(Rd*u[0],Rd*u[2]+Y+0.09,-Rd*u[1]);sky.add(lb)}
+ }
+}
+function overview(){if(!camera)return;const e=lastExt;controls.target.set(0,0,0);
+ const cur=camera.position.clone();const th=Math.atan2(cur.x,cur.z);const ph=0.9,rr=e*2.45*Math.max(1,1.25/camera.aspect);
+ camera.position.set(rr*Math.sin(ph)*Math.sin(th),rr*Math.cos(ph),rr*Math.sin(ph)*Math.cos(th));controls.update();
+ if(!matchMedia('(min-width:700px) and (min-height:560px)').matches)box.scrollIntoView({behavior:'smooth',block:'start'})}
 function clearDyn(){dyn.traverse(o=>{if(o.geometry)o.geometry.dispose();if(o.material){if(o.material.map)o.material.map.dispose();o.material.dispose()}});dyn.clear()}
 function line(pts,col,op=1,dash,sz=1){const g=new THREE.BufferGeometry().setFromPoints(pts.map(V));
  const m=dash?new THREE.LineDashedMaterial({color:col,dashSize:0.06*sz,gapSize:0.04*sz,transparent:true,opacity:op}):new THREE.LineBasicMaterial({color:col,transparent:op<1,opacity:op});
@@ -807,22 +881,24 @@ function draw3d(R){
  const H0=Math.max(R.h,R.w,S.hb);const ext=Math.max(H0*5,(R.horiz||0)*1.4+H0*3,S.target==='wall'?S.D*1.3+H0*3:0);const EP=H0*0.01;
  const md=root.getAttribute('data-mode');const E0=(EARTH.find(e=>e.id===GROUND)||EARTH[0]).c;
  const gc=new THREE.Color(E0);if(md==='dark')gc.multiplyScalar(0.55);if(md==='gold')gc.lerp(new THREE.Color(0x3a2a10),0.45).multiplyScalar(0.8);
- groundMesh.scale.set(ext,ext,1);groundMesh.material.color.copy(gc);
+ groundMesh.scale.set(ext*1.18,ext*1.18,1);groundMesh.material.color.copy(gc);lastExt=ext;buildSky(P0);sky.scale.setScalar(ext);
  const lum=gc.r*0.3+gc.g*0.59+gc.b*0.11;const gA=gc.clone().multiplyScalar(lum>0.35?0.62:1.9),gB=gc.clone().multiplyScalar(lum>0.35?0.8:1.4);
  const G1=md==='gold'?new THREE.Color(P0.g1):gA,G2=md==='gold'?new THREE.Color(P0.g2):gB;
  for(let i=0;i<8;i++){const a=(i*45+22.5)*D2R;dyn.add(line([[0,0,EP*0.3],[ext*Math.sin(a),ext*Math.cos(a),EP*0.3]],G1.getHex(),0.45))}
  const cell=[0.005,0.01,0.02,0.05,0.1,0.2,0.5,1,2,5,10,20,50].find(v=>v>=ext/8)||100;
  const g=new THREE.GridHelper(Math.ceil(ext/cell)*cell*2,Math.ceil(ext/cell)*2,G1,G2);g.position.y=EP*0.2;g.material.transparent=true;g.material.opacity=.5;dyn.add(g);
  const labs=LANG==='en'?['N','NE','E','SE','S','SW','W','NW']:['ជើង N','ឦសាន','កើត E','អាគ្នេយ៍','ត្បូង S','និរតី','លិច W','ពាយព្យ'];
- labs.forEach((tx,i)=>{const a=i*45,card=i%2===0;const sp=textSprite(tx,a===0?P0.north:P0.ink,P0.halo);const rr=ext*(card?0.93:0.88);sp.position.copy(V([rr*Math.sin(a*D2R),rr*Math.cos(a*D2R),ext*0.05]));const sc=ext/7*(card?1:0.72);sp.scale.set(2*sc,0.6*sc,1);dyn.add(sp)});
- {const r1=ext*0.76,r2=ext*0.82,rr=(r1+r2)/2;
+ if(!SKY.deg)labs.forEach((tx,i)=>{const a=i*45,card=i%2===0;const sp=textSprite(tx,a===0?P0.north:P0.ink,P0.halo);const rr=ext*(card?0.93:0.88);sp.position.copy(V([rr*Math.sin(a*D2R),rr*Math.cos(a*D2R),ext*0.05]));const sc=ext/7*(card?1:0.72);sp.scale.set(2*sc,0.6*sc,1);dyn.add(sp)});
+ {const r1=ext*0.7,r2=ext*0.75,rr=(r1+r2)/2;
   const rm=new THREE.Mesh(new THREE.RingGeometry(r1,r2,72,1,(-S.mAz)*D2R,Math.PI),new THREE.MeshBasicMaterial({color:0x2f7fe6,transparent:true,opacity:.5,side:THREE.DoubleSide,depthWrite:false}));
   rm.rotation.x=-Math.PI/2;rm.position.y=EP*0.4;dyn.add(rm);
   if(R.day){const sa=R.sp.az*D2R;const sm=new THREE.Mesh(new THREE.CircleGeometry(ext*0.04,28),new THREE.MeshBasicMaterial({color:R.lit?0xffc23a:0xff6b3a}));
    sm.rotation.x=-Math.PI/2;sm.position.copy(V([rr*Math.sin(sa),rr*Math.cos(sa),EP*0.7]));dyn.add(sm);
    dyn.add(line([[0,0,EP*0.5],[rr*Math.sin(sa),rr*Math.cos(sa),EP*0.5]],0xffb020,0.9,true,ext*0.12))}}
  scene.background=skyCol(R.sp.el,P0);box.style.background='#'+scene.background.getHexString();
- const sd=ext*1.1;glow.position.copy(V(mul(R.s,sd)));const gs=ext*0.25;glow.scale.set(gs,gs,1);glow.visible=R.sp.el>-2;
+ const sd=ext*0.9;glow.position.copy(V(add(mul(R.s,sd),[0,0,ext*0.004])));const gs=ext*0.2;glow.scale.set(gs,gs,1);glow.visible=R.sp.el>-2;
+ if(R.sp.el>-1){const sb=new THREE.Mesh(new THREE.SphereGeometry(ext*0.034,24,16),new THREE.MeshBasicMaterial({color:0xffcf3a}));sb.position.copy(glow.position);dyn.add(sb);
+  const u=R.s;dyn.add(line([[0,0,ext*0.004],[sd*u[0],sd*u[1],ext*0.004]],0xffb020,0.5,true,ext*0.08));dyn.add(line([[sd*u[0],sd*u[1],ext*0.004],add(mul(u,sd),[0,0,ext*0.004])],0xffb020,0.5,true,ext*0.08))}
  sunLight.position.copy(V(mul(R.s,10)));sunLight.intensity=R.day?0.9:0.05;hemi.intensity=R.day?0.75:0.25;
  const grp=new THREE.Group();
  const front=new THREE.Mesh(new THREE.PlaneGeometry(R.w,R.h),new THREE.MeshPhongMaterial({color:0xd6ecfa,specular:0xffffff,shininess:120,emissive:R.lit?0x3a5a70:0x101820}));
@@ -981,10 +1057,22 @@ function renderMap(){
  for(let i=1;i<=3;i++)s+=`<circle cx="${cx}" cy="${cy}" r="${i*step*sc}" fill="none" stroke="currentColor" stroke-opacity=".18"/><text x="${cx+i*step*sc*0.71+4}" y="${cy+i*step*sc*0.71+14}" font-size="12" fill="currentColor" fill-opacity=".6">${mlen(i*step)}</text>`;
  const L4=LANG==='en'?['N','E','S','W']:['ជ','ក','ត','ល'];
  [0,90,180,270].forEach((a,i)=>{const p=[cx+(rad+18)*Math.sin(a*D2R),cy-(rad+18)*Math.cos(a*D2R)];s+=`<text x="${p[0]}" y="${p[1]+5}" text-anchor="middle" font-size="15" font-weight="700" fill="${a===0?'var(--red)':'currentColor'}">${L4[i]}</text>`});
- {const ar=rad-4;const pt=a=>[cx+ar*Math.sin(a*D2R),cy-ar*Math.cos(a*D2R)];const p0=pt(S.mAz-90),p1=pt(S.mAz),p2=pt(S.mAz+90);
-  s+=`<path d="M${p0[0]} ${p0[1]} A${ar} ${ar} 0 0 1 ${p1[0]} ${p1[1]} A${ar} ${ar} 0 0 1 ${p2[0]} ${p2[1]}" fill="none" stroke="#2f7fe6" stroke-opacity=".45" stroke-width="9" stroke-linecap="round"/>`}
- const sa=R.sp.az*D2R;const sp=[cx+rad*Math.sin(sa),cy-rad*Math.cos(sa)];
- if(R.day)s+=`<line x1="${sp[0]}" y1="${sp[1]}" x2="${cx}" y2="${cy}" stroke="#f2a900" stroke-width="3" stroke-dasharray="6 5"/><circle cx="${sp[0]}" cy="${sp[1]}" r="13" fill="#f2a900"/><text x="${sp[0]}" y="${sp[1]+4}" text-anchor="middle" font-size="10" fill="#4a3000">${t('sunG')}</text>`;
+ for(let d=0;d<360;d+=5){const l=d%30===0?12:d%10===0?8:4;const a=d*D2R;s+=`<line x1="${cx+rad*Math.sin(a)}" y1="${cy-rad*Math.cos(a)}" x2="${cx+(rad-l)*Math.sin(a)}" y2="${cy-(rad-l)*Math.cos(a)}" stroke="currentColor" stroke-opacity="${d%30===0?.8:.45}" stroke-width="${d%30===0?1.6:1}"/>`;
+  if(d%30===0&&d%90!==0)s+=`<text x="${cx+(rad-22)*Math.sin(a)}" y="${cy-(rad-22)*Math.cos(a)+4}" text-anchor="middle" font-size="10" fill="currentColor" fill-opacity=".7">${d}°</text>`}
+ s+=`<circle cx="${cx}" cy="${cy}" r="${rad}" fill="none" stroke="currentColor" stroke-opacity=".5"/>`;
+ const PP=(az,el)=>{const r=rad*(1-Math.max(0,el)/90);return [cx+r*Math.sin(az*D2R),cy-r*Math.cos(az*D2R)]};
+ const tNoonP=SKY.today?sunPath(S.date).noon:null;
+ const pth=(dt,col,w,dash,lbl)=>{const sp=sunPath(dt);if(sp.pts.length<2)return;const near=lbl&&tNoonP&&sp.noon&&Math.abs(sp.noon.el-tNoonP.el)<6;
+  s+=`<polyline points="${sp.pts.map(([az,el])=>PP(az,el).map(x=>x.toFixed(1)).join(',')).join(' ')}" fill="none" stroke="${col}" stroke-width="${w}" stroke-dasharray="${dash}" stroke-linecap="round"/>`;
+  for(const [az,el,h] of sp.hrs){const q=PP(az,el);s+=`<circle cx="${q[0]}" cy="${q[1]}" r="${w+2}" fill="${col}" stroke="var(--bg)" stroke-width="1"/>`;
+   if(h%2===0&&!near)s+=`<text x="${q[0]}" y="${q[1]-8}" text-anchor="middle" font-size="10" font-weight="700" fill="${col}">${hourLbl(h)}</text>`}
+  if(lbl&&sp.noon){const q=PP(sp.noon.az,sp.noon.el);s+=`<text x="${q[0]}" y="${q[1]+18}" text-anchor="middle" font-size="11" font-weight="600" fill="${col}">${lbl}</text>`}};
+ if(SKY.sol){pth({y:S.date.y,m:6,d:21},'#ff8a3d',1.6,'5 4',t('pSummer'));pth({y:S.date.y,m:12,d:21},'#4f9bff',1.6,'5 4',t('pWinter'))}
+ if(SKY.today)pth(S.date,'#e0a800',2.4,'7 4','');
+ {const ar=rad+5;const pt=a=>[cx+ar*Math.sin(a*D2R),cy-ar*Math.cos(a*D2R)];const p0=pt(S.mAz-90),p1=pt(S.mAz),p2=pt(S.mAz+90);
+  s+=`<path d="M${p0[0]} ${p0[1]} A${ar} ${ar} 0 0 1 ${p1[0]} ${p1[1]} A${ar} ${ar} 0 0 1 ${p2[0]} ${p2[1]}" fill="none" stroke="#2f7fe6" stroke-opacity=".45" stroke-width="6" stroke-linecap="round"/>`}
+ const sp=PP(R.sp.az,R.sp.el);
+ if(R.day)s+=`<line x1="${sp[0]}" y1="${sp[1]}" x2="${cx}" y2="${cy}" stroke="#f2a900" stroke-width="3" stroke-dasharray="6 5"/><circle cx="${sp[0]}" cy="${sp[1]}" r="11" fill="#ffcf3a" stroke="#b47800" stroke-width="2"/><text x="${sp[0]}" y="${sp[1]+4}" text-anchor="middle" font-size="9" fill="#4a3000">${t('sunG')}</text>`;
  const half=Math.max(10,R.w*sc/2);const u=R.u;const a=[cx-u[0]*half,cy+u[1]*half],b=[cx+u[0]*half,cy-u[1]*half];
  s+=`<line x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}" stroke="var(--acc)" stroke-width="6" stroke-linecap="round"/><line x1="${cx}" y1="${cy}" x2="${cx+R.n[0]*24}" y2="${cy-R.n[1]*24}" stroke="var(--acc)" stroke-width="2"/>`;
  if(R.lit){const e=P(R.spotC[0],R.spotC[1]);s+=`<line x1="${cx}" y1="${cy}" x2="${e[0]}" y2="${e[1]}" stroke="#ff8a00" stroke-width="3.5"/><circle cx="${e[0]}" cy="${e[1]}" r="9" fill="#fff0a0" stroke="#ff8a00" stroke-width="3"/>`;
@@ -1003,7 +1091,7 @@ function update(full){
  R=compute();draw3d(R);renderMirror();if(!$('p-map').hidden)renderMap();
  $('time').value=S.min;if(document.activeElement!==$('tIn'))$('tIn').value=hm(S.min);
  $('sunL').textContent=R.day?t('sunL',{a:fmt(R.sp.az,0),d:dirName(R.sp.az),e:fmt(R.sp.el,0)}):t('night');
- if(full)renderCal();else renderSel();
+ if(full){renderCal();applySky()}else renderSel();
  save();
 }
 window.__redraw=()=>{if(R){draw3d(R);if(!$('p-map').hidden)renderMap()}};
@@ -1027,6 +1115,10 @@ function applyHud(){const h=$('hud');h.style.setProperty('--hs',HSC[HS]);h.datas
  store.set('sm-hud2',String(HS));store.set('sm-hudbg',HB)}
 $('hudMinus').onclick=()=>{if(HS>0){HS--;applyHud()}};
 $('hudPlus').onclick=()=>{if(HS<HMAX){HS++;applyHud()}};
+function applySky(){document.querySelectorAll('#skyChips button[data-k]').forEach(b=>b.setAttribute('aria-pressed',!!SKY[b.dataset.k]));store.set('sm-sky',JSON.stringify(SKY));
+ if(R&&R.day!==undefined){const sp=sunPath(S.date);$('skyL').textContent=sp.noon?t('skyNoon',{t:hm(sp.noon.m),e:fmt(sp.noon.el,0)}):''}}
+$('skyChips').addEventListener('click',e=>{const b=e.target.closest('button[data-k]');if(!b)return;SKY[b.dataset.k]=!SKY[b.dataset.k];applySky();if(R){draw3d(R);if(!$('p-map').hidden)renderMap()}});
+$('overviewB').onclick=overview;
 $('faceSun').onclick=()=>{if(R&&R.day){fitted=false;setAz(Math.round(R.sp.az))}};
 $('hudBg').onclick=()=>{HB=BGS[(BGS.indexOf(HB)+1)%BGS.length];applyHud()};
 function applyGround(){const L=LANG==='en'?1:0;
@@ -1043,7 +1135,7 @@ function applyLang(){
  $('mSel').innerHTML=SOLAR_E.map((n,i)=>`<option value="${i+1}">${LANG==='en'?n:SOLAR_K[i]+' · '+n}</option>`).join('');
  $('cityS').innerHTML=CITIES.map((c,i)=>`<option value="${i}">${c[0][LANG==='en'?1:0]}</option>`).join('');
  document.title=(LANG==='en'?'Sun Mirror Reflection':'ចំណាំងផ្លាត់ព្រះអាទិត្យ')+' · SunMirror';
- renderCompass();syncInputs();applyHud();applyGround();
+ renderCompass();syncInputs();applyHud();applyGround();applySky();
 }
 const setLang=l=>{LANG=l;store.set('sm-lang',l);applyLang();if(R)update(true)};
 $('langB').onclick=()=>setLang(LANG==='en'?'km':'en');$('lgKm').onclick=()=>setLang('km');$('lgEn').onclick=()=>setLang('en');
