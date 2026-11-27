@@ -118,12 +118,30 @@ html[lang=en] [data-lang=km],html[lang=km] [data-lang=en]{display:none!important
 .panel{display:flex;flex-direction:column;min-height:0;padding-bottom:env(safe-area-inset-bottom)}
 .fig{position:relative;flex:1;min-height:300px;background:var(--fig);overflow:hidden;touch-action:none}
 .fig canvas{position:absolute;inset:0;width:100%!important;height:100%!important;display:block}
-.hud{position:absolute;left:12px;top:12px;max-width:min(340px,calc(100% - 24px));background:var(--hud);border-radius:14px;padding:12px 14px;box-shadow:0 6px 24px rgba(0,0,0,.22);pointer-events:none;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+:root,:root[data-mode=light]{--hudGlass:rgba(255,255,255,.42);--txtHalo:0 0 2px rgba(255,255,255,.95),0 0 8px rgba(255,255,255,.85)}
+:root[data-mode=dark]{--hudGlass:rgba(0,0,0,.4);--txtHalo:0 0 2px #000,0 0 8px rgba(0,0,0,.9)}
+:root[data-mode=gold]{--hudGlass:rgba(12,8,3,.45);--txtHalo:0 0 2px #000,0 0 8px rgba(0,0,0,.9)}
+.hud{--hs:1;--hb:1;position:absolute;left:12px;top:12px;max-width:min(calc(360px * var(--hs) * var(--hb)),calc(100% - 24px));min-width:170px;border-radius:14px;padding:calc(12px * var(--hs) * var(--hb)) calc(14px * var(--hs) * var(--hb)) 8px;pointer-events:none;transition:background .2s,padding .2s}
+.hud[data-bg=solid]{background:var(--hud);box-shadow:0 6px 24px rgba(0,0,0,.22)}
+.hud[data-bg=glass]{background:var(--hudGlass);box-shadow:0 4px 18px rgba(0,0,0,.14);-webkit-backdrop-filter:blur(6px) saturate(1.2);backdrop-filter:blur(6px) saturate(1.2)}
+.hud[data-bg=glass] .verdict,.hud[data-bg=glass] .sm,.hud[data-bg=clear] .verdict,.hud[data-bg=clear] .sm,.hud[data-bg=clear] .big{text-shadow:var(--txtHalo)}
+.hud[data-bg=clear]{background:none;box-shadow:none}
+:root[data-mode=gold] .hud[data-bg=clear]{border-color:transparent}
+.hud.compact .sm{display:none}
+.hudtools{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;pointer-events:auto}
+.hudtools button{min-width:44px;height:38px;padding:0 8px;border-radius:9px;border:1px solid var(--line);background:var(--card2);color:var(--ink);font-weight:700;font-size:15px;cursor:pointer;display:grid;place-items:center;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.hud[data-bg=glass] .hudtools button,.hud[data-bg=clear] .hudtools button{background:var(--hudGlass);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.hudtools button:disabled{opacity:.35;cursor:default}
+.hudtools svg{width:18px;height:18px}
 :root[data-mode=gold] .hud{border:1px solid #6e5320}
-.hud .big{font-size:clamp(30px,4vw,42px);font-weight:700;line-height:1.05;color:var(--sunink)}
+.hud .big{font-size:calc(38px * var(--hs) * var(--hb));font-weight:700;line-height:1.05;color:var(--sunink)}
 :root[data-mode=gold] .hud .big{background:linear-gradient(100deg,#c8922c,#fff0b3 45%,#e0b04a 60%,#a87a20);-webkit-background-clip:text;background-clip:text;color:transparent}
-.hud .verdict{font-weight:600;font-size:17px;line-height:1.3;margin-top:2px}
-.hud .sm{font-size:13px;color:var(--mute);margin-top:4px;line-height:1.45}
+:root[data-mode=gold] .hud .big,:root[data-mode=gold] .hud[data-bg] .big{text-shadow:none;filter:drop-shadow(0 1px 2px rgba(0,0,0,.85))}
+.hud .verdict{font-weight:600;font-size:max(12px,calc(17px * var(--hs) * var(--hb)));line-height:1.3;margin-top:2px}
+.hud .sm{font-size:max(11px,calc(13px * var(--hs) * var(--hb)));color:var(--mute);margin-top:4px;line-height:1.45}
+.hud[data-bg=glass] .sm,.hud[data-bg=clear] .sm{color:var(--ink);opacity:.85}
+.hudtools .face{width:auto;padding:0 12px;font-size:14px;background:var(--accBg)!important;color:var(--accInk);border-color:transparent;box-shadow:var(--shine)}
+.hudtools .face[hidden]{display:none}
 .fitbtn{position:absolute;right:12px;top:12px}
 .legend{position:absolute;right:12px;bottom:12px;font-size:13px;background:var(--hud);border-radius:10px;padding:6px 10px;display:flex;flex-direction:column;gap:2px;pointer-events:none}
 .legend i{display:inline-block;width:18px;height:4px;border-radius:2px;margin-inline-end:6px;vertical-align:middle}
@@ -152,6 +170,11 @@ html[lang=en] [data-lang=km],html[lang=km] [data-lang=en]{display:none!important
 .compass button[aria-pressed=true]{border-color:var(--acc);background:var(--acc2);font-weight:700}
 :root[data-mode=gold] .compass button[aria-pressed=true]{background:var(--accBg);color:var(--accInk);box-shadow:var(--shine)}
 :root[data-mode=gold] .compass button[aria-pressed=true] small{color:#3a2806}
+.earth{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+.earth button{min-height:58px;border:2px solid var(--line);border-radius:10px;background:var(--card2);color:var(--ink);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:4px 2px;font-size:12px;line-height:1.15}
+.earth i{width:26px;height:26px;border-radius:50%;box-shadow:inset 0 -3px 6px rgba(0,0,0,.25),inset 0 2px 3px rgba(255,255,255,.35),0 1px 3px rgba(0,0,0,.2)}
+.earth button[aria-pressed=true]{border-color:var(--acc);font-weight:700}
+:root[data-mode=gold] .earth button[aria-pressed=true]{border-color:#e0b04a}
 .seg{display:flex;border:1px solid var(--line);border-radius:10px;overflow:hidden}
 .seg button{flex:1;min-height:44px;border:0;background:var(--card2);cursor:pointer;font-weight:600;color:var(--ink)}
 .seg button[aria-pressed=true]{background:var(--accBg);color:var(--accInk);box-shadow:var(--shine)}
@@ -276,8 +299,7 @@ table.kv{width:100%;border-collapse:collapse;font-size:15px}
  .top p{display:none}
  .brandrow svg{width:34px;height:34px}
  .modes button{width:38px}
- .hud{left:8px;top:8px;padding:8px 10px}
- .hud .big{font-size:28px}.hud .verdict{font-size:15px}
+ .hud{left:8px;top:8px;--hb:.8}
  .legend{display:none}
  .fitbtn{top:auto;bottom:10px;right:10px}
  .modecards{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -343,16 +365,25 @@ table.kv{width:100%;border-collapse:collapse;font-size:15px}
 <main class="app">
  <section class="stage" data-i18n-aria="view3d" aria-label="3D">
   <div class="fig" id="view3d">
-   <div class="hud" id="hud" aria-live="polite">
-    <div class="big" id="hudBig">—</div>
-    <div class="verdict" id="hudVerdict"></div>
-    <div class="sm" id="hudSm"></div>
+   <div class="hud" id="hud" data-bg="glass">
+    <div aria-live="polite">
+     <div class="big" id="hudBig">—</div>
+     <div class="verdict" id="hudVerdict"></div>
+     <div class="sm" id="hudSm"></div>
+    </div>
+    <div class="hudtools">
+     <button type="button" id="hudMinus">−</button>
+     <button type="button" id="hudPlus">+</button>
+     <button type="button" id="hudBg"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 3h6v6H3zM15 3h6v6h-6zM9 9h6v6H9zM3 15h6v6H3zM15 15h6v6h-6z" fill="currentColor" opacity=".55"/></svg></button>
+     <button type="button" class="face" id="faceSun" hidden data-i18n="faceSun">បង្វិលទៅរកព្រះអាទិត្យ</button>
+    </div>
    </div>
    <button class="btn sm fitbtn" id="fitBtn" type="button" data-i18n="fit">មើលទាំងមូល</button>
    <div class="legend" aria-hidden="true">
     <span><i style="background:#ffc93c"></i><span data-i18n="lgIn">ពន្លឺចូល</span></span>
     <span><i style="background:#ff8a00"></i><span data-i18n="lgOut">ពន្លឺផ្លាត់</span></span>
     <span><i style="background:#1f6fc4"></i><span data-i18n="lgRef">ទំហំកញ្ចក់ (គំរូ)</span></span>
+    <span><i style="background:rgba(47,127,230,.5);height:8px"></i><span data-i18n="lgArc">ទិសដែលពន្លឺចាំងចូលកញ្ចក់បាន</span></span>
    </div>
   </div>
  </section>
@@ -397,6 +428,10 @@ table.kv{width:100%;border-collapse:collapse;font-size:15px}
      <button type="button" id="tgWall" aria-pressed="false" data-i18n="wall">ជញ្ជាំងទល់មុខ</button>
     </div>
     <div id="wallBox" hidden><input type="range" id="wD" min="0" max="1000" step="1" data-i18n-aria="wallDist" aria-label="ចម្ងាយជញ្ជាំង"></div>
+   </div>
+   <div class="ctl">
+    <div class="ch"><b data-i18n="groundT">ពណ៌ដី</b><span id="earthL"></span></div>
+    <div class="earth" id="earth" role="group" data-i18n-aria="groundT" aria-label="ពណ៌ដី"></div>
    </div>
   </div>
 
@@ -585,7 +620,11 @@ const I={
  planT:['ប្លង់ពីលើ (ជើងនៅខាងលើ)','Plan view (north up)'],spotL:['ស្នាមពន្លឺ','Spot'],sunG:['ថ្ងៃ','Sun'],
  openMir:['បើកទីតាំងកញ្ចក់ក្នុង Google Maps','Open mirror location in Google Maps'],openSpot:['បើកទីតាំងស្នាមពន្លឺក្នុង Google Maps','Open spot location in Google Maps'],walk:['ផ្លូវដើរពីកញ្ចក់ទៅស្នាមពន្លឺ','Walking route mirror → spot'],
  gmapB:['បង្ហាញ Google Map (ផ្កាយរណប)','Show Google Map (satellite)'],gmapNote:['បើផែនទីមិនបង្ហាញក្នុងផ្ទាំងនេះ សូមចុចតំណ «Google Maps» ខាងលើ។','If the map does not appear here, use the Google Maps links above.'],
- no3D:['មិនអាចផ្ទុកម៉ាស៊ីន 3D បានទេ','Could not load the 3D engine'],noKH:['មិនអាចផ្ទុកប្រតិទិនខ្មែរបានទេ','Could not load the Khmer calendar'],custom:['ផ្ទាល់ខ្លួន','Custom'],
+ no3D:['មិនអាចផ្ទុកម៉ាស៊ីន 3D បានទេ','Could not load the 3D engine'],
+ hudSmaller:['បង្រួមប្រអប់លទ្ធផល','Make the result card smaller'],hudBigger:['ពង្រីកប្រអប់លទ្ធផល','Make the result card bigger'],hudBg:['ផ្ទៃខាងក្រោយ៖ ','Background: '],
+ bgGlass:['ថ្លាស្រាល','glass'],bgClear:['ថ្លាទាំងស្រុង','clear'],bgSolid:['ពេញ','solid'],
+ groundT:['ពណ៌ដី','Ground colour'],faceSun:['បង្វិលទៅរកព្រះអាទិត្យ','Turn to the sun'],
+ lgArc:['ទិសដែលពន្លឺចាំងចូលកញ្ចក់បាន','Sun can reach the mirror from here'],noKH:['មិនអាចផ្ទុកប្រតិទិនខ្មែរបានទេ','Could not load the Khmer calendar'],custom:['ផ្ទាល់ខ្លួន','Custom'],
 };
 const t=(k,v)=>{let s=(I[k]||[k,k])[LANG==='en'?1:0];if(v)for(const x in v)s=s.split('{'+x+'}').join(v[x]);return s};
 const NUM=s=>LANG==='en'?String(s):KN(s);
@@ -665,6 +704,8 @@ const S={lat:11.5564,lon:104.9282,tz:7,mAz:90,w:36,h:63,hb:0,target:'ground',D:0
 try{const sv=JSON.parse(store.get('sunmirror-mm','{}'));for(const k in S)if(typeof sv[k]===typeof S[k])S[k]=sv[k]}catch(e){}
 const T0=nowLocal(S.tz);S.date={y:T0.y,m:T0.m,d:T0.d};S.min=(T0.min>360&&T0.min<1080)?T0.min:540;
 const save=()=>{const o={...S};delete o.date;delete o.min;store.set('sunmirror-mm',JSON.stringify(o))};
+const EARTH=[{id:'sand',n:['ខ្សាច់','Sand'],c:0xd6c69c},{id:'grass',n:['ស្មៅ','Grass'],c:0x7ea65a},{id:'red',n:['ដីក្រហម','Red soil'],c:0xb2643f},{id:'stone',n:['បេតុង','Concrete'],c:0xa6a49e},{id:'dark',n:['ដីខ្មៅ','Dark soil'],c:0x4d3d2d}];
+let GROUND=store.get('sm-earth','sand');if(!EARTH.some(e=>e.id===GROUND))GROUND='sand';
 const utcMs=(dt,min,tz)=>Date.UTC(dt.y,dt.m-1,dt.d)+(min-tz*60)*6e4;
 
 /* ---------- geometry ---------- */
@@ -726,9 +767,9 @@ function litWindows(dt){
 
 /* ---------- 3D ---------- */
 const PAL={
- light:{ground:0xcbbf9c,g1:0x8a7f63,g2:0xb3a888,day:0x8cc4ef,dawn:0xf0a868,night:0x0b1424,ink:'#1b2430',north:'#c0392b',halo:'rgba(255,255,255,.9)',back:0x6b5440},
- dark:{ground:0x2a2925,g1:0x6a6455,g2:0x3e3b34,day:0x1b3656,dawn:0x5a3520,night:0x000000,ink:'#e8edf3',north:'#ff6b62',halo:'rgba(0,0,0,.85)',back:0x3a3a3a},
- gold:{ground:0x3a2a10,g1:0xd4a437,g2:0x6e5320,day:0x3b2a0f,dawn:0x7a4a12,night:0x0b0804,ink:'#f6dc8c',north:'#fff0b3',halo:'rgba(0,0,0,.85)',back:0x8a6216}};
+ light:{secs:[0xe8c3b6,0xead5ae,0xe4ddab,0xcbdcaf,0xb6d5bf,0xb3cdd8,0xc4c4e0,0xd8c3dc],ground:0xcbbf9c,g1:0x8a7f63,g2:0xb3a888,day:0x8cc4ef,dawn:0xf0a868,night:0x0b1424,ink:'#1b2430',north:'#c0392b',halo:'rgba(255,255,255,.9)',back:0x6b5440},
+ dark:{secs:[0x40261f,0x3e311d,0x38361d,0x2b3822,0x1f3529,0x1e303b,0x2a2b42,0x37273d],ground:0x2a2925,g1:0x6a6455,g2:0x3e3b34,day:0x1b3656,dawn:0x5a3520,night:0x000000,ink:'#e8edf3',north:'#ff6b62',halo:'rgba(0,0,0,.85)',back:0x3a3a3a},
+ gold:{secs:[0x5e4314,0x3a2a0e,0x4d3712,0x33250c,0x4d3712,0x3a2a0e,0x4d3712,0x33250c],ground:0x3a2a10,g1:0xd4a437,g2:0x6e5320,day:0x3b2a0f,dawn:0x7a4a12,night:0x0b0804,ink:'#f6dc8c',north:'#fff0b3',halo:'rgba(0,0,0,.85)',back:0x8a6216}};
 const pal=()=>PAL[root.getAttribute('data-mode')]||PAL.light;
 const box=$('view3d');let renderer,scene,camera,controls,dyn,sunLight,hemi,fitted=false,glow,groundMesh;
 const V=p=>new THREE.Vector3(p[0],p[2],-p[1]);
@@ -764,11 +805,22 @@ function skyCol(el,P){const night=new THREE.Color(P.night),dawn=new THREE.Color(
 function draw3d(R){
  if(!scene)return;clearDyn();const P0=pal();
  const H0=Math.max(R.h,R.w,S.hb);const ext=Math.max(H0*5,(R.horiz||0)*1.4+H0*3,S.target==='wall'?S.D*1.3+H0*3:0);const EP=H0*0.01;
- groundMesh.scale.set(ext,ext,1);groundMesh.material.color.setHex(P0.ground);
+ const md=root.getAttribute('data-mode');const E0=(EARTH.find(e=>e.id===GROUND)||EARTH[0]).c;
+ const gc=new THREE.Color(E0);if(md==='dark')gc.multiplyScalar(0.55);if(md==='gold')gc.lerp(new THREE.Color(0x3a2a10),0.45).multiplyScalar(0.8);
+ groundMesh.scale.set(ext,ext,1);groundMesh.material.color.copy(gc);
+ const lum=gc.r*0.3+gc.g*0.59+gc.b*0.11;const gA=gc.clone().multiplyScalar(lum>0.35?0.62:1.9),gB=gc.clone().multiplyScalar(lum>0.35?0.8:1.4);
+ const G1=md==='gold'?new THREE.Color(P0.g1):gA,G2=md==='gold'?new THREE.Color(P0.g2):gB;
+ for(let i=0;i<8;i++){const a=(i*45+22.5)*D2R;dyn.add(line([[0,0,EP*0.3],[ext*Math.sin(a),ext*Math.cos(a),EP*0.3]],G1.getHex(),0.45))}
  const cell=[0.005,0.01,0.02,0.05,0.1,0.2,0.5,1,2,5,10,20,50].find(v=>v>=ext/8)||100;
- const g=new THREE.GridHelper(Math.ceil(ext/cell)*cell*2,Math.ceil(ext/cell)*2,P0.g1,P0.g2);g.position.y=EP*0.2;g.material.transparent=true;g.material.opacity=.5;dyn.add(g);
- const labs=LANG==='en'?[['N',0],['E',90],['S',180],['W',270]]:[['ជើង N',0],['កើត E',90],['ត្បូង S',180],['លិច W',270]];
- labs.forEach(([tx,a])=>{const sp=textSprite(tx,a===0?P0.north:P0.ink,P0.halo);const rr=ext*0.92;sp.position.copy(V([rr*Math.sin(a*D2R),rr*Math.cos(a*D2R),ext*0.05]));const sc=ext/7;sp.scale.set(2*sc,0.6*sc,1);dyn.add(sp)});
+ const g=new THREE.GridHelper(Math.ceil(ext/cell)*cell*2,Math.ceil(ext/cell)*2,G1,G2);g.position.y=EP*0.2;g.material.transparent=true;g.material.opacity=.5;dyn.add(g);
+ const labs=LANG==='en'?['N','NE','E','SE','S','SW','W','NW']:['ជើង N','ឦសាន','កើត E','អាគ្នេយ៍','ត្បូង S','និរតី','លិច W','ពាយព្យ'];
+ labs.forEach((tx,i)=>{const a=i*45,card=i%2===0;const sp=textSprite(tx,a===0?P0.north:P0.ink,P0.halo);const rr=ext*(card?0.93:0.88);sp.position.copy(V([rr*Math.sin(a*D2R),rr*Math.cos(a*D2R),ext*0.05]));const sc=ext/7*(card?1:0.72);sp.scale.set(2*sc,0.6*sc,1);dyn.add(sp)});
+ {const r1=ext*0.76,r2=ext*0.82,rr=(r1+r2)/2;
+  const rm=new THREE.Mesh(new THREE.RingGeometry(r1,r2,72,1,(-S.mAz)*D2R,Math.PI),new THREE.MeshBasicMaterial({color:0x2f7fe6,transparent:true,opacity:.5,side:THREE.DoubleSide,depthWrite:false}));
+  rm.rotation.x=-Math.PI/2;rm.position.y=EP*0.4;dyn.add(rm);
+  if(R.day){const sa=R.sp.az*D2R;const sm=new THREE.Mesh(new THREE.CircleGeometry(ext*0.04,28),new THREE.MeshBasicMaterial({color:R.lit?0xffc23a:0xff6b3a}));
+   sm.rotation.x=-Math.PI/2;sm.position.copy(V([rr*Math.sin(sa),rr*Math.cos(sa),EP*0.7]));dyn.add(sm);
+   dyn.add(line([[0,0,EP*0.5],[rr*Math.sin(sa),rr*Math.cos(sa),EP*0.5]],0xffb020,0.9,true,ext*0.12))}}
  scene.background=skyCol(R.sp.el,P0);box.style.background='#'+scene.background.getHexString();
  const sd=ext*1.1;glow.position.copy(V(mul(R.s,sd)));const gs=ext*0.25;glow.scale.set(gs,gs,1);glow.visible=R.sp.el>-2;
  sunLight.position.copy(V(mul(R.s,10)));sunLight.intensity=R.day?0.9:0.05;hemi.intensity=R.day?0.75:0.25;
@@ -816,7 +868,8 @@ function renderMirror(){
  rows.push([t('rSun'),`${fmt(sp.az,1)}° ${dirName(sp.az)} / ${fmt(sp.el,1)}°`]);
  rows.push([t('rMir'),`${S.mAz}° ${dirName(S.mAz)}`]);
  if(!R.day){$('hudBig').textContent=t('night');$('hudVerdict').textContent=t('below');$('hudSm').textContent=t('changeT')}
- else if(!R.lit){$('hudBig').textContent=t('noRefl');$('hudVerdict').textContent=t('behind');$('hudSm').textContent=t('behindSm',{a:fmt(sp.az,0)})}
+ $('faceSun').hidden=!(R.day&&!R.lit);
+ if(!R.day){}else if(!R.lit){$('hudBig').textContent=t('noRefl');$('hudVerdict').textContent=t('behind');$('hudSm').textContent=t('behindSm',{a:fmt(sp.az,0)})}
  else{
   const vt=R.ratio<0.9?'smaller':R.ratio>1.1?'bigger':'same';
   $('hudBig').textContent='×'+fmt(R.ratio,R.ratio<10?2:1);
@@ -928,6 +981,8 @@ function renderMap(){
  for(let i=1;i<=3;i++)s+=`<circle cx="${cx}" cy="${cy}" r="${i*step*sc}" fill="none" stroke="currentColor" stroke-opacity=".18"/><text x="${cx+i*step*sc*0.71+4}" y="${cy+i*step*sc*0.71+14}" font-size="12" fill="currentColor" fill-opacity=".6">${mlen(i*step)}</text>`;
  const L4=LANG==='en'?['N','E','S','W']:['ជ','ក','ត','ល'];
  [0,90,180,270].forEach((a,i)=>{const p=[cx+(rad+18)*Math.sin(a*D2R),cy-(rad+18)*Math.cos(a*D2R)];s+=`<text x="${p[0]}" y="${p[1]+5}" text-anchor="middle" font-size="15" font-weight="700" fill="${a===0?'var(--red)':'currentColor'}">${L4[i]}</text>`});
+ {const ar=rad-4;const pt=a=>[cx+ar*Math.sin(a*D2R),cy-ar*Math.cos(a*D2R)];const p0=pt(S.mAz-90),p1=pt(S.mAz),p2=pt(S.mAz+90);
+  s+=`<path d="M${p0[0]} ${p0[1]} A${ar} ${ar} 0 0 1 ${p1[0]} ${p1[1]} A${ar} ${ar} 0 0 1 ${p2[0]} ${p2[1]}" fill="none" stroke="#2f7fe6" stroke-opacity=".45" stroke-width="9" stroke-linecap="round"/>`}
  const sa=R.sp.az*D2R;const sp=[cx+rad*Math.sin(sa),cy-rad*Math.cos(sa)];
  if(R.day)s+=`<line x1="${sp[0]}" y1="${sp[1]}" x2="${cx}" y2="${cy}" stroke="#f2a900" stroke-width="3" stroke-dasharray="6 5"/><circle cx="${sp[0]}" cy="${sp[1]}" r="13" fill="#f2a900"/><text x="${sp[0]}" y="${sp[1]+4}" text-anchor="middle" font-size="10" fill="#4a3000">${t('sunG')}</text>`;
  const half=Math.max(10,R.w*sc/2);const u=R.u;const a=[cx-u[0]*half,cy+u[1]*half],b=[cx+u[0]*half,cy-u[1]*half];
@@ -962,6 +1017,22 @@ function syncInputs(){
  $('dIn').value=`${S.date.y}-${pad(S.date.m)}-${pad(S.date.d)}`;$('tzIn').value=S.tz;$('latIn').value=S.lat;$('lonIn').value=S.lon;
  const ci=CITIES.findIndex(c=>c[1]!==null&&Math.abs(c[1]-S.lat)<1e-4&&Math.abs(c[2]-S.lon)<1e-4);$('cityS').value=ci<0?CITIES.length-1:ci;
 }
+const HSC=[0.6,0.72,0.85,1,1.18,1.36,1.6],BGS=['glass','clear','solid'],HMAX=HSC.length-1;
+let HS=parseInt(store.get('sm-hud2','3'),10);if(!(HS>=0&&HS<=HMAX))HS=3;
+let HB=store.get('sm-hudbg','glass');if(!BGS.includes(HB))HB='glass';
+function applyHud(){const h=$('hud');h.style.setProperty('--hs',HSC[HS]);h.dataset.bg=HB;h.classList.toggle('compact',HS<=1);
+ $('hudMinus').disabled=HS===0;$('hudPlus').disabled=HS===HMAX;
+ $('hudMinus').title=t('hudSmaller');$('hudPlus').title=t('hudBigger');$('hudBg').title=t('hudBg')+t('bg'+HB[0].toUpperCase()+HB.slice(1));
+ ['hudMinus','hudPlus','hudBg'].forEach(id=>$(id).setAttribute('aria-label',$(id).title));
+ store.set('sm-hud2',String(HS));store.set('sm-hudbg',HB)}
+$('hudMinus').onclick=()=>{if(HS>0){HS--;applyHud()}};
+$('hudPlus').onclick=()=>{if(HS<HMAX){HS++;applyHud()}};
+$('faceSun').onclick=()=>{if(R&&R.day){fitted=false;setAz(Math.round(R.sp.az))}};
+$('hudBg').onclick=()=>{HB=BGS[(BGS.indexOf(HB)+1)%BGS.length];applyHud()};
+function applyGround(){const L=LANG==='en'?1:0;
+ $('earth').innerHTML=EARTH.map(e=>`<button type="button" data-g="${e.id}" aria-pressed="${e.id===GROUND}"><i style="background:#${e.c.toString(16).padStart(6,'0')}"></i><span>${e.n[L]}</span></button>`).join('');
+ $('earthL').textContent=(EARTH.find(e=>e.id===GROUND)||EARTH[0]).n[L];store.set('sm-earth',GROUND)}
+$('earth').addEventListener('click',e=>{const b=e.target.closest('button[data-g]');if(!b)return;GROUND=b.dataset.g;applyGround();if(R)draw3d(R)});
 function applyLang(){
  root.setAttribute('lang',LANG);
  document.querySelectorAll('[data-i18n]').forEach(el=>el.textContent=t(el.dataset.i18n));
@@ -972,7 +1043,7 @@ function applyLang(){
  $('mSel').innerHTML=SOLAR_E.map((n,i)=>`<option value="${i+1}">${LANG==='en'?n:SOLAR_K[i]+' · '+n}</option>`).join('');
  $('cityS').innerHTML=CITIES.map((c,i)=>`<option value="${i}">${c[0][LANG==='en'?1:0]}</option>`).join('');
  document.title=(LANG==='en'?'Sun Mirror Reflection':'ចំណាំងផ្លាត់ព្រះអាទិត្យ')+' · SunMirror';
- renderCompass();syncInputs();
+ renderCompass();syncInputs();applyHud();applyGround();
 }
 const setLang=l=>{LANG=l;store.set('sm-lang',l);applyLang();if(R)update(true)};
 $('langB').onclick=()=>setLang(LANG==='en'?'km':'en');$('lgKm').onclick=()=>setLang('km');$('lgEn').onclick=()=>setLang('en');
