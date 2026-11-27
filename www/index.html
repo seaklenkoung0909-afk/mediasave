@@ -267,6 +267,14 @@ table.kv{width:100%;border-collapse:collapse;font-size:15px}
 .intro svg{width:min(42vw,200px);height:auto;overflow:visible}
 .intro .t1{font-size:clamp(24px,5vw,40px);font-weight:700;line-height:1.2;opacity:0;transform:translateY(12px);animation:rise .8s 1.35s cubic-bezier(.2,.8,.2,1) forwards}
 .intro .t2{font-size:clamp(13px,2.4vw,16px);letter-spacing:.02em;color:var(--introSub);opacity:0;animation:rise .8s 1.6s ease forwards}
+.intro .credit{margin-top:clamp(14px,3vh,28px);display:flex;flex-direction:column;align-items:center;gap:4px;opacity:0;animation:rise .9s 2s ease forwards}
+.intro .credit::before{content:"";width:64px;height:1px;margin-bottom:8px;background:currentColor;opacity:.35}
+.intro .credit span{font-size:clamp(14px,2.6vw,18px);line-height:1.45;color:var(--introInk);font-weight:600}
+.intro .credit span+span{font-weight:400;color:var(--introSub)}
+:root[data-mode=gold] .intro .credit span:first-child{color:#f6dc8c}
+.credit3d{position:absolute;left:12px;bottom:10px;max-width:calc(100% - 300px);font-size:11px;line-height:1.4;color:var(--ink);opacity:.8;pointer-events:none;text-shadow:var(--txtHalo);display:flex;flex-direction:column;-webkit-user-select:none;user-select:none}
+.creditbox{margin-top:18px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--card);font-size:15px;line-height:1.6}
+.creditbox b{display:block}
 :root[data-mode=gold] .intro .t1{background:linear-gradient(100deg,#a87a20 0%,#f6dc8c 30%,#fffbe8 45%,#e0b04a 60%,#a87a20 100%);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:rise .8s 1.35s cubic-bezier(.2,.8,.2,1) forwards,sheen 2.2s 1.5s ease-in-out forwards}
 .intro .skip{position:absolute;bottom:calc(20px + env(safe-area-inset-bottom));font-size:13px;color:var(--introSub)}
 .lg-sun{transform-origin:40px 40px;animation:sunIn 1s cubic-bezier(.2,.8,.2,1) both}
@@ -311,6 +319,7 @@ table.kv{width:100%;border-collapse:collapse;font-size:15px}
  .hud{left:8px;top:8px;--hb:.8}
  .legend{display:none}
  .fitbtn{top:auto;bottom:10px;right:10px}
+ .credit3d{left:8px;bottom:8px;max-width:calc(100% - 150px);font-size:10px}
  .modecards{grid-template-columns:repeat(2,minmax(0,1fr))}
  .day{min-height:58px;padding:3px 1px}
  .day .g{font-size:16px}.day .l{font-size:11px}
@@ -351,6 +360,7 @@ table.kv{width:100%;border-collapse:collapse;font-size:15px}
   <svg viewBox="0 0 120 120" aria-hidden="true" id="introLogo"></svg>
   <div class="t1" data-i18n="title">ចំណាំងផ្លាត់ព្រះអាទិត្យលើកញ្ចក់</div>
   <div class="t2" data-i18n="tagline">3D · ប្រតិទិនខ្មែរ · ផែនទី</div>
+  <div class="credit" lang="km"><span>ដឹកនាំបង្រៀនដោយព្រឹទ្ធាចារ្យ ឃុន សូ</span><span>រៀបចំដោយបញ្ញាវន្ដ សៀក ឡេងគួង</span></div>
  </div>
  <div class="skip" data-i18n="tapSkip">ចុចដើម្បីរំលង</div>
 </div>
@@ -387,6 +397,7 @@ table.kv{width:100%;border-collapse:collapse;font-size:15px}
      <button type="button" class="face" id="faceSun" hidden data-i18n="faceSun">បង្វិលទៅរកព្រះអាទិត្យ</button>
     </div>
    </div>
+   <div class="credit3d" lang="km" aria-label="ដឹកនាំបង្រៀនដោយព្រឹទ្ធាចារ្យ ឃុន សូ · រៀបចំដោយបញ្ញាវន្ដ សៀក ឡេងគួង"><span>ដឹកនាំបង្រៀនដោយព្រឹទ្ធាចារ្យ ឃុន សូ</span><span>រៀបចំដោយបញ្ញាវន្ដ សៀក ឡេងគួង</span></div>
    <button class="btn sm fitbtn" id="fitBtn" type="button" data-i18n="fit">មើលទាំងមូល</button>
    <div class="legend" aria-hidden="true">
     <span><i style="background:#ffc93c"></i><span data-i18n="lgIn">ពន្លឺចូល</span></span>
@@ -546,6 +557,7 @@ table.kv{width:100%;border-collapse:collapse;font-size:15px}
    </div>
 
    <div class="pane prose" id="p-learn" role="tabpanel" hidden>
+    <div class="creditbox" lang="km" style="margin-top:0;margin-bottom:16px"><b>ដឹកនាំបង្រៀនដោយព្រឹទ្ធាចារ្យ ឃុន សូ</b><span>រៀបចំដោយបញ្ញាវន្ដ សៀក ឡេងគួង</span></div>
     <div data-lang="km">
      <h2>ទិសដៅនៃចំណាំងផ្លាត់</h2>
      <p>កញ្ចក់រាបស្មើ ផ្លាត់ពន្លឺតាមច្បាប់ «មុំចូល = មុំផ្លាត់»។ ព្រោះកញ្ចក់ឈរបញ្ឈរ ៩០° នឹងដី ពន្លឺផ្លាត់រក្សាមុំកម្ពស់ដដែលនឹងព្រះអាទិត្យ ប៉ុន្តែចុះក្រោមវិញ។</p>
@@ -677,7 +689,7 @@ new MutationObserver(()=>{if(MODE==='auto'&&root.getAttribute('data-mode')!==eff
 const intro=$('intro');let introT=null;
 function hideIntro(){intro.classList.add('out');clearTimeout(introT)}
 function playIntro(){intro.classList.remove('out');intro.querySelectorAll('*').forEach(el=>{el.style.animation='none';void el.getBoundingClientRect();el.style.animation=''});
- clearTimeout(introT);introT=setTimeout(hideIntro,matchMedia('(prefers-reduced-motion: reduce)').matches?900:3000)}
+ clearTimeout(introT);introT=setTimeout(hideIntro,matchMedia('(prefers-reduced-motion: reduce)').matches?2200:4200)}
 intro.addEventListener('click',hideIntro);
 let seen=false;try{seen=sessionStorage.getItem('sm-intro')==='1';sessionStorage.setItem('sm-intro','1')}catch(e){}
 if(seen)intro.classList.add('out');else playIntro();
